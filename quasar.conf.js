@@ -9,7 +9,7 @@
 
 module.exports = function (/* ctx */) {
   return {
-    productName: 'RecordSQL ',
+    productName: 'RecordSQL',
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
     supportIE: false,
