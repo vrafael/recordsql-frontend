@@ -8,8 +8,7 @@
   "author": "coldrain96 <Justtryagain961@gmail.com>",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
