@@ -2,7 +2,7 @@
   "name": "recordsql-frontend",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "RecordSQL",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "coldrain96 <Justtryagain961@gmail.com>",

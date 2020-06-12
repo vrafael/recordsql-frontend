@@ -9,6 +9,8 @@
 
 module.exports = function (/* ctx */) {
   return {
+    productName: 'RecordSQL ',
+
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
     supportIE: false,
 
@@ -120,8 +122,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Quasar App',
-        short_name: 'Quasar App',
+        name: 'RecordSQL',
+        short_name: 'RecordSQL',
         description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
