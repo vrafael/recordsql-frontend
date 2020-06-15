@@ -35,9 +35,9 @@
         >
 
           <q-route-tab
-            :to="link.link"
             exact
-            v-for="link in Links"
+            v-for="link in links"
+            :to="link.link"
             :key="link.title"
             v-bind="link"
             icon=""
@@ -48,7 +48,7 @@
               <q-icon
               :name="link.icon"
               size="sm"
-              style="margin-right: 5px; "
+              style="margin-right: 5px;"
               >
               </q-icon>
               {{ link.title }}
@@ -68,6 +68,7 @@
     >
       <q-list class="flex flex-center">
         Buffer
+        {{ links }}
       </q-list>
     </q-drawer>
 
@@ -78,31 +79,16 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 export default {
-  components: {
-  },
-
   data: () => ({
-    drawerLeft: false,
-    drawerRight: false,
-    Links: [
-      {
-        title: 'Home',
-        icon: 'home',
-        link: '/'
-      },
-      {
-        title: 'Types',
-        icon: 'mdi-puzzle',
-        link: '/types'
-      },
-      {
-        title: 'Records',
-        icon: 'mdi-database ',
-        link: '/records'
-      }
-    ]
-  })
+    drawerLeft: true,
+    drawerRight: true,
+  }),
+  computed: {
+    ...mapGetters('HomeLayout', {
+      links: 'getAllLinks',
+    })
+  },
 }
 </script>
