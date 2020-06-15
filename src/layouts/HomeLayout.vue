@@ -10,7 +10,10 @@
           aria-label="Menu"
           @click="drawerLeft = !drawerLeft"
         />
-
+        <img
+          src="~assets/RecordSQL-logo.png"
+          style="max-width: 32px; max-height: 32px"
+        >
         <q-toolbar-title>
           RecordSQL
         </q-toolbar-title>
