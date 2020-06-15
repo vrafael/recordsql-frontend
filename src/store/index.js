@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import example from './module-example'
-
 Vue.use(Vuex)
+
+import HomeLayout from 'src/store/layouts/HomeLayout'
 
 /*
  * If not building with SSR mode, you can
@@ -17,7 +17,7 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      HomeLayout,
     },
 
     // enable strict mode (adds overhead!)
