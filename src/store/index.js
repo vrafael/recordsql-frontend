@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import HomeLayout from 'src/store/layouts/HomeLayout'
+import MainLayout from 'src/store/layouts/MainLayout'
 
 /*
  * If not building with SSR mode, you can
@@ -17,7 +17,7 @@ import HomeLayout from 'src/store/layouts/HomeLayout'
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      HomeLayout,
+      MainLayout,
     },
 
     // enable strict mode (adds overhead!)
