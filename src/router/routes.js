@@ -1,7 +1,4 @@
 const routes = [{
-    path: '/',
-    redirect: '/records/'
-  }, {
     path: '/records',
     redirect: '/records/fields'
   },
