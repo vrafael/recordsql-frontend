@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex">
-    <q-row class="full-width" style="max-width: 1500px">
+  <q-page class="flex justify-center">
+    <q-row class="row full-width" style="max-width: 1000px">
       <div class="col-12 q-mx-auto">
         <q-card class="q-mx-xs">
 
