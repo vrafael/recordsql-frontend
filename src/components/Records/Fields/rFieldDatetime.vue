@@ -13,3 +13,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      createDateInput: "14.05.2020 21:50"
+    }
+  }
+}
+</script>

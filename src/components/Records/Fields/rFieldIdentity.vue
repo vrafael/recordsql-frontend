@@ -8,3 +8,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      idInput: '93651',
+    }
+  }
+}
+</script>

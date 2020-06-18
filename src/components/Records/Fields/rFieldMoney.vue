@@ -13,3 +13,13 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      amountInput: 312300.0,
+    }
+  }
+}
+</script>
