@@ -47,11 +47,11 @@
       getFormattedCurrentDateAndTime() {
         const D = new Date();
         const dates = {
-          date: D.getDate(),
+          date: ''+ D.getDate(),
           month: '' + (D.getMonth() + 1),
-          fullYear: D.getFullYear(),
-          hours24format: D.getHours(),
-          minutes: D.getMinutes(),
+          fullYear: '' + D.getFullYear(),
+          hours24format: '' + D.getHours(),
+          minutes: '' + D.getMinutes(),
         }
         const formattedDates = {}
         for (const [key, value] of Object.entries(dates)) {
