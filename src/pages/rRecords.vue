@@ -5,8 +5,8 @@
         <q-card class="q-mx-xs">
 
           <q-card-section>
-            <Header/>
-            <Tabs/>
+            <r-header/>
+            <r-tabs/>
           </q-card-section>
           <q-page-container>
             <router-view/>
@@ -18,17 +18,13 @@
 </template>
 
 <script>
-  import Tabs from 'components/Records/Tabs'
-  import Header from 'components/Records/Header'
+  import rTabs from 'components/Records/rTabs'
+  import rHeader from 'components/Records/rHeader'
 
   export default {
     components: {
-      Tabs,
-      Header,
+      rTabs,
+      rHeader,
     },
   }
 </script>
-
-<style scoped>
-
-</style>

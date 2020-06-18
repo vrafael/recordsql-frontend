@@ -5,19 +5,19 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('layouts/HomeLayout.vue'),
+    component: () => import('layouts/rLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      { path: '/types', component: () => import('pages/Types.vue') },
-      { path: '/records', component: () => import('pages/Records.vue') },
+      { path: '', component: () => import('pages/rHome.vue') },
+      { path: '/types', component: () => import('pages/rTypes.vue') },
+      { path: '/records', component: () => import('pages/rRecords.vue') },
     ]
   },
   {
     path: '/records',
-    component: () => import('layouts/HomeLayout.vue'),
+    component: () => import('layouts/rLayout.vue'),
     children: [
-      { path: 'fields', component: () => import('components/Records/Fields/Fields') },
-      { path: 'relations', component: () => import('components/Records/Relations/Relations') },
+      { path: 'fields', component: () => import('components/Records/Fields/rFields') },
+      { path: 'relations', component: () => import('components/Records/Relations/rRelations') },
     ]
   },
 ]

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr fff">
-    <q-header elevated>
+    <q-header elevated class="bg-linear" >
       <q-toolbar>
         <q-btn
           flat
@@ -10,11 +10,13 @@
           aria-label="Menu"
           @click="drawerLeft = !drawerLeft"
         />
-        <img
-          src="~assets/RecordSQL-logo.png"
-          style="max-width: 32px; max-height: 32px"
-        >
         <q-toolbar-title>
+          <q-avatar rounded>
+            <img
+              src="~assets/RecordLogo.svg"
+              style="max-width: 32px; max-height: 32px"
+            >
+          </q-avatar>
           RecordSQL
         </q-toolbar-title>
         <q-btn
@@ -80,3 +82,8 @@ export default {
   },
 }
 </script>
+
+<style lang="sass">
+.bg-linear
+  background: linear-gradient(90deg,  rgb(15, 71, 126) 5%, $primary 50%, rgb(15, 71, 126)  95%)
+</style>
