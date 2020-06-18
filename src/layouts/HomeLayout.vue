@@ -32,34 +32,20 @@
       bordered
       content-class="bg-grey-1"
     >
-      <q-list>
-        <q-tabs
-          vertical
-        >
+      <q-scroll-area class="fit">
+        <q-list v-for="(link, index) in links" :key="index">
+          <q-item :to="link.link" exact clickable>
+            <q-item-section avatar>
+              <q-icon :name="link.icon" :color="link.iconColor" />
+            </q-item-section>
+            <q-item-section>
+              {{ link.label }}
+            </q-item-section>
+          </q-item>
 
-          <q-route-tab
-            exact
-            v-for="link in links"
-            :to="link.link"
-            :key="link.title"
-            v-bind="link"
-            icon=""
-          >
-            <q-item
-              style="display:flex; align-items: center"
-            >
-              <q-icon
-              :name="link.icon"
-              size="sm"
-              style="margin-right: 5px;"
-              >
-              </q-icon>
-              {{ link.title }}
-            </q-item>
-          </q-route-tab>
-
-        </q-tabs>
-      </q-list>
+          <q-separator v-if="link.separator" />
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-drawer
@@ -71,7 +57,6 @@
     >
       <q-list class="flex flex-center">
         Buffer
-        {{ links }}
       </q-list>
     </q-drawer>
 

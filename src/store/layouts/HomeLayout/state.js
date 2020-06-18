@@ -2,19 +2,22 @@ export default function () {
   return {
     links: [
       {
-        title: 'Home',
+        label: 'Home',
         icon: 'home',
-        link: '/'
+        link: '/',
+        separator: true,
       },
       {
-        title: 'Types',
+        label: 'Types',
         icon: 'mdi-puzzle',
-        link: '/types'
+        link: '/types',
+        separator: false,
       },
       {
-        title: 'Records',
+        label: 'Records',
         icon: 'mdi-database ',
-        link: '/records'
+        link: '/records',
+        separator: false,
       }
     ]
   }
