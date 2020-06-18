@@ -1,6 +1,9 @@
 
 const routes = [
   {
+    path: '/records', redirect: '/records/fields'
+  },
+  {
     path: '/',
     component: () => import('layouts/HomeLayout.vue'),
     children: [
