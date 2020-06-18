@@ -67,10 +67,15 @@
     <r-field-datetime />
 
     <div class="row">
-      <q-btn label="Save changes"></q-btn>
-      <q-btn label="Cancel" class="q-ml-xs"></q-btn>
+      <q-btn style="width: 140px">
+        <q-icon left name="save" />
+        Save
+      </q-btn>
       <q-space />
-      <q-btn class="q-ml-auto" label="Delete"></q-btn>
+      <q-btn style="width: 140px">
+        <q-icon left name="cancel" />
+        Cancel
+      </q-btn>
     </div>
   </q-form>
 </template>
