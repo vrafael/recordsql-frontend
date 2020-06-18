@@ -57,7 +57,10 @@
         for (const [key, value] of Object.entries(dates)) {
           if (value.length <= 1) {
             formattedDates[key] = `0${value}`
-          } else {
+          } else if (value === 0) {
+            formattedDates[key] = `0${value}`
+          }
+          else {
             formattedDates[key] = value
           }
         }
