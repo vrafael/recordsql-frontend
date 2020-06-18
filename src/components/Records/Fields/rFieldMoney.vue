@@ -5,11 +5,12 @@
     </div>
     <div class="col-9">
       <q-input
-        class="text-body1"
         v-model="amountInput"
-        outlined
-        clearable
-      ></q-input>
+        mask="#.##"
+        fill-mask="0"
+        reverse-fill-mask
+        input-class="text-right text-h6"
+      />
     </div>
   </div>
 </template>
@@ -18,7 +19,7 @@
 export default {
   data() {
     return {
-      amountInput: 312300.0,
+      amountInput: '',
     }
   }
 }
