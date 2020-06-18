@@ -73,10 +73,10 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     drawerLeft: true,
-    drawerRight: true,
+    drawerRight: false,
   }),
   computed: {
-    ...mapGetters('HomeLayout', {
+    ...mapGetters('MainLayout', {
       links: 'getAllLinks',
     })
   },
