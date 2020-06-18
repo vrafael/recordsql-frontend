@@ -190,25 +190,28 @@
           </q-card-section>
 
           <q-card-actions
+            class="q-pa-md"
           >
-            <div class="col-2">
+            <div class="q-pa-md row full-width">
               <q-btn
                 label="Save changes"
                 type="submit"
-                color="teal"
+                color="warning"
+                size="md"
               ></q-btn>
-            </div>
-            <div class="col-2">
               <q-btn
+                class="q-ml-sm"
                 label="Cancel"
+                size="md"
               ></q-btn>
-            </div>
-            <div class="col-2 offset-6">
               <q-btn
                 class="q-ml-auto"
                 label="Delete"
+                color="negative"
+                size="md"
               ></q-btn>
             </div>
+
           </q-card-actions>
         </q-card>
       </div>
