@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex justify-center">
-    <q-row class="row full-width" style="max-width: 1000px">
+  <q-page padding class="flex justify-center">
+    <div class="row full-width" style="max-width: 1000px">
       <div class="col-12 q-mx-auto">
         <q-card class="q-mx-xs">
 
@@ -13,7 +13,7 @@
           <!--        </q-page-container>-->
         </q-card>
       </div>
-    </q-row>
+    </div>
   </q-page>
 </template>
 
