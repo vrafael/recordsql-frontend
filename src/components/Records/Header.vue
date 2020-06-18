@@ -17,7 +17,7 @@
         >Заявка на ПК</span>
       </div>
       <q-btn-dropdown
-        color="grey-6"
+        color="primary"
         label="Transitions"
         class="q-ml-auto"
       >
