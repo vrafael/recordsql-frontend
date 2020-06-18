@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr fff">
-    <q-header elevated>
+    <q-header elevated class="bg-linear" >
       <q-toolbar>
         <q-btn
           flat
@@ -82,3 +82,8 @@ export default {
   },
 }
 </script>
+
+<style lang="sass">
+.bg-linear
+  background: linear-gradient(90deg,  rgb(15, 71, 126) 5%, $primary 50%, rgb(15, 71, 126)  95%)
+</style>
