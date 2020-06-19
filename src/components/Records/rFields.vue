@@ -41,7 +41,7 @@
     </div>
 
     <r-field-string />
-
+    
     <r-field-text />
 
     <div class="row q-my-md">
@@ -65,6 +65,13 @@
 
     <r-field-money />
     <r-field-datetime />
+    <r-field-bool />
+    <r-field-color />
+    <r-field-link />
+    <r-field-date />
+    <r-field-time />
+    <r-field-int />
+
 
     <div class="row">
       <q-btn style="width: 140px">
@@ -81,19 +88,29 @@
 </template>
 
 <script>
-import rFieldIdentity from './Fields/rFieldIdentity';
-import rFieldString from './Fields/rFieldString';
+import rFieldBool from './Fields/rFieldBool';
+import rFieldColor from './Fields/rFieldColor';
+import rFieldDate from './Fields/rFieldDate';
 import rFieldDatetime from './Fields/rFieldDatetime';
+import rFieldIdentity from './Fields/rFieldIdentity';
+import rFieldInt from './Fields/rFieldInt';
 import rFieldMoney from './Fields/rFieldMoney';
+import rFieldString from './Fields/rFieldString';
 import rFieldText from './Fields/rFieldText';
+import rFieldTime from './Fields/rFieldTime';
 
 export default {
   components: {
-    rFieldIdentity,
-    rFieldString,
+    rFieldBool,
+    rFieldColor,
+    rFieldDate,
     rFieldDatetime,
+    rFieldIdentity,
+    rFieldInt,
     rFieldMoney,
-    rFieldText
+    rFieldString,
+    rFieldText,
+    rFieldTime
   },
   data: () => ({
     idInput: '93651',
