@@ -1,7 +1,7 @@
 <template>
   <q-page padding class="flex justify-center">
     <div class="row full-width" style="max-width: 1000px">
-      <div class="col-12 q-mx-auto">
+      <div class="col-12">
         <q-card>
           <q-card-section class="bg-primary text-white">
             <div class="row items-center ">
