@@ -4,36 +4,44 @@
       Create date
     </div>
     <div class="col-9">
+
       <q-input
-        v-model="getFormattedCurrentDateAndTime"
+        v-model="creatingDate"
         mask="##/##/#### ##:##"
         class="text-body1"
-        outlined
-      >
-        <q-icon
-          name="event"
-          class="cursor-pointer q-my-auto q-mx-xs"
-          size="md"
-        >
-          <q-popup-proxy transition-show="scale" transition-hide="scale">
-            <q-date mask="YYYY-MM-DD HH:mm"/>
-          </q-popup-proxy>
-        </q-icon>
+        outlined>
+        <template>
+          <q-icon
+            size="md"
+            name="event"
+            class="cursor-pointer q-my-auto q-mx-xs">
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale">
+              <q-date
+                v-model="creatingDate"
+                mask="DD-MM-YYYY HH:mm"/>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
 
-        <q-icon
-          name="access_time"
-          class="cursor-pointer q-my-auto q-mx-xs"
-          size="md"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale">
-            <q-time
-              mask="YYYY-MM-DD HH:mm"
-              format24h/>
-          </q-popup-proxy>
-        </q-icon>
+        <template>
+          <q-icon
+            size="md"
+            name="access_time"
+            class="cursor-pointer q-my-auto q-mx-xs">
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale">
+              <q-time
+                v-model="creatingDate"
+                mask="DD-MM-YYYY HH:mm"
+                format24h/>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
       </q-input>
+
     </div>
   </div>
 </template>
@@ -41,13 +49,16 @@
 <script>
   export default {
     data: () => ({
-      createDateInput: ''
+      creatingDate: '',
     }),
-    computed: {
+    mounted() {
+      this.creatingDate = this.getFormattedCurrentDateAndTime();
+    },
+    methods: {
       getFormattedCurrentDateAndTime() {
         const D = new Date();
         const dates = {
-          date: ''+ D.getDate(),
+          date: '' + D.getDate(),
           month: '' + (D.getMonth() + 1),
           fullYear: '' + D.getFullYear(),
           hours24format: '' + D.getHours(),
@@ -59,13 +70,12 @@
             formattedDates[key] = `0${value}`
           } else if (value === 0) {
             formattedDates[key] = `0${value}`
-          }
-          else {
+          } else {
             formattedDates[key] = value
           }
         }
         return (
-        `${formattedDates.date}.`+
+        `${formattedDates.date}.` +
         `${formattedDates.month}.` +
         `${formattedDates.fullYear}` +
         `${formattedDates.hours24format}.` +
