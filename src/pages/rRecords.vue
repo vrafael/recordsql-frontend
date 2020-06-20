@@ -13,34 +13,18 @@
                 <div class="text-subtitle2">Обеспечение офиса</div>
               </div>
 
-              <q-btn-group>
-                <q-btn-dropdown
-                  class="text-black"
-                  color="white"
-                  label="Transitions"
-                >
-                  <q-list>
-                    <q-item clickable v-close-popup>
-                      <q-item-section>
-                        <q-item-label>Согласовать</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section>
-                        <q-item-label>Отклонить</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup>
-                      <q-item-section>
-                        <q-item-label>Отозвать</q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-btn-dropdown>
-                <q-btn color="red" icon="delete" />
-              </q-btn-group>
+              <q-fab
+                v-model="transitions"
+                label="Transitions"
+                vertical-actions-align="left"
+                color="accent"
+                icon="keyboard_arrow_down"
+                direction="down"
+                label-position="left"
+              >
+                <q-fab-action color="primary" @click="onClick" icon="thumb_up" label="Согласовать" />
+                <q-fab-action color="secondary" @click="onClick" icon="thumb_down" label="Отклонить" />
+              </q-fab>
             </div>
           </q-card-section>
           <q-card-section>
@@ -76,9 +60,10 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      tab: 'fields'
+      tab: 'fields',
+      transitions: false
     };
   }
 };

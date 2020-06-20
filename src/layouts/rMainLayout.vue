@@ -24,7 +24,7 @@
           @click="drawerRight = !drawerRight"
           round
           dense
-          icon="menu"
+          icon="star"
         />
       </q-toolbar>
     </q-header>
@@ -59,12 +59,11 @@
     <q-drawer
       side="right"
       v-model="drawerRight"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
       <q-list class="flex flex-center">
-        Buffer
+        Favorite objects
       </q-list>
     </q-drawer>
 
@@ -78,10 +77,12 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data: () => ({
-    drawerLeft: true,
-    drawerRight: false
-  }),
+  data () {
+    return ({
+      drawerLeft: true,
+      drawerRight: false
+    })
+  },
   computed: {
     ...mapGetters('MainLayout', {
       menu: 'MENU_GET'

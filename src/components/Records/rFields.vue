@@ -72,10 +72,14 @@
         Save
       </q-btn>
       <q-space />
-      <q-btn color="primary" style="width: 140px">
-        <q-icon left name="cancel" />
-        Cancel
-      </q-btn>
+
+      <q-btn-group>
+        <q-btn color="primary" style="width: 140px">
+          <q-icon left name="cancel" />
+          Cancel
+        </q-btn>
+        <q-btn color="red" icon="delete" />
+      </q-btn-group>
     </div>
   </q-form>
 </template>
