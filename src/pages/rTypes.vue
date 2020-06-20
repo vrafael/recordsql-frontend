@@ -3,7 +3,7 @@
     <q-splitter v-model="splitter" unit="px">
       <template v-slot:before>
         <q-tree
-          :nodes="types"
+          :nodes="typetree"
           node-key="id"
           :selected.sync="selected"
           :expanded.sync="expanded"
@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     ...mapGetters('Types', {
-      types: 'TYPES_GET'
+      typetree: 'TYPETREE_GET'
     })
   }
 };

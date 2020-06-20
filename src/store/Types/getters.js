@@ -1,7 +1,7 @@
-function TYPES_GET (state) {
-  return state.types
+function TYPETREE_GET (state) {
+  return state.typetree
 }
 
 export default {
-  TYPES_GET
+  TYPETREE_GET
 }

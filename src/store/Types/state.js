@@ -1,6 +1,6 @@
 export default function () {
   return {
-    types: [
+    typetree: [
       {
         id: 1,
         label: 'Object',
