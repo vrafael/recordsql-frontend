@@ -3,7 +3,7 @@ export default function () {
     links: [
       {
         label: 'Home',
-        icon: 'home',
+        icon: 'mdi-home',
         link: '/',
         separator: true,
       },
@@ -15,7 +15,7 @@ export default function () {
       },
       {
         label: 'Records',
-        icon: 'mdi-database ',
+        icon: 'mdi-database',
         link: '/records',
         separator: false,
       }
