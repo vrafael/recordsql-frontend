@@ -1,18 +1,20 @@
 <template>
-  <q-page>
-    <q-splitter v-model="splitter">
+  <q-page class="flex full-height">
+    <q-splitter v-model="splitter" unit="px">
       <template v-slot:before>
         <q-tree
           :nodes="types"
+          node-key="id"
           :selected.sync="selected"
           :expanded.sync="expanded"
-          node-key="id"
+          selectable
+          selected-color="primary"
         >
           <template v-slot:default-header="prop">
             <div class="row items-center">
               <q-icon
-                :name="prop.node.icon || 'share'"
-                color="orange"
+                :name="prop.node.icon"
+                color="accent"
                 size="28px"
                 class="q-mr-sm"
               />
@@ -33,55 +35,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data () {
     return {
-      splitter: 50,
+      splitter: 300,
       expanded: [1, 2],
-      types: [
-        {
-          id: 1,
-          label: 'Object',
-          icon: 'las la-atom',
-          children: [
-            {
-              id: 2,
-              label: 'Directory',
-              icon: 'las la-book',
-              children: [
-                {
-                  id: 3,
-                  label: 'Field',
-                  icon: 'las la-tag'
-                },
-                {
-                  id: 4,
-                  label: 'Type',
-                  icon: 'las la-cog'
-                }
-              ]
-            },
-            {
-              id: 5,
-              label: 'Error',
-              icon: 'las la-exclamation-circle',
-              children: [
-                {
-                  id: 6,
-                  label: 'SystemError',
-                  icon: 'las la-exclamation-triangle'
-                },
-                {
-                  id: 7,
-                  label: 'SecurityError',
-                  icon: 'las la-ban'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      selected: null,
     };
+  },
+  computed: {
+    ...mapGetters('Types', {
+      types: 'TYPES_GET'
+    })
   }
 };
 </script>
