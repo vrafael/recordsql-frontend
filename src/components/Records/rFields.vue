@@ -67,12 +67,12 @@
     <r-field-datetime />
 
     <div class="row">
-      <q-btn style="width: 140px">
+      <q-btn color="primary" style="width: 140px">
         <q-icon left name="save" />
         Save
       </q-btn>
       <q-space />
-      <q-btn style="width: 140px">
+      <q-btn color="primary" style="width: 140px">
         <q-icon left name="cancel" />
         Cancel
       </q-btn>

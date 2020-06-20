@@ -3,7 +3,7 @@
     <div class="row full-width" style="max-width: 1000px">
       <div class="col-12">
         <q-card>
-          <q-card-section class="bg-primary text-white">
+          <q-card-section class="bg-linear text-white">
             <div class="row items-center ">
               <div class="items-start q-mx-sm">
                 <q-icon name="las la-laptop" style="font-size: 3em;" />
