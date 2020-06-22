@@ -1,22 +1,28 @@
 <template>
   <div class="row q-my-md">
-    <div
-      class="text-h6"
-      style="display: flex;align-items: center;">
-      {{ questionText }}
+    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+      Check the box
     </div>
-    <q-checkbox
-      toggle-indeterminate
-      indeterminate-value="maybe"
-      v-model="theModel2"/>
+    <div class="col-9">
+      <q-input
+        class="text-body1"
+        outlined>
+        <div
+          class="text-h6"
+          style="display: flex;align-items: center;">
+        </div>
+        <q-checkbox
+          slot="prepend"
+          toggle-indeterminate
+          indeterminate-value="maybe"
+          v-model="theModel2"/>
+      </q-input>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    props: {
-      questionText: String,
-    },
     data: () => ({
       theModel2: null
     }),
