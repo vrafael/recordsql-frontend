@@ -6,7 +6,7 @@
     <div class="col-9">
       <q-input
         v-model="creatingTime"
-        mask="##:##:##:##"
+        mask="##:##:##.##"
         class="text-body1"
         outlined>
         <q-icon
@@ -17,6 +17,7 @@
             transition-show="scale"
             transition-hide="scale">
             <q-time
+              mask="HH:mm:ss.00"
               v-model="creatingTime"
               format24h>
               <div class="row items-center justify-end q-gutter-sm">
@@ -39,7 +40,7 @@
     }),
     mounted() {
       const fd = this.getFormattedCurrentDateAndTime();
-      this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}:${fd.milliseconds}`;
+      this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}.${fd.milliseconds}`;
     },
     methods: {
       getFormattedCurrentDateAndTime() {
