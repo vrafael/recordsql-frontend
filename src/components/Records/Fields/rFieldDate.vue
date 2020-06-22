@@ -7,10 +7,9 @@
 
       <q-input
         v-model="creatingDate"
-        mask="##/##/####"
+        mask="####/##/##"
         class="text-body1"
         outlined>
-        <template>
           <q-icon
             size="md"
             name="event"
@@ -20,10 +19,9 @@
               transition-hide="scale">
               <q-date
                 v-model="creatingDate"
-                mask="DD-MM-YYYY"/>
+              />
             </q-popup-proxy>
           </q-icon>
-        </template>
       </q-input>
 
     </div>
@@ -36,7 +34,8 @@
       creatingDate: '',
     }),
     mounted() {
-      this.creatingDate = this.getFormattedCurrentDate();
+      const fd = this.getFormattedCurrentDate();
+      this.creatingDate = `${fd.fullYear} ${fd.month} ${fd.date}`
     },
     methods: {
       getFormattedCurrentDate() {
@@ -56,11 +55,11 @@
             formattedDates[key] = value
           }
         }
-        return (
-        `${formattedDates.date}.` +
-        `${formattedDates.month}.` +
-        `${formattedDates.fullYear}`
-        )
+        return {
+          date: formattedDates.date,
+          month: formattedDates.month,
+          fullYear: formattedDates.fullYear
+        }
       },
     },
   }
