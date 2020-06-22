@@ -10,18 +10,24 @@
         mask="####.##.##"
         class="text-body1"
         outlined>
-          <q-icon
-            size="md"
-            name="event"
-            class="cursor-pointer q-my-auto q-mx-xs">
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale">
-              <q-date
-                v-model="creatingDate"
-              />
-            </q-popup-proxy>
-          </q-icon>
+        <q-icon
+          size="md"
+          name="event"
+          class="cursor-pointer q-my-auto q-mx-xs">
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale">
+            <q-date
+              v-model="creatingDate"
+              mask="MM-DD-YYYY"
+            >
+              <div class="row items-center justify-end q-gutter-sm">
+                <q-btn label="Cancel" color="primary" flat v-close-popup/>
+                <q-btn label="OK" color="primary" flat @click="save" v-close-popup/>
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
       </q-input>
 
     </div>
