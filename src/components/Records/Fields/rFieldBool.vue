@@ -4,19 +4,11 @@
       Check the box
     </div>
     <div class="col-9">
-      <q-input
-        class="text-body1"
-        outlined>
-        <div
-          class="text-h6"
-          style="display: flex;align-items: center;">
-        </div>
         <q-checkbox
           slot="prepend"
           toggle-indeterminate
           indeterminate-value="maybe"
           v-model="theModel2"/>
-      </q-input>
     </div>
   </div>
 </template>
