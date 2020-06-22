@@ -4,28 +4,24 @@
       Create time
     </div>
     <div class="col-9">
-
       <q-input
         v-model="creatingDate"
         mask="##:##"
         class="text-body1"
         outlined>
-
-        <template>
-          <q-icon
-            size="md"
-            name="access_time"
-            class="cursor-pointer q-my-auto q-mx-xs">
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale">
-              <q-time
-                v-model="creatingDate"
-                mask="HH:mm"
-                format24h/>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
+        <q-icon
+          size="md"
+          name="access_time"
+          class="cursor-pointer q-my-auto q-mx-xs">
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale">
+            <q-time
+              v-model="creatingDate"
+              mask="HH:mm"
+              format24h/>
+          </q-popup-proxy>
+        </q-icon>
       </q-input>
 
     </div>
