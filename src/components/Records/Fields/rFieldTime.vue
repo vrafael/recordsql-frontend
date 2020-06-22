@@ -5,8 +5,8 @@
     </div>
     <div class="col-9">
       <q-input
-        v-model="creatingDate"
-        mask="##:##"
+        v-model="creatingTime"
+        mask="##:##:##:##"
         class="text-body1"
         outlined>
         <q-icon
@@ -17,8 +17,8 @@
             transition-show="scale"
             transition-hide="scale">
             <q-time
-              v-model="creatingDate"
-              mask="HH:mm"
+              v-model="creatingTime"
+              mask="HH:mm:ss:00"
               format24h/>
           </q-popup-proxy>
         </q-icon>
@@ -31,10 +31,11 @@
 <script>
   export default {
     data: () => ({
-      creatingDate: '',
+      creatingTime: '',
     }),
     mounted() {
-      this.creatingDate = this.getFormattedCurrentDateAndTime();
+      const fd = this.getFormattedCurrentDateAndTime();
+      this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}:${fd.milliseconds}`;
     },
     methods: {
       getFormattedCurrentDateAndTime() {
@@ -42,6 +43,8 @@
         const dates = {
           hours24format: '' + D.getHours(),
           minutes: '' + D.getMinutes(),
+          seconds: '' + D.getSeconds(),
+          milliseconds: '' + D.getMilliseconds()
         }
         const formattedDates = {}
         for (const [key, value] of Object.entries(dates)) {
@@ -53,10 +56,12 @@
             formattedDates[key] = value
           }
         }
-        return (
-        `${formattedDates.hours24format}.` +
-        `${formattedDates.minutes}`
-        )
+        return {
+          hours24format: formattedDates.hours24format,
+          minutes: formattedDates.minutes,
+          seconds: formattedDates.seconds,
+          milliseconds: formattedDates.milliseconds,
+        }
       },
     },
   }

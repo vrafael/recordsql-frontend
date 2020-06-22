@@ -32,7 +32,7 @@
         <div class="col-6">
           <q-input
             v-model="creatingTime"
-            mask="##:##"
+            mask="##:##:##:##"
             class="text-body1 q-ml-md"
             outlined>
             <q-icon
@@ -44,7 +44,7 @@
                 transition-hide="scale">
                 <q-time
                   v-model="creatingTime"
-                  mask="HH:mm"
+                  mask="HH:mm:ss:00"
                   format24h/>
               </q-popup-proxy>
             </q-icon>
@@ -64,7 +64,7 @@
     mounted() {
       const fd = this.getFormattedCurrentDateAndTime();
       this.creatingDate = `${fd.fullYear}.${fd.month}.${fd.date}`;
-      this.creatingTime = `${fd.hours24format}:${fd.minutes}`;
+      this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}:${fd.milliseconds}`;
     },
     methods: {
       getFormattedCurrentDateAndTime() {
@@ -75,6 +75,8 @@
           fullYear: '' + D.getFullYear(),
           hours24format: '' + D.getHours(),
           minutes: '' + D.getMinutes(),
+          seconds: '' + D.getSeconds(),
+          milliseconds: '' + D.getMilliseconds()
         }
         const formattedDates = {}
         for (const [key, value] of Object.entries(dates)) {
@@ -91,7 +93,9 @@
           month: formattedDates.month,
           fullYear: formattedDates.fullYear,
           hours24format: formattedDates.hours24format,
-          minutes: formattedDates.minutes
+          minutes: formattedDates.minutes,
+          seconds: formattedDates.seconds,
+          milliseconds: formattedDates.milliseconds,
         }
       },
     },
