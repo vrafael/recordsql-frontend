@@ -10,7 +10,7 @@
         <div class="col-6">
           <q-input
             v-model="creatingDate"
-            mask="####/##/##"
+            mask="####.##.##"
             class="text-body1 q-mx-xs"
             outlined>
             <template>

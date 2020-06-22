@@ -7,7 +7,7 @@
 
       <q-input
         v-model="creatingDate"
-        mask="####/##/##"
+        mask="####.##.##"
         class="text-body1"
         outlined>
           <q-icon
