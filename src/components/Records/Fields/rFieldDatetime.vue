@@ -1,47 +1,56 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div class="row q-my-md">
     <div class="col-3 text-h6" style="display: flex;align-items: center;">
       Create date & time
     </div>
     <div class="col-9">
-
-      <q-input
-        v-model="creatingDate"
-        mask="##/##/#### ##:##"
-        class="text-body1"
-        outlined>
-        <template>
-          <q-icon
-            size="md"
-            name="event"
-            class="cursor-pointer q-my-auto q-mx-xs">
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale">
-              <q-date
-                v-model="creatingDate"
-                mask="DD-MM-YYYY HH:mm"/>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-
-        <template>
-          <q-icon
-            size="md"
-            name="access_time"
-            class="cursor-pointer q-my-auto q-mx-xs">
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale">
-              <q-time
-                v-model="creatingDate"
-                mask="DD-MM-YYYY HH:mm"
-                format24h/>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-
+      <div
+        class="row"
+      >
+        <div class="col-6">
+          <q-input
+            v-model="creatingDate"
+            mask="####/##/##"
+            class="text-body1 q-mx-xs"
+            outlined>
+            <template>
+              <q-icon
+                size="md"
+                name="event"
+                class="cursor-pointer q-my-auto q-mx-xs">
+                <q-popup-proxy
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-date
+                    v-model="creatingDate"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+        <div class="col-6">
+          <q-input
+            v-model="creatingTime"
+            mask="##:##"
+            class="text-body1 q-mx-xs"
+            outlined>
+            <q-icon
+              size="md"
+              name="access_time"
+              class="cursor-pointer q-my-auto q-mx-xs">
+              <q-popup-proxy
+                transition-show="scale"
+                transition-hide="scale">
+                <q-time
+                  v-model="creatingTime"
+                  mask="HH:mm"
+                  format24h/>
+              </q-popup-proxy>
+            </q-icon>
+          </q-input>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,9 +59,12 @@
   export default {
     data: () => ({
       creatingDate: '',
+      creatingTime: '',
     }),
     mounted() {
-      this.creatingDate = this.getFormattedCurrentDateAndTime();
+      const fd = this.getFormattedCurrentDateAndTime();
+      this.creatingDate = `${fd.fullYear}.${fd.month}.${fd.date}`;
+      this.creatingTime = `${fd.hours24format}:${fd.minutes}`;
     },
     methods: {
       getFormattedCurrentDateAndTime() {
@@ -74,13 +86,13 @@
             formattedDates[key] = value
           }
         }
-        return (
-        `${formattedDates.date}.` +
-        `${formattedDates.month}.` +
-        `${formattedDates.fullYear}` +
-        `${formattedDates.hours24format}.` +
-        `${formattedDates.minutes}`
-        )
+        return {
+          date: formattedDates.date,
+          month: formattedDates.month,
+          fullYear: formattedDates.fullYear,
+          hours24format: formattedDates.hours24format,
+          minutes: formattedDates.minutes
+        }
       },
     },
   }
