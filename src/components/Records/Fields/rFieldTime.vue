@@ -18,8 +18,12 @@
             transition-hide="scale">
             <q-time
               v-model="creatingTime"
-              mask="HH:mm:ss:00"
-              format24h/>
+              format24h>
+              <div class="row items-center justify-end q-gutter-sm">
+                <q-btn label="Cancel" color="primary" flat v-close-popup />
+                <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+              </div>
+            </q-time>
           </q-popup-proxy>
         </q-icon>
       </q-input>
