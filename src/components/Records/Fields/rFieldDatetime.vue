@@ -11,7 +11,7 @@
           <q-input
             v-model="creatingDate"
             mask="####.##.##"
-            class="text-body1 q-mx-xs"
+            class="text-body1"
             outlined>
             <template>
               <q-icon
@@ -33,7 +33,7 @@
           <q-input
             v-model="creatingTime"
             mask="##:##"
-            class="text-body1 q-mx-xs"
+            class="text-body1 q-ml-md"
             outlined>
             <q-icon
               size="md"
