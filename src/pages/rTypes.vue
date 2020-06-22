@@ -1,6 +1,6 @@
 <template>
-  <q-page class="flex full-height">
-    <q-splitter v-model="splitter" unit="px">
+  <q-page class="flex full-height full-width">
+    <q-splitter v-model="splitter" unit="px" class="full-width">
       <template v-slot:before>
         <q-tree
           :nodes="typetree"
@@ -26,9 +26,7 @@
         </q-tree>
       </template>
       <template v-slot:after>
-        <div class="flex justify-center">
-          Coming soon..
-        </div>
+        <r-find />
       </template>
     </q-splitter>
   </q-page>
@@ -36,8 +34,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import rFind from '../components/Find/rFind';
 
 export default {
+  components: {
+    rFind
+  },
   data () {
     return {
       splitter: 300,
