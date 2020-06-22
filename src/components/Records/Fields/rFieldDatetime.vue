@@ -25,8 +25,8 @@
                     v-model="creatingDate"
                   >
                     <div class="row items-center justify-end q-gutter-sm">
-                      <q-btn label="Cancel" color="primary" flat v-close-popup/>
                       <q-btn label="OK" color="primary" flat @click="save" v-close-popup/>
+                      <q-btn label="Cancel" color="primary" flat v-close-popup/>
                     </div>
                   </q-date>
                 </q-popup-proxy>
