@@ -1,4 +1,4 @@
-<template xmlns="http://www.w3.org/1999/html">
+<template>
   <div class="row q-my-md">
     <div class="col-3 text-h6" style="display: flex;align-items: center;">
       Create date & time
@@ -25,8 +25,16 @@
                     v-model="creatingDate"
                   >
                     <div class="row items-center justify-end q-gutter-sm">
-                      <q-btn label="OK" color="primary" flat @click="save" v-close-popup/>
-                      <q-btn label="Cancel" color="primary" flat v-close-popup/>
+                      <q-btn
+                        label="OK"
+                        color="primary"
+                        flat
+                        v-close-popup/>
+                      <q-btn
+                        label="Cancel"
+                        color="primary"
+                        flat
+                        v-close-popup/>
                     </div>
                   </q-date>
                 </q-popup-proxy>
@@ -52,8 +60,16 @@
                   v-model="creatingTime"
                   format24h>
                   <div class="row items-center justify-end q-gutter-sm">
-                    <q-btn label="OK" color="primary" flat @click="save" v-close-popup/>
-                    <q-btn label="Cancel" color="primary" flat v-close-popup/>
+                    <q-btn
+                      label="OK"
+                      color="primary"
+                      flat
+                      v-close-popup/>
+                    <q-btn
+                      label="Cancel"
+                      color="primary"
+                      flat
+                      v-close-popup/>
                   </div>
                 </q-time>
               </q-popup-proxy>
