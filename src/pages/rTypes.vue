@@ -1,5 +1,8 @@
 <template>
-  <q-page class="flex full-height full-width">
+  <q-page
+    padding
+    class="flex full-width"
+  >
     <q-splitter
       v-model="splitter"
       unit="%"
@@ -7,6 +10,9 @@
       :limits="[0, 60]"
     >
       <template #before>
+        <q-banner class="bg-primary text-white">
+          <span class="text-h6">Types</span>
+        </q-banner>
         <q-tree
           :nodes="typetree"
           node-key="id"
