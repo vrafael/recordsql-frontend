@@ -3,7 +3,6 @@
     v-model="splitter"
     horizontal
     unit="%"
-    class="full-width"
     :limits="[0, 60]"
   >
     <template #before>

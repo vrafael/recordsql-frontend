@@ -20,6 +20,6 @@
 
 <script >
 export default {
-  name: 'r404'
+  name: 'R404'
 }
 </script>
