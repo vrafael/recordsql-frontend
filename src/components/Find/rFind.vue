@@ -1,20 +1,28 @@
 <template>
-  <div>
-    <q-slide-transition>
-      <div v-show="filtersShow">
-        <r-fields />
-      </div>
-    </q-slide-transition>
-    <div class="bg-primary" style="width:100%;">
-      <q-btn icon="more_horiz"  @click="filtersShow =! filtersShow"/>
-    </div>
-    <q-table
-      title="Treats"
-      :data="data"
-      :columns="columns"
-      row-key="name"
-    />
-  </div>
+  <q-splitter
+    v-model="splitter"
+    horizontal
+    unit="%"
+    class="full-width"
+    :limits="[0, 60]"
+  >
+    <template v-slot:before>
+      <r-fields />
+    </template>
+    <template v-slot:separator>
+      <q-btn color="primary" padding="xs lg" size="xs" icon="drag_indicator" @click="filtersShow" />
+    </template>    
+    <template v-slot:after>
+      <q-table :data="data" :columns="columns" row-key="name">
+        <template v-slot:top>
+          <q-btn color="primary">
+            <q-icon left name="refresh" />
+            Refresh
+          </q-btn>
+        </template>
+      </q-table>
+    </template>
+  </q-splitter>
 </template>
 
 <script>
@@ -22,11 +30,12 @@ import rFields from '../Records/rFields';
 
 export default {
   components: {
-    rFields,
+    rFields
   },
-  data () {
-    return ({
-      filtersShow: false,
+  data() {
+    return {
+      splitter: 0,
+      splitterRestore: null,
       columns: [
         {
           name: 'name',
@@ -37,13 +46,31 @@ export default {
           format: val => `${val}`,
           sortable: true
         },
-        { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
+        {
+          name: 'calories',
+          align: 'center',
+          label: 'Calories',
+          field: 'calories',
+          sortable: true
+        },
         { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
         { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
         { name: 'protein', label: 'Protein (g)', field: 'protein' },
         { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-        { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-        { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        {
+          name: 'calcium',
+          label: 'Calcium (%)',
+          field: 'calcium',
+          sortable: true,
+          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+        },
+        {
+          name: 'iron',
+          label: 'Iron (%)',
+          field: 'iron',
+          sortable: true,
+          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+        }
       ],
       data: [
         {
@@ -147,7 +174,20 @@ export default {
           iron: '6%'
         }
       ]
-    })
+    };
+  },
+  methods: {
+    filtersShow () {
+      if (this.splitter > 0) {
+        this.splitterRestore = this.splitter
+        this.splitter = 0
+      } else if (this.splitterRestore > 0) {
+        this.splitter = this.splitterRestore
+        this.splitterRestore = 0
+      } else {
+        this.splitter = 25
+      }
+    }
   }
-}
+};
 </script>
