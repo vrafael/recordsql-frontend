@@ -1,7 +1,12 @@
 <template>
   <q-page class="flex full-height full-width">
-    <q-splitter v-model="splitter" unit="%" class="full-width" :limits="[0, 60]">
-      <template v-slot:before>
+    <q-splitter
+      v-model="splitter"
+      unit="%"
+      class="full-width"
+      :limits="[0, 60]"
+    >
+      <template #before>
         <q-tree
           :nodes="typetree"
           node-key="id"
@@ -10,7 +15,7 @@
           selectable
           selected-color="primary"
         >
-          <template v-slot:default-header="prop">
+          <template #default-header="prop">
             <div class="row items-center">
               <q-icon
                 :name="prop.node.icon"
@@ -25,10 +30,16 @@
           </template>
         </q-tree>
       </template>
-      <template v-slot:separator>
-        <q-btn color="primary" padding="lg xs" size="xs" icon="drag_indicator" @click="typetreeShow" />
+      <template #separator>
+        <q-btn
+          color="primary"
+          padding="lg xs"
+          size="xs"
+          icon="drag_indicator"
+          @click="typetreeShow"
+        />
       </template>
-      <template v-slot:after>
+      <template #after>
         <r-find />
       </template>
     </q-splitter>
@@ -36,8 +47,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import rFind from '../components/Find/rFind';
+import { mapGetters } from 'vuex'
+import rFind from '../components/Find/rFind'
 
 export default {
   components: {
@@ -69,5 +80,5 @@ export default {
       typetree: 'TYPETREE_GET'
     })
   }
-};
+}
 </script>

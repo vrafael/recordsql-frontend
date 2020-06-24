@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh Lpr fff">
-    <q-header elevated class="bg-linear">
+    <q-header
+      elevated
+      class="bg-linear"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -15,7 +18,7 @@
             <img
               src="~assets/RecordLogo.svg"
               style="max-width: 32px; max-height: 32px"
-            />
+            >
           </q-avatar>
           RecordSQL
         </q-toolbar-title>
@@ -35,7 +38,10 @@
       content-class="bg-grey-1"
     >
       <q-scroll-area class="fit">
-        <q-list v-for="(menu_item, index) in menu" :key="index">
+        <q-list
+          v-for="(menu_item, index) in menu"
+          :key="index"
+        >
           <q-item
             :to="menu_item.link"
             :exact="menu_item.link === '/'"
@@ -44,7 +50,10 @@
             active-class="menu-active bg-blue-1"
           >
             <q-item-section avatar>
-              <q-icon :name="menu_item.icon" :color="menu_item.iconColor" />
+              <q-icon
+                :name="menu_item.icon"
+                :color="menu_item.iconColor"
+              />
             </q-item-section>
             <q-item-section>
               {{ menu_item.label }}
@@ -88,7 +97,7 @@ export default {
       menu: 'MENU_GET'
     })
   }
-};
+}
 </script>
 
 <style lang="sass">

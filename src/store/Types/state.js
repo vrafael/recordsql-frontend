@@ -14,7 +14,7 @@ export default function () {
               {
                 id: 3,
                 label: 'Field',
-                icon: 'las la-tag',
+                icon: 'las la-tag'
               },
               {
                 id: 4,

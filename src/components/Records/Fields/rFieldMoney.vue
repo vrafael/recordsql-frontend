@@ -1,6 +1,9 @@
 <template>
   <div class="row q-my-md">
-    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+    <div
+      class="col-3 text-h6"
+      style="display: flex;align-items: center;"
+    >
       Amount
     </div>
     <div class="col-9">
@@ -17,9 +20,9 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      amountInput: '',
+      amountInput: ''
     }
   }
 }

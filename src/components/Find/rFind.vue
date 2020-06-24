@@ -6,17 +6,30 @@
     class="full-width"
     :limits="[0, 60]"
   >
-    <template v-slot:before>
+    <template #before>
       <r-fields />
     </template>
-    <template v-slot:separator>
-      <q-btn color="primary" padding="xs lg" size="xs" icon="drag_indicator" @click="filtersShow" />
-    </template>    
-    <template v-slot:after>
-      <q-table :data="data" :columns="columns" row-key="name">
-        <template v-slot:top>
+    <template #separator>
+      <q-btn
+        color="primary"
+        padding="xs lg"
+        size="xs"
+        icon="drag_indicator"
+        @click="filtersShow"
+      />
+    </template>
+    <template #after>
+      <q-table
+        :data="data"
+        :columns="columns"
+        row-key="name"
+      >
+        <template #top>
           <q-btn color="primary">
-            <q-icon left name="refresh" />
+            <q-icon
+              left
+              name="refresh"
+            />
             Refresh
           </q-btn>
         </template>
@@ -26,13 +39,13 @@
 </template>
 
 <script>
-import rFields from '../Records/rFields';
+import rFields from '../Records/rFields'
 
 export default {
   components: {
     rFields
   },
-  data() {
+  data () {
     return {
       splitter: 0,
       splitterRestore: null,
@@ -174,7 +187,7 @@ export default {
           iron: '6%'
         }
       ]
-    };
+    }
   },
   methods: {
     filtersShow () {
@@ -189,5 +202,5 @@ export default {
       }
     }
   }
-};
+}
 </script>
