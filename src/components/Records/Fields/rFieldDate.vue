@@ -7,7 +7,7 @@
 
       <q-input
         v-model="creatingDate"
-        mask="####.##.##"
+        mask="####/##/##"
         class="text-body1"
         outlined>
         <q-icon
@@ -19,7 +19,6 @@
             transition-hide="scale">
             <q-date
               v-model="creatingDate"
-              mask="MM-DD-YYYY"
             >
               <div class="row items-center justify-end q-gutter-sm">
                 <q-btn
