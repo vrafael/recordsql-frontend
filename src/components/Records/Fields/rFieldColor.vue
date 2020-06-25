@@ -13,7 +13,22 @@
         <template v-slot:append>
           <q-icon name="colorize" class="cursor-pointer">
             <q-popup-proxy transition-show="scale" transition-hide="scale">
-              <q-color v-model="color.backgroundColor"/>
+              <q-card>
+                <q-color v-model="color.backgroundColor"/>
+                <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn
+                    label="OK"
+                    color="primary"
+                    flat
+                    v-close-popup/>
+                  <q-btn
+                    label="Cancel"
+                    color="primary"
+                    flat
+                    v-close-popup/>
+                </div>
+              </q-card>
+
             </q-popup-proxy>
           </q-icon>
         </template>
