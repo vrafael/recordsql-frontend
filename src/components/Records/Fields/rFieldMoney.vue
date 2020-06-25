@@ -7,7 +7,6 @@
       <q-input
         v-model="amountInput"
         mask="#.##"
-        fill-mask="0"
         reverse-fill-mask
         input-class="text-right text-h6"
       />

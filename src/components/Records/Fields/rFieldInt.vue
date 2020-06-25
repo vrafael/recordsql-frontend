@@ -7,7 +7,6 @@
       <q-input
         v-model="integer"
         mask="#"
-        fill-mask="0"
         reverse-fill-mask
         input-class="text-right text-h6"
       />
@@ -18,7 +17,7 @@
 <script>
   export default {
     data: () => ({
-      integer: 0,
+      integer: '',
     }),
   }
 </script>
