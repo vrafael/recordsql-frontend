@@ -41,7 +41,7 @@
     </div>
 
     <r-field-string />
-    
+
     <r-field-text />
 
     <div class="row q-my-md">
@@ -63,11 +63,11 @@
       </div>
     </div>
 
-    <r-field-money />
+    <r-field-money prefix="$"/>
     <r-field-datetime />
     <r-field-bool />
     <r-field-color />
-    <r-field-link />
+<!--    <r-field-link />-->
     <r-field-date />
     <r-field-time />
     <r-field-int />
@@ -98,6 +98,8 @@ import rFieldMoney from './Fields/rFieldMoney';
 import rFieldString from './Fields/rFieldString';
 import rFieldText from './Fields/rFieldText';
 import rFieldTime from './Fields/rFieldTime';
+import rFieldFloat from './Fields/rFieldFloat';
+import rVMoney from './Fields/rVMoney';
 
 export default {
   components: {
@@ -110,7 +112,9 @@ export default {
     rFieldMoney,
     rFieldString,
     rFieldText,
-    rFieldTime
+    rFieldTime,
+    rFieldFloat,
+    rVMoney
   },
   data: () => ({
     idInput: '93651',
