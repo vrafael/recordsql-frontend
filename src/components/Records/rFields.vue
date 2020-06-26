@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <r-field-money prefix="$"/>
+    <r-field-money/>
     <r-field-datetime />
     <r-field-bool />
     <r-field-color />
