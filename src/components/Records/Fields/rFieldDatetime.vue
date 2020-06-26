@@ -45,7 +45,7 @@
         <div class="col-6">
           <q-input
             v-model="creatingTime"
-            mask="##:##:##.##"
+            mask="##:##:##.###"
             class="text-body1 q-ml-md"
             outlined>
             <q-icon

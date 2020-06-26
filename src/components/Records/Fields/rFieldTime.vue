@@ -6,7 +6,7 @@
     <div class="col-9">
       <q-input
         v-model="creatingTime"
-        mask="##:##:##.##"
+        mask="##:##:##.###"
         class="text-body1"
         outlined>
         <q-icon
