@@ -5,6 +5,7 @@
     </div>
     <div class="col-9">
       <q-input
+        outlined
         v-model="amountInput"
         mask="#.##"
         reverse-fill-mask
