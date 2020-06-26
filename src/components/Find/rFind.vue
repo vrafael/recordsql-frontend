@@ -6,7 +6,7 @@
     :limits="[0, 60]"
   >
     <template #before>
-      <r-fields />
+      <r-filters />
     </template>
     <template #separator>
       <q-btn
@@ -22,6 +22,7 @@
         :data="data"
         :columns="columns"
         row-key="name"
+        class="q-pa-sm"
       >
         <template #top>
           <q-btn color="primary">
@@ -38,15 +39,15 @@
 </template>
 
 <script>
-import rFields from '../Records/rFields'
+import rFilters from './rFilters'
 
 export default {
   components: {
-    rFields
+    rFilters
   },
   data () {
     return {
-      splitter: 0,
+      splitter: 40,
       splitterRestore: null,
       columns: [
         {

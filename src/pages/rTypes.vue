@@ -10,7 +10,7 @@
       :limits="[0, 60]"
     >
       <template #before>
-        <q-banner class="bg-primary text-white">
+        <q-banner class="bg-linear text-white">
           <span class="text-h6">Types</span>
         </q-banner>
         <q-tree
