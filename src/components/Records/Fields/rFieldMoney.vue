@@ -4,23 +4,42 @@
       Amount
     </div>
     <div class="col-9">
-      <q-input
+      <q-field
         outlined
-        v-model="amountInput"
-        mask="#.##"
-        reverse-fill-mask
-        input-class="text-right text-h6"
-      />
+        :prefix="prefix"
+        dense
+        v-bind="$attrs"
+      >
+        <template v-slot:control>
+          <input
+            class="q-field__input text-right"
+            autofocus
+            v-money="moneyFormat"/>
+        </template>
+      </q-field>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      amountInput: '',
+  import { VMoney } from 'v-money'
+
+  export default {
+    data: () => ({
+      moneyFormat: {
+        decimal: '.',
+        thousands: ',',
+        prefix: '',
+        suffix: '',
+        precision: 4,
+        masked: false
+      }
+    }),
+    props: [
+      'prefix',
+    ],
+    directives: {
+      money: VMoney
     }
   }
-}
 </script>
