@@ -60,7 +60,8 @@
                 <q-time
                   mask="HH:mm:ss.00"
                   v-model="creatingTime"
-                  format24h>
+                  format24h
+                  with-seconds>
                   <div class="row items-center justify-end q-gutter-sm">
                     <q-btn
                       label="OK"
