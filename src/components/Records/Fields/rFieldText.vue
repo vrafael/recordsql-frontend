@@ -16,11 +16,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      documentText: 'some text',
+  export default {
+    data() {
+      return {
+        documentText: 'some text',
+      }
     }
   }
-}
 </script>

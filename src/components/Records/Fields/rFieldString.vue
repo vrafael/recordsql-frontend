@@ -16,11 +16,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      nameInput: 'Договор аренды',
+  export default {
+    data() {
+      return {
+        nameInput: 'Договор аренды',
+      }
     }
   }
-}
 </script>

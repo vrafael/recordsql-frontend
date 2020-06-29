@@ -15,11 +15,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      idInput: '93651',
+  export default {
+    data() {
+      return {
+        idInput: '93651',
+      }
     }
   }
-}
 </script>

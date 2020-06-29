@@ -27,12 +27,12 @@
                   label="OK"
                   color="primary"
                   flat
-                  v-close-popup />
+                  v-close-popup/>
                 <q-btn
                   label="Cancel"
                   color="primary"
                   flat
-                  v-close-popup />
+                  v-close-popup/>
               </div>
             </q-time>
           </q-popup-proxy>
