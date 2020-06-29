@@ -5,6 +5,7 @@
     </div>
     <div class="col-9">
         <q-checkbox
+          dense
           slot="prepend"
           toggle-indeterminate
           indeterminate-value="maybe"

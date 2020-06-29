@@ -5,6 +5,7 @@
     </div>
     <div class="col-9">
       <q-input
+        dense
         v-model="creatingTime"
         mask="##:##:##.###"
         class="text-body1"

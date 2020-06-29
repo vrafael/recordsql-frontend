@@ -9,6 +9,7 @@
       >
         <div class="col-6">
           <q-input
+            dense
             v-model="creatingDate"
             mask="####/##/##"
             class="text-body1"
@@ -47,6 +48,7 @@
             v-model="creatingTime"
             mask="##:##:##.###"
             class="text-body1 q-ml-md"
+            dense
             outlined>
             <q-icon
               size="md"

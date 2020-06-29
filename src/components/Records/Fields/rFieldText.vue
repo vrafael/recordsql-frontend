@@ -8,6 +8,7 @@
         type="textarea"
         class="text-body1"
         v-model="documentText"
+        dense
         outlined
       ></q-input>
     </div>

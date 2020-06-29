@@ -6,6 +6,7 @@
     <div class="col-9">
       <q-input
         outlined
+        dense
         mask="\#NNNNNN"
         v-model="inputColor"
         :rules="[ val => val.length === 7 || 'Please use 6 characters']"

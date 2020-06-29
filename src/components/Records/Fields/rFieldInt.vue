@@ -5,6 +5,7 @@
     </div>
     <div class="col-9">
       <q-input
+        dense
         outlined
         v-model="integer"
         mask="#"

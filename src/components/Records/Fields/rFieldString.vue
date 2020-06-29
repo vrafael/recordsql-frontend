@@ -8,6 +8,7 @@
         class="text-body1"
         v-model="nameInput"
         outlined
+        dense
         clearable
       ></q-input>
     </div>

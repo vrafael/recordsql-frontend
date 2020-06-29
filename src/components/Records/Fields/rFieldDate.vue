@@ -9,6 +9,7 @@
         v-model="creatingDate"
         mask="####/##/##"
         class="text-body1"
+        dense
         outlined>
         <q-icon
           size="md"
