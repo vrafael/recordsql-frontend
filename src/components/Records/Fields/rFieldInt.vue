@@ -1,7 +1,7 @@
 <template>
   <div class="row q-my-md">
     <div class="col-3 text-h6" style="display: flex;align-items: center;">
-      Enter the number
+      Int
     </div>
     <div class="col-9">
       <q-input
