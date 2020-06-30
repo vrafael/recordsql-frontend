@@ -1,13 +1,13 @@
 <template>
   <div class="row">
     <div
-      class="col-4"
+      class="col-3"
       @click="enable = !enable"
     >
       <q-toggle v-model="enable" />
       Color
     </div>
-    <div class="col-8">
+    <div class="col-9">
       <q-input
         v-model="value"
         :rules="colorInputRules"
@@ -60,11 +60,13 @@
 </template>
 
 <script>
+// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
+
 export default {
   data: () => ({
     colorInputRules: [
       val => (val && val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',
-      val => /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex values (0-9 and A-F)'
+      val => /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     enable: false,
     value: '',

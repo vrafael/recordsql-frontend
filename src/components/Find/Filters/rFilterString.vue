@@ -1,31 +1,32 @@
 <template>
-  <div class="row items-center">
+  <div class="row">
     <div
       class="col-3"
       @click="enable = !enable"
     >
       <q-toggle v-model="enable" />
-      Boolean
+      String
     </div>
     <div class="col-9">
-      <q-checkbox
-        slot="prepend"
-        toggle-indeterminate
-        indeterminate-value="null"
+      <q-input
         v-model="value"
         :disable="!enable"
-        :label="value.toString().toUpperCase()"
+        outlined
         dense
+        ref="input"
+        clearable
       />
     </div>
   </div>
 </template>
 
 <script>
+// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
+
 export default {
   data: () => ({
     enable: false,
-    value: false
+    value: null
   })
 }
 </script>

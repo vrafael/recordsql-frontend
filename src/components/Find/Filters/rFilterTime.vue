@@ -5,13 +5,13 @@
       @click="enable = !enable"
     >
       <q-toggle v-model="enable" />
-      Date
+      Time
     </div>
     <div class="col-4">
       <q-input
         v-model="valueFrom"
-        :mask="dateInputMask"
-        :rules="dateInputRules"
+        :mask="timeInputMask"
+        :rules="timeInputRules"
         :disable="!enable"
         outlined
         dense
@@ -22,16 +22,18 @@
         <template #append>
           <q-icon
             @click="applyValueFromToProxyFrom"
-            name="event"
+            name="access_time"
             class="cursor-pointer"
           >
             <q-popup-proxy
               transition-show="scale"
               transition-hide="scale"
             >
-              <q-date
+              <q-time
                 v-model="proxyValueFrom"
-                :mask="dateMask"
+                with-seconds
+                format24h
+                :mask="timeMask"
               >
                 <div class="row items-center justify-between">
                   <q-btn
@@ -48,7 +50,7 @@
                     v-close-popup
                   />
                 </div>
-              </q-date>
+              </q-time>
             </q-popup-proxy>
           </q-icon>
         </template>
@@ -58,8 +60,8 @@
     <div class="col-4">
       <q-input
         v-model="valueTo"
-        :mask="dateInputMask"
-        :rules="dateInputRules"
+        :mask="timeInputMask"
+        :rules="timeInputRules"
         :disable="!enable"
         outlined
         dense
@@ -70,16 +72,18 @@
         <template #append>
           <q-icon
             @click="applyValueToToProxyTo"
-            name="event"
+            name="access_time"
             class="cursor-pointer"
           >
             <q-popup-proxy
               transition-show="scale"
               transition-hide="scale"
             >
-              <q-date
+              <q-time
                 v-model="proxyValueTo"
-                :mask="dateMask"
+                with-seconds
+                format24h
+                :mask="timeMask"
               >
                 <div class="row items-center justify-between">
                   <q-btn
@@ -96,7 +100,7 @@
                     v-close-popup
                   />
                 </div>
-              </q-date>
+              </q-time>
             </q-popup-proxy>
           </q-icon>
         </template>
@@ -106,13 +110,15 @@
 </template>
 
 <script>
+import { date } from 'quasar'
+
 export default {
   data: () => ({
-    dateInputMask: '####.##.##',
-    dateInputRules: [
-      val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val)) || 'Please use format "YYYY.MM.DD"'
+    timeInputMask: '##:##:##.###',
+    timeInputRules: [
+      val => (/^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "HH:mm:ss.nnn"'
     ],
-    dateMask: 'YYYY.MM.DD',
+    timeMask: 'HH:mm:ss',
     enable: false,
     valueFrom: '',
     proxyValueFrom: Date.now(),
@@ -121,7 +127,9 @@ export default {
   }),
   methods: {
     applyProxyFromToValueFrom () {
-      this.valueFrom = this.proxyValueFrom
+      const proxytime = date.extractDate(this.proxyValueFrom, this.timeMask)
+      this.valueFrom = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+
       if (this.valueTo && this.valueFrom > this.valueTo) {
         this.valueTo = this.valueFrom
       }
@@ -135,7 +143,9 @@ export default {
       })
     },
     applyProxyToToValueTo () {
-      this.valueTo = this.proxyValueTo
+      const proxytime = date.extractDate(this.proxyValueTo, this.timeMask)
+      this.valueTo = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+
       if (this.valueFrom && this.valueTo < this.valueFrom) {
         this.valueFrom = this.valueTo
       }
@@ -150,4 +160,4 @@ export default {
     }
   }
 }
-</script>>
+</script>
