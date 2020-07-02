@@ -4,15 +4,16 @@
       class="col-3 text-h6"
       style="display: flex;align-items: center;"
     >
-      ID
+      Int
     </div>
     <div class="col-9">
       <q-input
-        class="text-body1"
-        v-model="idInput"
-        outlined
-        readonly
         dense
+        outlined
+        v-model="integer"
+        mask="#"
+        reverse-fill-mask
+        input-class="text-right text-h6"
       />
     </div>
   </div>
@@ -20,10 +21,12 @@
 
 <script>
 export default {
-  data () {
-    return {
-      idInput: '93651'
-    }
-  }
+  data: () => ({
+    integer: ''
+  })
 }
 </script>
+
+<style scoped>
+
+</style>

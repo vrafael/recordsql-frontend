@@ -11,6 +11,7 @@
         type="textarea"
         class="text-body1"
         v-model="documentText"
+        dense
         outlined
       />
     </div>

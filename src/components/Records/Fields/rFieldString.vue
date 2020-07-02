@@ -11,6 +11,7 @@
         class="text-body1"
         v-model="nameInput"
         outlined
+        dense
         clearable
       />
     </div>
