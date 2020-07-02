@@ -24,7 +24,7 @@
         row-key="ID"
         class="q-pa-sm"
         dense
-        pagination="pagination"
+        :pagination="pagination"
       >
         <template #top>
           <q-btn color="primary">
