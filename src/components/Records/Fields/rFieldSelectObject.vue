@@ -1,6 +1,9 @@
 <template>
   <div class="row q-my-md">
-    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+    <div
+      class="col-3 text-h6"
+      style="display: flex;align-items: center;"
+    >
       {{ label }}
     </div>
     <div class="col-9">
@@ -8,21 +11,32 @@
         lass="text-body1"
         outlined
         readonly
-        dense>
+        dense
+      >
         <q-icon
           slot="prepend"
           color="accent"
           size="md"
-          :name="inputIcon">
-        </q-icon>
-        <q-btn-dropdown class="q-my-xs" color="primary" label="Select">
+          :name="inputIcon"
+        />
+        <q-btn-dropdown
+          class="q-my-xs"
+          color="primary"
+          label="Select"
+        >
           <q-list>
-            <q-item clickable v-close-popup>
-              <q-item-section avatar class="q-pr-none">
-                <q-icon :name="dropdownIcon"></q-icon>
+            <q-item
+              clickable
+              v-close-popup
+            >
+              <q-item-section
+                avatar
+                class="q-pr-none"
+              >
+                <q-icon :name="dropdownIcon" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{ label | pluralize }} ...</q-item-label>
+                <q-item-label>{{ label }} ...</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -34,11 +48,11 @@
 
 <script>
 
-  export default {
-    props: [
-      'label',
-      'inputIcon',
-      'dropdownIcon'
-    ],
-  }
+export default {
+  props: [
+    'label',
+    'inputIcon',
+    'dropdownIcon'
+  ]
+}
 </script>
