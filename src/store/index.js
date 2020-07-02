@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 import MainLayout from 'src/store/layouts/MainLayout'
 import TypeList from 'src/store/components/Types/TypeList'
+import TypeMetadata from 'src/store/main/TypeMetadata';
 
 /*
  * If not building with SSR mode, you can
@@ -19,7 +20,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       MainLayout,
-      TypeList
+      TypeList,
+      TypeMetadata
     },
 
     // enable strict mode (adds overhead!)
