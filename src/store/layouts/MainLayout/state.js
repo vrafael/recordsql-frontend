@@ -5,19 +5,19 @@ export default function () {
         label: 'Home',
         icon: 'home',
         link: '/',
-        separator: true,
+        separator: true
       },
       {
         label: 'Types',
         icon: 'mdi-puzzle',
         link: '/types',
-        separator: false,
+        separator: false
       },
       {
         label: 'Records',
         icon: 'mdi-database ',
         link: '/records',
-        separator: false,
+        separator: false
       }
     ]
   }

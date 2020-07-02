@@ -1,7 +1,7 @@
-function getAllLinks(state) {
+function getAllLinks (state) {
   return state.links
 }
 
 export default {
-  getAllLinks,
+  getAllLinks
 }

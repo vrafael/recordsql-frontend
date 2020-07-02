@@ -1,6 +1,9 @@
 <template>
   <div class="row q-my-md">
-    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+    <div
+      class="col-3 text-h6"
+      style="display: flex;align-items: center;"
+    >
       Create date & time
     </div>
     <div class="col-9">
@@ -13,15 +16,18 @@
             v-model="creatingDate"
             mask="####/##/##"
             class="text-body1"
-            outlined>
+            outlined
+          >
             <template>
               <q-icon
                 size="md"
                 name="event"
-                class="cursor-pointer q-my-auto q-mx-xs">
+                class="cursor-pointer q-my-auto q-mx-xs"
+              >
                 <q-popup-proxy
                   transition-show="scale"
-                  transition-hide="scale">
+                  transition-hide="scale"
+                >
                   <q-date
                     v-model="creatingDate"
                   >
@@ -30,12 +36,14 @@
                         label="OK"
                         color="primary"
                         flat
-                        v-close-popup/>
+                        v-close-popup
+                      />
                       <q-btn
                         label="Cancel"
                         color="primary"
                         flat
-                        v-close-popup/>
+                        v-close-popup
+                      />
                     </div>
                   </q-date>
                 </q-popup-proxy>
@@ -49,30 +57,36 @@
             mask="##:##:##.###"
             class="text-body1 q-ml-md"
             dense
-            outlined>
+            outlined
+          >
             <q-icon
               size="md"
               name="access_time"
-              class="cursor-pointer q-my-auto q-mx-xs">
+              class="cursor-pointer q-my-auto q-mx-xs"
+            >
               <q-popup-proxy
                 transition-show="scale"
-                transition-hide="scale">
+                transition-hide="scale"
+              >
                 <q-time
                   mask="HH:mm:ss.00"
                   v-model="creatingTime"
                   format24h
-                  with-seconds>
+                  with-seconds
+                >
                   <div class="row items-center justify-end q-gutter-sm">
                     <q-btn
                       label="OK"
                       color="primary"
                       flat
-                      v-close-popup/>
+                      v-close-popup
+                    />
                     <q-btn
                       label="Cancel"
                       color="primary"
                       flat
-                      v-close-popup/>
+                      v-close-popup
+                    />
                   </div>
                 </q-time>
               </q-popup-proxy>
@@ -85,48 +99,48 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      creatingDate: '',
-      creatingTime: '',
-    }),
-    mounted() {
-      const fd = this.getFormattedCurrentDateAndTime();
-      this.creatingDate = `${fd.fullYear}.${fd.month}.${fd.date}`;
-      this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}.${fd.milliseconds}`;
-    },
-    methods: {
-      getFormattedCurrentDateAndTime() {
-        const D = new Date();
-        const dates = {
-          date: '' + D.getDate(),
-          month: '' + (D.getMonth() + 1),
-          fullYear: '' + D.getFullYear(),
-          hours24format: '' + D.getHours(),
-          minutes: '' + D.getMinutes(),
-          seconds: '' + D.getSeconds(),
-          milliseconds: '' + D.getMilliseconds()
+export default {
+  data: () => ({
+    creatingDate: '',
+    creatingTime: ''
+  }),
+  mounted () {
+    const fd = this.getFormattedCurrentDateAndTime()
+    this.creatingDate = `${fd.fullYear}.${fd.month}.${fd.date}`
+    this.creatingTime = `${fd.hours24format}:${fd.minutes}:${fd.seconds}.${fd.milliseconds}`
+  },
+  methods: {
+    getFormattedCurrentDateAndTime () {
+      const D = new Date()
+      const dates = {
+        date: '' + D.getDate(),
+        month: '' + (D.getMonth() + 1),
+        fullYear: '' + D.getFullYear(),
+        hours24format: '' + D.getHours(),
+        minutes: '' + D.getMinutes(),
+        seconds: '' + D.getSeconds(),
+        milliseconds: '' + D.getMilliseconds()
+      }
+      const formattedDates = {}
+      for (const [key, value] of Object.entries(dates)) {
+        if (value.length <= 1) {
+          formattedDates[key] = `0${value}`
+        } else if (value === 0) {
+          formattedDates[key] = `0${value}`
+        } else {
+          formattedDates[key] = value
         }
-        const formattedDates = {}
-        for (const [key, value] of Object.entries(dates)) {
-          if (value.length <= 1) {
-            formattedDates[key] = `0${value}`
-          } else if (value === 0) {
-            formattedDates[key] = `0${value}`
-          } else {
-            formattedDates[key] = value
-          }
-        }
-        return {
-          date: formattedDates.date,
-          month: formattedDates.month,
-          fullYear: formattedDates.fullYear,
-          hours24format: formattedDates.hours24format,
-          minutes: formattedDates.minutes,
-          seconds: formattedDates.seconds,
-          milliseconds: formattedDates.milliseconds,
-        }
-      },
-    },
+      }
+      return {
+        date: formattedDates.date,
+        month: formattedDates.month,
+        fullYear: formattedDates.fullYear,
+        hours24format: formattedDates.hours24format,
+        minutes: formattedDates.minutes,
+        seconds: formattedDates.seconds,
+        milliseconds: formattedDates.milliseconds
+      }
+    }
   }
+}
 </script>

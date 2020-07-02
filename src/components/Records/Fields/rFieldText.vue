@@ -1,6 +1,9 @@
 <template>
   <div class="row q-my-md">
-    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+    <div
+      class="col-3 text-h6"
+      style="display: flex;align-items: center;"
+    >
       Document text
     </div>
     <div class="col-9">
@@ -10,17 +13,17 @@
         v-model="documentText"
         dense
         outlined
-      ></q-input>
+      />
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        documentText: 'some text',
-      }
+export default {
+  data () {
+    return {
+      documentText: 'some text'
     }
   }
+}
 </script>

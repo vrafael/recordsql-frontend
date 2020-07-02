@@ -1,6 +1,9 @@
 <template>
   <div class="row q-my-md">
-    <div class="col-3 text-h6" style="display: flex;align-items: center;">
+    <div
+      class="col-3 text-h6"
+      style="display: flex;align-items: center;"
+    >
       Int
     </div>
     <div class="col-9">
@@ -17,11 +20,11 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      integer: '',
-    }),
-  }
+export default {
+  data: () => ({
+    integer: ''
+  })
+}
 </script>
 
 <style scoped>

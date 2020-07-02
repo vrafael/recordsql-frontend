@@ -17,7 +17,7 @@ import MainLayout from 'src/store/layouts/MainLayout'
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      MainLayout,
+      MainLayout
     },
 
     // enable strict mode (adds overhead!)

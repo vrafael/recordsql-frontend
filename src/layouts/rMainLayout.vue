@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh Lpr fff">
-    <q-header elevated class="bg-linear" >
+    <q-header
+      elevated
+      class="bg-linear"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -35,10 +38,20 @@
       content-class="bg-grey-1"
     >
       <q-scroll-area class="fit">
-        <q-list v-for="(link, index) in links" :key="index">
-          <q-item :to="link.link" exact clickable>
+        <q-list
+          v-for="(link, index) in links"
+          :key="index"
+        >
+          <q-item
+            :to="link.link"
+            exact
+            clickable
+          >
             <q-item-section avatar>
-              <q-icon :name="link.icon" :color="link.iconColor" />
+              <q-icon
+                :name="link.icon"
+                :color="link.iconColor"
+              />
             </q-item-section>
             <q-item-section>
               {{ link.label }}
@@ -73,13 +86,13 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => ({
     drawerLeft: true,
-    drawerRight: false,
+    drawerRight: false
   }),
   computed: {
     ...mapGetters('MainLayout', {
-      links: 'getAllLinks',
+      links: 'getAllLinks'
     })
-  },
+  }
 }
 </script>
 
