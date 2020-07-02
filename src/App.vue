@@ -1,20 +1,22 @@
 <template>
   <div id="q-app">
-<!--    <router-view />-->
-    {{ getTypeListArr }}
+    <router-view />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
-  mounted() {
-    this.$store.dispatch('fetchTypeListArr')
+  async mounted() {
+    await this.$store.dispatch('fetchTypeMetaDataObj', 9)
+    console.log('test: ', this.$store.getters.getMetaDataObj)
   },
-  computed: mapGetters([
-  'getTypeListArr'
-  ])
+  // async mounted() {
+  //   await this.$store.dispatch('fetchTypeListArr',)
+  //   console.log('test: ', this.$store.getters.getTypeListArr)
+  // },
+
 }
 </script>
