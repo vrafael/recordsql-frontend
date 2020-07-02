@@ -8,6 +8,7 @@
         class="text-body1"
         v-model="nameInput"
         outlined
+        dense
         clearable
       ></q-input>
     </div>
@@ -15,11 +16,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      nameInput: 'Договор аренды',
+  export default {
+    data() {
+      return {
+        nameInput: 'Договор аренды',
+      }
     }
   }
-}
 </script>

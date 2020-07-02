@@ -8,6 +8,7 @@
         type="textarea"
         class="text-body1"
         v-model="documentText"
+        dense
         outlined
       ></q-input>
     </div>
@@ -15,11 +16,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      documentText: 'some text',
+  export default {
+    data() {
+      return {
+        documentText: 'some text',
+      }
     }
   }
-}
 </script>
