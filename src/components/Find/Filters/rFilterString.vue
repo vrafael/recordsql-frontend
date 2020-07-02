@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row q-my-md q-pb-md">
     <div
       class="col-3"
       @click="enable = !enable"

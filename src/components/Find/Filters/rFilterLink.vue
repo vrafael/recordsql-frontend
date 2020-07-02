@@ -19,37 +19,45 @@
           #control
           class="items-center"
         >
-          <q-card
+          <r-object
             v-for="item in value"
             :key="item.ID"
-            class="q-mr-sm items-center row"
-            flat
-            bordered
+            :object="item"
+            :remove="removeItem"
+            style="max-width: 150px;"
+          />
+        </template>
+        <template #append>
+          <q-icon
+            name="search"
+            class="cursor-pointer"
           >
-            <q-avatar
-              color="grey-4"
-              text-color="accent"
-              font-size="20px"
-              :icon="item.TypeIcon"
-              style="width: 25px"
-            />
-            <div
-              class="ellipsis q-pl-xs text-primary text-bold"
-              style="max-width: 100px;"
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
             >
-              {{ item.Name }}
-              <q-tooltip content-class="bg-primary">
-                {{ item.Name }}
-              </q-tooltip>
-            </div>
-            <q-btn
-              size="xs"
-              flat
-              dense
-              round
-              icon="close"
-            />
-          </q-card>
+              <q-list>
+                <q-item
+                  v-for="type in types"
+                  :key="type.TypeID"
+                  clickable
+                  v-close-popup
+                >
+                  <div class="row items-center">
+                    <q-icon
+                      :name="type.TypeIcon"
+                      color="accent"
+                      size="28px"
+                      class="q-mr-sm"
+                    />
+                    <div class="text-weight-bold text-primary">
+                      {{ `${type.TypeName}...` }}
+                    </div>
+                  </div>
+                </q-item>
+              </q-list>
+            </q-popup-proxy>
+          </q-icon>
         </template>
       </q-field>
     </div>
@@ -57,30 +65,54 @@
 </template>
 
 <script>
+import rObject from '../../rObject'
+
 export default {
+  components: {
+    rObject
+  },
   data: () => ({
     enable: false,
     value: [{
       ID: 1,
       TypeIcon: 'las la-birthday-cake',
-      Name: 'Cake'
+      TypeName: 'Cake',
+      StateName: 'Приготовлен',
+      Name: 'Наполеон'
     }, {
       ID: 2,
       TypeIcon: 'las la-hippo',
-      Name: 'Big hippopotamus'
+      TypeName: 'Гиппопотам',
+      Name: 'Big Hippo'
     }, {
       ID: 96,
       TypeID: 46,
-      TypeName: 'Состояние',
+      TypeName: 'Рыбка',
       TypeIcon: 'las la-fish',
-      StateName: 'Сформирован',
-      StateColor: '008000',
-      Name: 'Fish'
+      StateName: 'Накормлена',
+      StateColor: 'green',
+      Name: 'Ponio'
+    }],
+    types: [{
+      TypeID: 10,
+      TypeName: 'Рыбка',
+      TypeIcon: 'las la-fish',
+      TypeTag: 'Fish',
+      TypeOwnerID: 1
+    }, {
+      TypeID: 11,
+      TypeName: 'Гиппопотам',
+      TypeIcon: 'las la-hippo',
+      TypeTag: 'Hippo',
+      TypeOwnerID: 1
     }]
   }),
   methods: {
     removeItem (item) {
-      console.log(item)
+      const index = this.value.indexOf(item)
+      if (index !== -1) {
+        this.value.splice(index, 1)
+      }
     }
   }
 }
