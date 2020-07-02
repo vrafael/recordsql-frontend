@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import MainLayout from 'src/store/layouts/MainLayout'
+import MainLayout from './MainLayout'
+import Types from './Types'
 
 /*
  * If not building with SSR mode, you can
@@ -14,10 +15,11 @@ import MainLayout from 'src/store/layouts/MainLayout'
  * with the Store instance.
  */
 
-export default function (/* { ssrContext } */) {
+export default function ( /* { ssrContext } */ ) {
   const Store = new Vuex.Store({
     modules: {
-      MainLayout
+      MainLayout,
+      Types
     },
 
     // enable strict mode (adds overhead!)

@@ -7,9 +7,7 @@
       Create date & time
     </div>
     <div class="col-9">
-      <div
-        class="row"
-      >
+      <div class="row">
         <div class="col-6">
           <q-input
             dense
@@ -28,9 +26,7 @@
                   transition-show="scale"
                   transition-hide="scale"
                 >
-                  <q-date
-                    v-model="creatingDate"
-                  >
+                  <q-date v-model="creatingDate">
                     <div class="row items-center justify-end q-gutter-sm">
                       <q-btn
                         label="OK"
