@@ -3,9 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import MainLayout from 'src/store/layouts/MainLayout'
+import MainLayout from './MainLayout'
+import Types from './Types'
 import TypeList from 'src/store/components/Types/TypeList'
-import TypeMetadata from 'src/store/main/TypeMetadata';
+import TypeMetadata from 'src/store/main/TypeMetadata'
 
 /*
  * If not building with SSR mode, you can
@@ -16,10 +17,11 @@ import TypeMetadata from 'src/store/main/TypeMetadata';
  * with the Store instance.
  */
 
-export default function (/* { ssrContext } */) {
+export default function ( /* { ssrContext } */ ) {
   const Store = new Vuex.Store({
     modules: {
       MainLayout,
+      Types,
       TypeList,
       TypeMetadata
     },

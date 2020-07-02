@@ -3,21 +3,21 @@ export default function () {
     links: [
       {
         label: 'Home',
-        icon: 'home',
+        icon: 'mdi-home',
         link: '/',
-        separator: true,
+        separator: true
       },
       {
         label: 'Types',
         icon: 'mdi-puzzle',
         link: '/types',
-        separator: false,
+        separator: false
       },
       {
         label: 'Records',
-        icon: 'mdi-database ',
+        icon: 'mdi-database',
         link: '/records',
-        separator: false,
+        separator: false
       }
     ]
   }

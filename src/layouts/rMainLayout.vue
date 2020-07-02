@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh Lpr fff">
-    <q-header elevated class="bg-linear" >
+    <q-header
+      elevated
+      class="bg-linear"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -24,7 +27,7 @@
           @click="drawerRight = !drawerRight"
           round
           dense
-          icon="menu"
+          icon="star"
         />
       </q-toolbar>
     </q-header>
@@ -35,17 +38,29 @@
       content-class="bg-grey-1"
     >
       <q-scroll-area class="fit">
-        <q-list v-for="(link, index) in links" :key="index">
-          <q-item :to="link.link" exact clickable>
+        <q-list
+          v-for="(menu_item, index) in menu"
+          :key="index"
+        >
+          <q-item
+            :to="menu_item.link"
+            :exact="menu_item.link === '/'"
+            clickable
+            class="menu"
+            active-class="menu-active bg-blue-1"
+          >
             <q-item-section avatar>
-              <q-icon :name="link.icon" :color="link.iconColor" />
+              <q-icon
+                :name="menu_item.icon"
+                :color="menu_item.iconColor"
+              />
             </q-item-section>
             <q-item-section>
-              {{ link.label }}
+              {{ menu_item.label }}
             </q-item-section>
           </q-item>
 
-          <q-separator v-if="link.separator" />
+          <q-separator v-if="menu_item.separator" />
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -53,12 +68,11 @@
     <q-drawer
       side="right"
       v-model="drawerRight"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
       <q-list class="flex flex-center">
-        Buffer
+        Favorite objects
       </q-list>
     </q-drawer>
 
@@ -70,20 +84,28 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
-  data: () => ({
-    drawerLeft: true,
-    drawerRight: false,
-  }),
-  computed: {
-    ...mapGetters('MainLayout', {
-      links: 'getAllLinks',
+  data () {
+    return ({
+      drawerLeft: true,
+      drawerRight: false
     })
   },
+  computed: {
+    ...mapGetters('MainLayout', {
+      menu: 'MENU_GET'
+    })
+  }
 }
 </script>
 
 <style lang="sass">
 .bg-linear
-  background: linear-gradient(90deg,  rgb(15, 71, 126) 5%, $primary 50%, rgb(15, 71, 126)  95%)
+  background: linear-gradient(90deg,  $secondary 5%, $primary 50%, $secondary  95%)
+
+.menu
+  color: $primary
+  &-active
+    color: $accent
 </style>

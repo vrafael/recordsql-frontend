@@ -4,20 +4,20 @@
       class="col-3 text-h6"
       style="display: flex;align-items: center;"
     >
-      Amount
+      Float
     </div>
     <div class="col-9">
       <q-field
         outlined
-        :prefix="prefix"
         dense
         v-bind="$attrs"
       >
         <template #control>
           <input
+            v-model="float"
             class="q-field__input text-right"
             autofocus
-            v-money="moneyFormat"
+            type="number"
           >
         </template>
       </q-field>
@@ -30,12 +30,13 @@ import { VMoney } from 'v-money'
 
 export default {
   data: () => ({
+    float: '',
     moneyFormat: {
-      decimal: '.',
-      thousands: ',',
+      decimal: '',
+      thousands: '',
       prefix: '',
       suffix: '',
-      precision: 4,
+      precision: '',
       masked: false
     }
   }),

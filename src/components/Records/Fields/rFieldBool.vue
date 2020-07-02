@@ -4,15 +4,15 @@
       class="col-3 text-h6"
       style="display: flex;align-items: center;"
     >
-      ID
+      Check the box
     </div>
     <div class="col-9">
-      <q-input
-        class="text-body1"
-        v-model="idInput"
-        outlined
-        readonly
+      <q-checkbox
         dense
+        slot="prepend"
+        toggle-indeterminate
+        indeterminate-value="maybe"
+        v-model="theModel2"
       />
     </div>
   </div>
@@ -20,10 +20,8 @@
 
 <script>
 export default {
-  data () {
-    return {
-      idInput: '93651'
-    }
-  }
+  data: () => ({
+    theModel2: null
+  })
 }
 </script>
