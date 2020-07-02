@@ -19,7 +19,7 @@
         clearable
         @clear="resetFrom"
       >
-        <template #control="{ id, floatingLabel, value, emitValue }">
+        <template #control="{ id, value, emitValue }">
           <input
             class="q-field__input text-right"
             v-money="moneyFormat"
@@ -44,7 +44,7 @@
         clearable
         @clear="resetTo"
       >
-        <template #control="{ id, floatingLabel, value, emitValue }">
+        <template #control="{ id, value, emitValue }">
           <input
             class="q-field__input text-right"
             v-money="moneyFormat"
