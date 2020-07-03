@@ -21,9 +21,9 @@
 
 <script>
 export default {
-  data: () => ({
-    integer: ''
-  })
+  props: {
+    integer: String
+  }
 }
 </script>
 

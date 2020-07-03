@@ -9,7 +9,7 @@
     <div class="col-9">
       <q-input
         class="text-body1"
-        v-model="idInput"
+        v-model="ID"
         outlined
         readonly
         dense
@@ -20,10 +20,8 @@
 
 <script>
 export default {
-  data () {
-    return {
-      idInput: '93651'
-    }
+  props: {
+    ID: String
   }
 }
 </script>

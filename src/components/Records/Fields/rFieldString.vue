@@ -9,7 +9,7 @@
     <div class="col-9">
       <q-input
         class="text-body1"
-        v-model="nameInput"
+        v-model="name"
         outlined
         dense
         clearable
@@ -20,10 +20,8 @@
 
 <script>
 export default {
-  data () {
-    return {
-      nameInput: 'Договор аренды'
-    }
+  props: {
+    name: String
   }
 }
 </script>
