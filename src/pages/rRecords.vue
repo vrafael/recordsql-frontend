@@ -30,13 +30,11 @@
             >
               <q-fab-action
                 color="primary"
-                @click="onClick"
                 icon="thumb_up"
                 label="Согласовать"
               />
               <q-fab-action
                 color="secondary"
-                @click="onClick"
                 icon="thumb_down"
                 label="Отклонить"
               />

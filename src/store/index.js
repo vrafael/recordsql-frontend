@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 import MainLayout from './MainLayout'
 import Types from './Types'
+import TypeList from 'src/store/components/Types/TypeList'
+import TypeMetadata from 'src/store/main/TypeMetadata'
+import Record from 'src/store/components/Record/Record'
+import RecordBuffer from 'src/store/components/Record/RecordBuffer'
 
 /*
  * If not building with SSR mode, you can
@@ -15,11 +19,15 @@ import Types from './Types'
  * with the Store instance.
  */
 
-export default function ( /* { ssrContext } */ ) {
+export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       MainLayout,
-      Types
+      Types,
+      TypeList,
+      TypeMetadata,
+      Record,
+      RecordBuffer
     },
 
     // enable strict mode (adds overhead!)
