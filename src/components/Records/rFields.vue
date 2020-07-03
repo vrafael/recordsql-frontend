@@ -92,15 +92,5 @@ export default {
     rFieldFloat,
     rFieldLink
   },
-  data: () => ({
-    idInput: '93651',
-    typeInput: 'Договор',
-    stateInput: 'Подписан',
-    nameInput: 'Договор аренды',
-    documentText: 'some text',
-    amountInput: 312300.0,
-    currencyInput: 'Рубль',
-    createDateInput: '14.05.2020 21:50'
-  })
 }
 </script>
