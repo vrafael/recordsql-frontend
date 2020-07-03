@@ -4,6 +4,7 @@
       <span class="text-h6">Filters</span>
     </q-banner>
     <q-form class="q-pa-sm q-gutter-sm">
+      <r-filter-float />
       <r-filter-string />
       <r-filter-money />
       <r-filter-link />
@@ -54,6 +55,7 @@ import rFilterBigint from './Filters/rFilterBigint'
 import rFilterLink from './Filters/rFilterLink'
 import rFilterMoney from './Filters/rFilterMoney'
 import rFilterString from './Filters/rFilterString'
+import rFilterFloat from './Filters/rFilterFloat'
 
 export default {
   components: {
@@ -66,7 +68,8 @@ export default {
     rFilterBigint,
     rFilterLink,
     rFilterMoney,
-    rFilterString
+    rFilterString,
+    rFilterFloat
   }
 }
 </script>

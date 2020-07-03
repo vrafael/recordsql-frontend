@@ -1,7 +1,5 @@
 <template>
   <q-form class="q-pa-md">
-    <r-field-identity />
-
     <r-field-link
       label="Type"
       input-icon="mdi-format-list-bulleted-type"
@@ -23,13 +21,30 @@
     <r-field-string />
     <r-field-text />
     <r-field-money />
-    <r-field-datetime />
-    <r-field-bool />
-    <r-field-color />
-    <r-field-date />
-    <r-field-time />
-    <r-field-int />
-    <r-field-float />
+    <r-field label="Boolean">
+      <r-input-bool />
+    </r-field>
+    <r-field label="Color">
+      <r-input-color />
+    </r-field>
+    <r-field label="Date">
+      <r-input-date />
+    </r-field>
+    <r-field label="DateTime">
+      <r-input-datetime />
+    </r-field>
+    <r-field label="Time">
+      <r-input-time />
+    </r-field>
+    <r-field label="Identifer">
+      <r-input-identifier />
+    </r-field>
+    <r-field label="Float">
+      <r-input-float />
+    </r-field>
+    <r-field label="Integer">
+      <r-input-int />
+    </r-field>
 
     <div class="row q-pt-md">
       <q-btn
@@ -64,32 +79,34 @@
 </template>
 
 <script>
-import rFieldBool from './Fields/rFieldBool'
-import rFieldColor from './Fields/rFieldColor'
-import rFieldDate from './Fields/rFieldDate'
-import rFieldDatetime from './Fields/rFieldDatetime'
-import rFieldIdentity from './Fields/rFieldIdentity'
-import rFieldInt from './Fields/rFieldInt'
+import rField from './Fields/rField'
+import rInputBool from './Fields/rInputBool'
+import rInputColor from './Fields/rInputColor'
+import rInputDate from './Fields/rInputDate'
+import rInputDatetime from './Fields/rInputDatetime'
+import rInputTime from './Fields/rInputTime'
+import rInputIdentifier from './Fields/rInputIdentifier'
+import rInputFloat from './Fields/rInputFloat'
+import rInputInt from './Fields/rInputInt'
 import rFieldMoney from './Fields/rFieldMoney'
 import rFieldString from './Fields/rFieldString'
 import rFieldText from './Fields/rFieldText'
-import rFieldTime from './Fields/rFieldTime'
-import rFieldFloat from './Fields/rFieldFloat'
 import rFieldLink from './Fields/rFieldLink'
 
 export default {
   components: {
-    rFieldBool,
-    rFieldColor,
-    rFieldDate,
-    rFieldDatetime,
-    rFieldIdentity,
-    rFieldInt,
+    rField,
+    rInputBool,
+    rInputColor,
+    rInputDate,
+    rInputDatetime,
+    rInputTime,
+    rInputIdentifier,
+    rInputFloat,
+    rInputInt,
     rFieldMoney,
     rFieldString,
     rFieldText,
-    rFieldTime,
-    rFieldFloat,
     rFieldLink
   },
   data: () => ({
