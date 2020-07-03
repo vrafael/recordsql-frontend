@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import rFieldBool from './Fields/rFieldBool'
 import rFieldColor from './Fields/rFieldColor'
 import rFieldDate from './Fields/rFieldDate'
@@ -92,5 +94,11 @@ export default {
     rFieldFloat,
     rFieldLink
   },
+  async mounted () {
+    const recordID = Number(this.$route.params.id)
+    await this.$store.dispatch('RECORD_FETCH', { ID: recordID, TypeID: 54 })
+    // console.log(this.$store.getters.RECORD_GET)
+  },
+  computed: mapGetters(['RECORD_GET'])
 }
 </script>
