@@ -2,22 +2,22 @@ import { fetchApiRPC } from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    typeListArr: []
+    TYPE_LIST: []
   },
   getters: {
-    getTypeListArr: (state) => {
-      return state.typeListArr
+    TYPE_LIST_GET: (state) => {
+      return state.TYPE_LIST
     }
   },
   mutations: {
-    updateTypeListArr (state, response) {
-      state.typeListArr = response
+    TYPE_LIST_UPDATE (state, response) {
+      state.TYPE_LIST = response
     }
   },
   actions: {
-    async fetchTypeListArr ({ commit }) {
+    async TYPE_LIST_FETCH ({ commit }) {
       const response = await fetchApiRPC('Dev.TypeList')
-      commit('updateTypeListArr', response)
+      commit('TYPE_LIST_UPDATE', response)
     }
   }
 }
