@@ -2,7 +2,7 @@ import { fetchApiRPC } from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    typeListArr: [],
+    typeListArr: []
   },
   getters: {
     getTypeListArr: (state) => {
@@ -10,14 +10,14 @@ export default {
     }
   },
   mutations: {
-    updateTypeListArr(state, response) {
+    updateTypeListArr (state, response) {
       state.typeListArr = response
     }
   },
   actions: {
-    async fetchTypeListArr({commit}) {
+    async fetchTypeListArr ({ commit }) {
       const response = await fetchApiRPC('Dev.TypeList')
       commit('updateTypeListArr', response)
-    },
+    }
   }
 }

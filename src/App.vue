@@ -9,10 +9,10 @@
 
 export default {
   name: 'App',
-  async mounted() {
+  async mounted () {
     await this.$store.dispatch('fetchTypeMetaDataObj', 9)
     console.log('test: ', this.$store.getters.getMetaDataObj)
-  },
+  }
   // async mounted() {
   //   await this.$store.dispatch('fetchTypeListArr',)
   //   console.log('test: ', this.$store.getters.getTypeListArr)
