@@ -2,22 +2,22 @@ import { fetchApiRPC } from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    typeMetaDataObj: []
+    TYPE_METADATA: []
   },
   getters: {
-    getMetaDataObj: (state) => {
-      return state.typeMetaDataObj
+    TYPE_METADATA_GET: (state) => {
+      return state.TYPE_METADATA
     }
   },
   mutations: {
-    updateTypeMetaDataObj (state, response) {
-      state.typeMetaDataObj = response
+    TYPE_METADATA_UPDATE (state, response) {
+      state.TYPE_METADATA = response
     }
   },
   actions: {
-    async fetchTypeMetaDataObj (context, TypeID = 0) {
+    async TYPE_METADATA_FETCH (context, TypeID = 0) {
       const response = await fetchApiRPC('Dev.TypeMetadata', { TypeID: TypeID })
-      context.commit('updateTypeMetaDataObj', response)
+      context.commit('TYPE_METADATA_UPDATE', response)
     }
   }
 }
