@@ -1,49 +1,40 @@
 <template>
   <q-form class="q-pa-md">
-    <r-field-link
-      label="Type"
-      input-icon="mdi-format-list-bulleted-type"
-      dropdown-icon="mdi-format-list-bulleted-type"
-    />
-
-    <r-field-link
-      label="State"
-      input-icon="mdi-state-machine"
-      dropdown-icon="mdi-state-machine"
-    />
-
-    <r-field-link
-      label="Currency"
-      input-icon="mdi-currency-usd"
-      dropdown-icon="mdi-currency-usd"
-    />
-
-    <r-field-string />
-    <r-field-text />
-    <r-field-money />
-    <r-field label="Boolean">
-      <r-input-bool />
+    <r-field label="Link">
+      <r-input-link />
     </r-field>
-    <r-field label="Color">
-      <r-input-color />
+    <r-field label="Text">
+      <r-input-text />
     </r-field>
-    <r-field label="Date">
-      <r-input-date />
+    <r-field label="String">
+      <r-input-string />
     </r-field>
-    <r-field label="DateTime">
-      <r-input-datetime />
+    <r-field label="Money">
+      <r-input-money />
     </r-field>
-    <r-field label="Time">
-      <r-input-time />
-    </r-field>
-    <r-field label="Identifer">
-      <r-input-identifier />
+    <r-field label="Integer">
+      <r-input-int />
     </r-field>
     <r-field label="Float">
       <r-input-float />
     </r-field>
-    <r-field label="Integer">
-      <r-input-int />
+    <r-field label="Identifer">
+      <r-input-identifier />
+    </r-field>
+    <r-field label="Time">
+      <r-input-time />
+    </r-field>
+    <r-field label="DateTime">
+      <r-input-datetime />
+    </r-field>
+    <r-field label="Date">
+      <r-input-date />
+    </r-field>
+    <r-field label="Color">
+      <r-input-color />
+    </r-field>
+    <r-field label="Boolean">
+      <r-input-bool />
     </r-field>
 
     <div class="row q-pt-md">
@@ -88,10 +79,10 @@ import rInputTime from './Fields/rInputTime'
 import rInputIdentifier from './Fields/rInputIdentifier'
 import rInputFloat from './Fields/rInputFloat'
 import rInputInt from './Fields/rInputInt'
-import rFieldMoney from './Fields/rFieldMoney'
-import rFieldString from './Fields/rFieldString'
-import rFieldText from './Fields/rFieldText'
-import rFieldLink from './Fields/rFieldLink'
+import rInputMoney from './Fields/rInputMoney'
+import rInputString from './Fields/rInputString'
+import rInputText from './Fields/rInputText'
+import rInputLink from './Fields/rInputLink'
 
 export default {
   components: {
@@ -104,10 +95,10 @@ export default {
     rInputIdentifier,
     rInputFloat,
     rInputInt,
-    rFieldMoney,
-    rFieldString,
-    rFieldText,
-    rFieldLink
+    rInputMoney,
+    rInputString,
+    rInputText,
+    rInputLink
   },
   data: () => ({
     idInput: '93651',

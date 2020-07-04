@@ -21,8 +21,6 @@
 </template>
 
 <script>
-// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
-
 export default {
   data: () => ({
     enable: false,

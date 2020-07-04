@@ -18,7 +18,6 @@ export default {
       val => (val !== null && val !== '') || 'Please input float number',
       val => (/^-?\d*(.\d*)?$/.test(val)) || 'Please use float number format'
     ],
-    enable: false,
     value: null
   }),
   methods: {
