@@ -12,7 +12,7 @@
         slot="prepend"
         toggle-indeterminate
         indeterminate-value="maybe"
-        v-model="theModel2"
+        v-model="state"
       />
     </div>
   </div>
@@ -20,8 +20,8 @@
 
 <script>
 export default {
-  data: () => ({
-    theModel2: null
-  })
+  props: {
+    state: Boolean
+  }
 }
 </script>

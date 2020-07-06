@@ -10,7 +10,7 @@
       <q-input
         type="textarea"
         class="text-body1"
-        v-model="documentText"
+        v-model="text"
         dense
         outlined
       />
@@ -20,10 +20,8 @@
 
 <script>
 export default {
-  data () {
-    return {
-      documentText: 'some text'
-    }
+  props: {
+    text: String
   }
 }
 </script>

@@ -30,13 +30,11 @@
             >
               <q-fab-action
                 color="primary"
-                @click="onClick"
                 icon="thumb_up"
                 label="Согласовать"
               />
               <q-fab-action
                 color="secondary"
-                @click="onClick"
                 icon="thumb_down"
                 label="Отклонить"
               />
@@ -54,13 +52,13 @@
           >
             <q-route-tab
               exact
-              to="/records/fields"
+              to="/194/fields"
               name="fields"
               label="Fields"
             />
             <q-route-tab
               exact
-              to="/records/relations"
+              to="/record/relations"
               name="relations"
               label="Relations"
             />
