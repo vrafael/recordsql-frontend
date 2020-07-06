@@ -12,6 +12,9 @@
     <r-field label="Money">
       <r-input-money />
     </r-field>
+    <r-field label="Bigint">
+      <r-input-bigint />
+    </r-field>
     <r-field label="Integer">
       <r-input-int />
     </r-field>
@@ -79,6 +82,7 @@ import rInputTime from './Fields/rInputTime'
 import rInputIdentifier from './Fields/rInputIdentifier'
 import rInputFloat from './Fields/rInputFloat'
 import rInputInt from './Fields/rInputInt'
+import rInputBigint from './Fields/rInputBigint'
 import rInputMoney from './Fields/rInputMoney'
 import rInputString from './Fields/rInputString'
 import rInputText from './Fields/rInputText'
@@ -95,6 +99,7 @@ export default {
     rInputIdentifier,
     rInputFloat,
     rInputInt,
+    rInputBigint,
     rInputMoney,
     rInputString,
     rInputText,
