@@ -1,6 +1,7 @@
 <template>
   <q-input
     type="number"
+    ref="input"
     v-model="value"
     :rules="intInputRules"
     outlined

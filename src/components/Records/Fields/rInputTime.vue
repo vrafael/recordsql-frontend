@@ -1,11 +1,11 @@
 <template>
   <q-input
+    ref="input"
     v-model="value"
     :mask="timeInputMask"
     :rules="timeInputRules"
     outlined
     dense
-    ref="input"
     clearable
     @clear="reset"
   >
