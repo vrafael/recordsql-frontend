@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import rField from './Fields/rField'
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
@@ -105,15 +107,11 @@ export default {
     rInputText,
     rInputLink
   },
-  data: () => ({
-    idInput: '93651',
-    typeInput: 'Договор',
-    stateInput: 'Подписан',
-    nameInput: 'Договор аренды',
-    documentText: 'some text',
-    amountInput: 312300.0,
-    currencyInput: 'Рубль',
-    createDateInput: '14.05.2020 21:50'
-  })
+  async mounted () {
+    const recordID = Number(this.$route.params.id)
+    await this.$store.dispatch('RECORD_FETCH', { ID: recordID, TypeID: 54 })
+    // console.log(this.$store.getters.RECORD_GET)
+  },
+  computed: mapGetters(['RECORD_GET'])
 }
 </script>

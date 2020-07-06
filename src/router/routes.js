@@ -1,33 +1,34 @@
-const routes = [{
-  path: '/records',
-  redirect: '/records/fields'
-},
-{
-  path: '/',
-  component: () => import('layouts/rMainLayout.vue'),
-  children: [{
-    path: '',
-    component: () => import('pages/rHome.vue')
-  },
+const routes = [
+  // {
+  //   path: '/record',
+  //   redirect: '/record/:id/fields'
+  // },
   {
-    path: '/types',
-    component: () => import('pages/rTypes.vue')
-  },
-  {
-    path: '/records',
-    component: () => import('pages/rRecords.vue'),
+    path: '/',
+    component: () => import('layouts/rMainLayout.vue'),
     children: [{
-      path: 'fields',
-      component: () => import('components/Records/rFields')
+      path: '',
+      component: () => import('pages/rHome.vue')
     },
     {
-      path: 'relations',
-      component: () => import('components/Records/rRelations')
+      path: '/types',
+      component: () => import('pages/rTypes.vue')
+    },
+    {
+      path: '/record',
+      component: () => import('pages/rRecords.vue'),
+      children: [{
+        path: '/:id/fields',
+        component: () => import('components/Records/rFields')
+      },
+      {
+        path: 'relations',
+        component: () => import('components/Records/rRelations')
+      }
+      ]
     }
     ]
   }
-  ]
-}
 ]
 
 // Always leave this as last one
