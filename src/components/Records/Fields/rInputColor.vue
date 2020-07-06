@@ -1,11 +1,11 @@
 <template>
   <q-input
+    ref="input"
     v-model="value"
     :rules="colorInputRules"
     mask="\#XXXXXXXX"
     outlined
     dense
-    ref="input"
     clearable
     @clear="reset"
   >
