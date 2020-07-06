@@ -5,6 +5,7 @@
     v-model="value"
     dense
     outlined
+    clearable
   />
 </template>
 

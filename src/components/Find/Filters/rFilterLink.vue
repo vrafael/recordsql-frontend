@@ -32,10 +32,7 @@
             name="search"
             class="cursor-pointer"
           >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
-            >
+            <q-popup-proxy>
               <q-list>
                 <q-item
                   v-for="type in types"
@@ -43,7 +40,10 @@
                   clickable
                   v-close-popup
                 >
-                  <div class="row items-center">
+                  <div
+                    class="row items-center"
+                    style="width:200px"
+                  >
                     <q-icon
                       :name="type.TypeIcon"
                       color="accent"

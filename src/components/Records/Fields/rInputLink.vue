@@ -28,8 +28,12 @@
               :key="type.TypeID"
               clickable
               v-close-popup
+              context-menu
             >
-              <div class="row items-center">
+              <div
+                class="row items-center"
+                style="width:200px"
+              >
                 <q-icon
                   :name="type.TypeIcon"
                   color="accent"
