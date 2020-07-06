@@ -1,21 +1,28 @@
 <template>
-  <q-input
-    type="number"
-    ref="input"
-    v-model="value"
-    :rules="intInputRules"
-    outlined
-    dense
-    clearable
-    @clear="reset"
-  />
+  <r-field label="Int">
+    <q-input
+      type="number"
+      ref="input"
+      v-model="value"
+      :rules="intInputRules"
+      outlined
+      dense
+      clearable
+      @clear="reset"
+    />
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
+
 const maxInt = Math.pow(2, 31) - 1,
   minInt = -Math.pow(2, 31)
 
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     intInputRules: [
       val => (val !== null && val !== '') || 'Please input integer number',

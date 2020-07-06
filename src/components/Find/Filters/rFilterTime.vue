@@ -1,118 +1,118 @@
 <template>
-  <div class="row">
-    <div
-      class="col-3"
-      @click="enable = !enable"
+  <r-filter
+    label="Time"
+    :enable.sync="enable"
+  >
+    <q-input
+      class="col-4"
+      v-model="valueFrom"
+      :mask="timeInputMask"
+      :rules="timeInputRules"
+      :disable="!enable"
+      outlined
+      dense
+      ref="inputFrom"
+      clearable
+      @clear="resetFrom"
     >
-      <q-toggle v-model="enable" />
-      Time
-    </div>
-    <div class="col-4">
-      <q-input
-        v-model="valueFrom"
-        :mask="timeInputMask"
-        :rules="timeInputRules"
-        :disable="!enable"
-        outlined
-        dense
-        ref="inputFrom"
-        clearable
-        @clear="resetFrom"
-      >
-        <template #append>
-          <q-icon
-            @click="applyValueFromToProxyFrom"
-            name="access_time"
-            class="cursor-pointer"
+      <template #append>
+        <q-icon
+          @click="applyValueFromToProxyFrom"
+          name="access_time"
+          class="cursor-pointer"
+        >
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
           >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
+            <q-time
+              v-model="proxyValueFrom"
+              with-seconds
+              format24h
+              :mask="timeMask"
             >
-              <q-time
-                v-model="proxyValueFrom"
-                with-seconds
-                format24h
-                :mask="timeMask"
-              >
-                <div class="row items-center justify-between">
-                  <q-btn
-                    @click="applyProxyFromToValueFrom"
-                    label="OK"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                  <q-btn
-                    label="Cancel"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                </div>
-              </q-time>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div>
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyFromToValueFrom"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+
     <q-space />
-    <div class="col-4">
-      <q-input
-        v-model="valueTo"
-        :mask="timeInputMask"
-        :rules="timeInputRules"
-        :disable="!enable"
-        outlined
-        dense
-        ref="inputTo"
-        clearable
-        @clear="resetTo"
-      >
-        <template #append>
-          <q-icon
-            @click="applyValueToToProxyTo"
-            name="access_time"
-            class="cursor-pointer"
+
+    <q-input
+      class="col-4"
+      v-model="valueTo"
+      :mask="timeInputMask"
+      :rules="timeInputRules"
+      :disable="!enable"
+      outlined
+      dense
+      ref="inputTo"
+      clearable
+      @clear="resetTo"
+    >
+      <template #append>
+        <q-icon
+          @click="applyValueToToProxyTo"
+          name="access_time"
+          class="cursor-pointer"
+        >
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
           >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
+            <q-time
+              v-model="proxyValueTo"
+              with-seconds
+              format24h
+              :mask="timeMask"
             >
-              <q-time
-                v-model="proxyValueTo"
-                with-seconds
-                format24h
-                :mask="timeMask"
-              >
-                <div class="row items-center justify-between">
-                  <q-btn
-                    @click="applyProxyToToValueTo"
-                    label="OK"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                  <q-btn
-                    label="Cancel"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                </div>
-              </q-time>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-    </div>
-  </div>
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyToToValueTo"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </r-filter>
 </template>
 
 <script>
+import rFilter from './rFilter'
 import { date } from 'quasar'
 
 export default {
+  components: {
+    rFilter
+  },
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [

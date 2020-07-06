@@ -1,62 +1,66 @@
 <template>
-  <q-field
-    v-model="value"
-    class="q-field--with-bottom"
-    outlined
-    dense
-    clearable
-  >
-    <template
-      #control
-      class="items-center"
+  <r-field label="Link">
+    <q-field
+      v-model="value"
+      class="q-field--with-bottom"
+      outlined
+      dense
+      clearable
     >
-      <r-object
-        v-if="value"
-        :object="value"
-        style="max-width: 150px;"
-      />
-    </template>
-    <template #append>
-      <q-icon
-        name="search"
-        class="cursor-pointer"
+      <template
+        #control
+        class="items-center"
       >
-        <q-popup-proxy>
-          <q-list>
-            <q-item
-              v-for="type in types"
-              :key="type.TypeID"
-              clickable
-              v-close-popup
-              context-menu
-            >
-              <div
-                class="row items-center"
-                style="width:200px"
+        <r-object
+          v-if="value"
+          :object="value"
+          style="max-width: 150px;"
+        />
+      </template>
+      <template #append>
+        <q-icon
+          name="search"
+          class="cursor-pointer"
+        >
+          <q-popup-proxy>
+            <q-list>
+              <q-item
+                v-for="type in types"
+                :key="type.TypeID"
+                clickable
+                v-close-popup
+                context-menu
               >
-                <q-icon
-                  :name="type.TypeIcon"
-                  color="accent"
-                  size="28px"
-                  class="q-mr-sm"
-                />
-                <div class="text-weight-bold text-primary">
-                  {{ `${type.TypeName}...` }}
+                <div
+                  class="row items-center"
+                  style="width:200px"
+                >
+                  <q-icon
+                    :name="type.TypeIcon"
+                    color="accent"
+                    size="28px"
+                    class="q-mr-sm"
+                  />
+                  <div class="text-weight-bold text-primary">
+                    {{ `${type.TypeName}...` }}
+                  </div>
                 </div>
-              </div>
-            </q-item>
-          </q-list>
-        </q-popup-proxy>
-      </q-icon>
-    </template>
-  </q-field>
+              </q-item>
+            </q-list>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-field>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
 import rObject from '../../rObject'
 
 export default {
   components: {
+    rField,
     rObject
   },
   data: () => ({

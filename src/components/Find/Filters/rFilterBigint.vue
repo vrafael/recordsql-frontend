@@ -1,47 +1,46 @@
 <template>
-  <div class="row q-my-md">
-    <div
-      class="col-3"
-      @click="enable = !enable"
-    >
-      <q-toggle v-model="enable" />
-      Bigint
-    </div>
-    <div class="col-4">
-      <q-input
-        type="number"
-        v-model="valueFrom"
-        :disable="!enable"
-        :rules="bigintInputRules"
-        outlined
-        dense
-        ref="inputFrom"
-        clearable
-        @clear="resetFrom"
-      />
-    </div>
+  <r-filter
+    label="Bigint"
+    :enable.sync="enable"
+  >
+    <q-input
+      class="col-4"
+      type="number"
+      v-model="valueFrom"
+      :disable="!enable"
+      :rules="bigintInputRules"
+      outlined
+      dense
+      ref="inputFrom"
+      clearable
+      @clear="resetFrom"
+    />
     <q-space />
-    <div class="col-4">
-      <q-input
-        type="number"
-        v-model="valueTo"
-        :disable="!enable"
-        :rules="bigintInputRules"
-        outlined
-        dense
-        ref="inputTo"
-        clearable
-        @clear="resetTo"
-      />
-    </div>
-  </div>
+    <q-input
+      class="col-4"
+      type="number"
+      v-model="valueTo"
+      :disable="!enable"
+      :rules="bigintInputRules"
+      outlined
+      dense
+      ref="inputTo"
+      clearable
+      @clear="resetTo"
+    />
+  </r-filter>
 </template>
 
 <script>
+import rFilter from './rFilter'
+
 const maxBigint = Math.pow(2, 63) - 1,
   minBigint = -Math.pow(2, 63)
 
 export default {
+  components: {
+    rFilter
+  },
   data: () => ({
     bigintInputRules: [
       val => (val !== null && val !== '') || 'Please input integer number',

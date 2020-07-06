@@ -1,74 +1,71 @@
 <template>
-  <div class="row q-my-md q-pb-md">
-    <div
-      class="col-3"
-      @click="enable = !enable"
+  <r-filter
+    label="Link"
+    :enable.sync="enable"
+  >
+    <q-field
+      class="col-9 q-field--with-bottom"
+      v-model="value"
+      :disable="!enable"
+      outlined
+      dense
+      clearable
     >
-      <q-toggle v-model="enable" />
-      Link
-    </div>
-    <div class="col-9">
-      <q-field
-        v-model="value"
-        :disable="!enable"
-        outlined
-        dense
-        clearable
+      <template
+        #control
+        class="items-center"
       >
-        <template
-          #control
-          class="items-center"
+        <r-object
+          v-for="item in value"
+          :key="item.ID"
+          :object="item"
+          :remove="removeItem"
+          style="max-width: 150px;"
+        />
+      </template>
+      <template #append>
+        <q-icon
+          name="search"
+          class="cursor-pointer"
         >
-          <r-object
-            v-for="item in value"
-            :key="item.ID"
-            :object="item"
-            :remove="removeItem"
-            style="max-width: 150px;"
-          />
-        </template>
-        <template #append>
-          <q-icon
-            name="search"
-            class="cursor-pointer"
-          >
-            <q-popup-proxy>
-              <q-list>
-                <q-item
-                  v-for="type in types"
-                  :key="type.TypeID"
-                  clickable
-                  v-close-popup
+          <q-popup-proxy>
+            <q-list>
+              <q-item
+                v-for="type in types"
+                :key="type.TypeID"
+                clickable
+                v-close-popup
+              >
+                <div
+                  class="row items-center"
+                  style="width:200px"
                 >
-                  <div
-                    class="row items-center"
-                    style="width:200px"
-                  >
-                    <q-icon
-                      :name="type.TypeIcon"
-                      color="accent"
-                      size="28px"
-                      class="q-mr-sm"
-                    />
-                    <div class="text-weight-bold text-primary">
-                      {{ `${type.TypeName}...` }}
-                    </div>
+                  <q-icon
+                    :name="type.TypeIcon"
+                    color="accent"
+                    size="28px"
+                    class="q-mr-sm"
+                  />
+                  <div class="text-weight-bold text-primary">
+                    {{ `${type.TypeName}...` }}
                   </div>
-                </q-item>
-              </q-list>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-field>
-    </div>
-  </div>
+                </div>
+              </q-item>
+            </q-list>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-field>
+  </r-filter>
 </template>
 
 <script>
+import rFilter from './rFilter'
 import rObject from '../../rObject'
 
 export default {
   components: {
+    rFilter,
     rObject
   },
   data: () => ({

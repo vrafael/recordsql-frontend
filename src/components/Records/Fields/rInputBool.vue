@@ -1,5 +1,5 @@
 <template>
-  <div class="col-9">
+  <r-field label="Boolean">
     <q-checkbox
       slot="prepend"
       class="q-field--with-bottom"
@@ -9,11 +9,16 @@
       :label="value.toString().toUpperCase()"
       dense
     />
-  </div>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
+
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     value: false
   })

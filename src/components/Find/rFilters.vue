@@ -3,7 +3,7 @@
     <q-banner class="bg-linear text-white">
       <span class="text-h6">Filters</span>
     </q-banner>
-    <q-form class="q-pa-sm q-gutter-sm">
+    <q-form class="q-pa-md">
       <r-filter-float />
       <r-filter-string />
       <r-filter-money />

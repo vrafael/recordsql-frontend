@@ -1,54 +1,61 @@
 <template>
-  <q-input
-    ref="input"
-    v-model="value"
-    :rules="colorInputRules"
-    mask="\#XXXXXXXX"
-    outlined
-    dense
-    clearable
-    @clear="reset"
-  >
-    <div
-      slot="prepend"
-      :style="helperColor.style"
-      class="color-helper"
-    />
-    <q-icon
-      @click="applyValueToProxy"
-      slot="append"
-      name="colorize"
-      class="cursor-pointer"
+  <r-field label="Color">
+    <q-input
+      ref="input"
+      v-model="value"
+      :rules="colorInputRules"
+      mask="\#XXXXXXXX"
+      outlined
+      dense
+      clearable
+      @clear="reset"
     >
-      <q-popup-proxy
-        transition-show="scale"
-        transition-hide="scale"
+      <div
+        slot="prepend"
+        :style="helperColor.style"
+        class="color-helper"
+      />
+      <q-icon
+        @click="applyValueToProxy"
+        slot="append"
+        name="colorize"
+        class="cursor-pointer"
       >
-        <q-card class="q-gutter-md">
-          <q-color v-model="proxyValue" />
-          <div class="row items-center justify-between">
-            <q-btn
-              @click="applyProxyToValue"
-              label="OK"
-              color="primary"
-              flat
-              v-close-popup
-            />
-            <q-btn
-              label="Cancel"
-              color="primary"
-              flat
-              v-close-popup
-            />
-          </div>
-        </q-card>
-      </q-popup-proxy>
-    </q-icon>
-  </q-input>
+        <q-popup-proxy
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <q-card class="q-gutter-md">
+            <q-color v-model="proxyValue" />
+            <div class="row items-center justify-between">
+              <q-btn
+                @click="applyProxyToValue"
+                label="OK"
+                color="primary"
+                flat
+                v-close-popup
+              />
+              <q-btn
+                label="Cancel"
+                color="primary"
+                flat
+                v-close-popup
+              />
+            </div>
+          </q-card>
+        </q-popup-proxy>
+      </q-icon>
+    </q-input>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
+
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     colorInputRules: [
       val => (val && val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',

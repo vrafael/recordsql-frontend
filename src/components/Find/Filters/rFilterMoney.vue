@@ -1,72 +1,69 @@
 <template>
-  <div class="row q-my-md">
-    <div
-      class="col-3"
-      @click="enable = !enable"
+  <r-filter
+    label="Money"
+    :enable.sync="enable"
+  >
+    <q-field
+      class="col-4"
+      ref="inputFrom"
+      v-model="valueFrom"
+      v-bind="$attrs"
+      :rules="moneyInputRules"
+      :disable="!enable"
+      outlined
+      dense
+      clearable
+      @clear="resetFrom"
     >
-      <q-toggle v-model="enable" />
-      Money
-    </div>
-    <div class="col-4">
-      <q-field
-        ref="inputFrom"
-        v-model="valueFrom"
-        v-bind="$attrs"
-        :rules="moneyInputRules"
-        :disable="!enable"
-        outlined
-        dense
-        clearable
-        @clear="resetFrom"
-      >
-        <template #control="{ id, value, emitValue }">
-          <input
-            class="q-field__input text-right"
-            v-money="moneyFormat"
-            :value="value"
-            @change="e => emitValue(e.target.value)"
-            :id="id"
-            autofocus
-          >
-        </template>
-      </q-field>
-    </div>
+      <template #control="{ id, value, emitValue }">
+        <input
+          class="q-field__input text-right"
+          v-money="moneyFormat"
+          :value="value"
+          @change="e => emitValue(e.target.value)"
+          :id="id"
+          autofocus
+        >
+      </template>
+    </q-field>
     <q-space />
-    <div class="col-4">
-      <q-field
-        ref="inputTo"
-        v-model="valueTo"
-        v-bind="$attrs"
-        :rules="moneyInputRules"
-        :disable="!enable"
-        outlined
-        dense
-        clearable
-        @clear="resetTo"
-      >
-        <template #control="{ id, value, emitValue }">
-          <input
-            class="q-field__input text-right"
-            v-money="moneyFormat"
-            :value="value"
-            @change="e => emitValue(e.target.value)"
-            :id="id"
-            autofocus
-          >
-        </template>
-      </q-field>
-    </div>
-  </div>
+    <q-field
+      class="col-4"
+      ref="inputTo"
+      v-model="valueTo"
+      v-bind="$attrs"
+      :rules="moneyInputRules"
+      :disable="!enable"
+      outlined
+      dense
+      clearable
+      @clear="resetTo"
+    >
+      <template #control="{ id, value, emitValue }">
+        <input
+          class="q-field__input text-right"
+          v-money="moneyFormat"
+          :value="value"
+          @change="e => emitValue(e.target.value)"
+          :id="id"
+          autofocus
+        >
+      </template>
+    </q-field>
+  </r-filter>
 </template>
 
 <script>
+import rFilter from './rFilter'
 import { VMoney } from 'v-money'
 
 const minMoney = -922337203685477,
   maxMoney = 922337203685477
 
 export default {
-
+  components: {
+    rFilter
+  },
   data: () => ({
     moneyInputRules: [
       val => (val !== null && val !== '') || 'Please input money value',

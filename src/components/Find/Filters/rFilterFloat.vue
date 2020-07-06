@@ -1,44 +1,43 @@
 <template>
-  <div class="row">
-    <div
-      class="col-3"
-      @click="enable = !enable"
-    >
-      <q-toggle v-model="enable" />
-      Float
-    </div>
-    <div class="col-4">
-      <q-input
-        type="number"
-        v-model="valueFrom"
-        :disable="!enable"
-        :rules="intInputRules"
-        outlined
-        dense
-        ref="inputFrom"
-        clearable
-        @clear="resetFrom"
-      />
-    </div>
+  <r-filter
+    label="Float"
+    :enable.sync="enable"
+  >
+    <q-input
+      class="col-4"
+      type="number"
+      v-model="valueFrom"
+      :disable="!enable"
+      :rules="intInputRules"
+      outlined
+      dense
+      ref="inputFrom"
+      clearable
+      @clear="resetFrom"
+    />
     <q-space />
-    <div class="col-4">
-      <q-input
-        type="number"
-        v-model="valueTo"
-        :disable="!enable"
-        :rules="intInputRules"
-        outlined
-        dense
-        ref="inputTo"
-        clearable
-        @clear="resetTo"
-      />
-    </div>
-  </div>
+    <q-input
+      class="col-4"
+      type="number"
+      v-model="valueTo"
+      :disable="!enable"
+      :rules="intInputRules"
+      outlined
+      dense
+      ref="inputTo"
+      clearable
+      @clear="resetTo"
+    />
+  </r-filter>
 </template>
 
 <script>
+import rFilter from './rFilter'
+
 export default {
+  components: {
+    rFilter
+  },
   data: () => ({
     intInputRules: [
       val => (val !== null && val !== '') || 'Please input float number',

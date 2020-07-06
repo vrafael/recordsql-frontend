@@ -1,56 +1,62 @@
 <template>
-  <q-input
-    ref="input"
-    v-model="value"
-    :mask="timeInputMask"
-    :rules="timeInputRules"
-    outlined
-    dense
-    clearable
-    @clear="reset"
-  >
-    <template #append>
-      <q-icon
-        @click="applyValueToProxy"
-        name="access_time"
-        class="cursor-pointer"
-      >
-        <q-popup-proxy
-          transition-show="scale"
-          transition-hide="scale"
+  <r-field label="Time">
+    <q-input
+      ref="input"
+      v-model="value"
+      :mask="timeInputMask"
+      :rules="timeInputRules"
+      outlined
+      dense
+      clearable
+      @clear="reset"
+    >
+      <template #append>
+        <q-icon
+          @click="applyValueToProxy"
+          name="access_time"
+          class="cursor-pointer"
         >
-          <q-time
-            v-model="proxyValue"
-            with-seconds
-            format24h
-            :mask="timeMask"
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
           >
-            <div class="row items-center justify-between">
-              <q-btn
-                @click="applyProxyToValue"
-                label="OK"
-                color="primary"
-                flat
-                v-close-popup
-              />
-              <q-btn
-                label="Cancel"
-                color="primary"
-                flat
-                v-close-popup
-              />
-            </div>
-          </q-time>
-        </q-popup-proxy>
-      </q-icon>
-    </template>
-  </q-input>
+            <q-time
+              v-model="proxyValue"
+              with-seconds
+              format24h
+              :mask="timeMask"
+            >
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyToValue"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
 import { date } from 'quasar'
 
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [

@@ -1,44 +1,18 @@
 <template>
   <q-form class="q-pa-md">
-    <r-field label="Link">
-      <r-input-link />
-    </r-field>
-    <r-field label="Text">
-      <r-input-text />
-    </r-field>
-    <r-field label="String">
-      <r-input-string />
-    </r-field>
-    <r-field label="Money">
-      <r-input-money />
-    </r-field>
-    <r-field label="Bigint">
-      <r-input-bigint />
-    </r-field>
-    <r-field label="Integer">
-      <r-input-int />
-    </r-field>
-    <r-field label="Float">
-      <r-input-float />
-    </r-field>
-    <r-field label="Identifer">
-      <r-input-identifier />
-    </r-field>
-    <r-field label="Time">
-      <r-input-time />
-    </r-field>
-    <r-field label="DateTime">
-      <r-input-datetime />
-    </r-field>
-    <r-field label="Date">
-      <r-input-date />
-    </r-field>
-    <r-field label="Color">
-      <r-input-color />
-    </r-field>
-    <r-field label="Boolean">
-      <r-input-bool />
-    </r-field>
+    <r-input-link />
+    <r-input-text />
+    <r-input-string />
+    <r-input-money />
+    <r-input-bigint />
+    <r-input-int />
+    <r-input-float />
+    <r-input-identifier />
+    <r-input-time />
+    <r-input-datetime />
+    <r-input-date />
+    <r-input-color />
+    <r-input-bool />
 
     <div class="row q-pt-md">
       <q-btn

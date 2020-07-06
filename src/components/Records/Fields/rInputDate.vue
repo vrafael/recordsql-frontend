@@ -1,52 +1,59 @@
 <template>
-  <q-input
-    ref="input"
-    v-model="value"
-    :mask="dateInputMask"
-    :rules="dateInputRules"
-    outlined
-    dense
-    clearable
-    @clear="reset"
-  >
-    <template #append>
-      <q-icon
-        @click="applyValueToProxy"
-        name="event"
-        class="cursor-pointer"
-      >
-        <q-popup-proxy
-          transition-show="scale"
-          transition-hide="scale"
+  <r-field label="Date">
+    <q-input
+      ref="input"
+      v-model="value"
+      :mask="dateInputMask"
+      :rules="dateInputRules"
+      outlined
+      dense
+      clearable
+      @clear="reset"
+    >
+      <template #append>
+        <q-icon
+          @click="applyValueToProxy"
+          name="event"
+          class="cursor-pointer"
         >
-          <q-date
-            v-model="proxyValue"
-            :mask="dateMask"
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
           >
-            <div class="row items-center justify-between">
-              <q-btn
-                @click="applyProxyToValue"
-                label="OK"
-                color="primary"
-                flat
-                v-close-popup
-              />
-              <q-btn
-                label="Cancel"
-                color="primary"
-                flat
-                v-close-popup
-              />
-            </div>
-          </q-date>
-        </q-popup-proxy>
-      </q-icon>
-    </template>
-  </q-input>
+            <q-date
+              v-model="proxyValue"
+              :mask="dateMask"
+            >
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyToValue"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
+
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     dateInputMask: '####.##.##',
     dateInputRules: [

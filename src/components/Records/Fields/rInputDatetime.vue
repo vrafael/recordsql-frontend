@@ -1,65 +1,71 @@
 <template>
-  <q-input
-    ref="input"
-    v-model="value"
-    :mask="datetimeInputMask"
-    :rules="datetimeInputRules"
-    outlined
-    dense
-    clearable
-    @clear="reset"
-  >
-    <template #append>
-      <q-icon
-        @click="applyValueToProxy"
-        name="today"
-        class="cursor-pointer"
-      >
-        <q-popup-proxy
-          transition-show="scale"
-          transition-hide="scale"
+  <r-field label="Datetime">
+    <q-input
+      ref="input"
+      v-model="value"
+      :mask="datetimeInputMask"
+      :rules="datetimeInputRules"
+      outlined
+      dense
+      clearable
+      @clear="reset"
+    >
+      <template #append>
+        <q-icon
+          @click="applyValueToProxy"
+          name="today"
+          class="cursor-pointer"
         >
-          <div class="col">
-            <div class="row">
-              <q-date
-                v-model="proxyValue"
-                :mask="datetimeMask"
-                class="no-shadow"
-              />
-              <q-time
-                v-model="proxyValue"
-                with-seconds
-                format24h
-                :mask="datetimeMask"
-                class="no-shadow"
-              />
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <div class="col">
+              <div class="row">
+                <q-date
+                  v-model="proxyValue"
+                  :mask="datetimeMask"
+                  class="no-shadow"
+                />
+                <q-time
+                  v-model="proxyValue"
+                  with-seconds
+                  format24h
+                  :mask="datetimeMask"
+                  class="no-shadow"
+                />
+              </div>
+              <div class="row justify-between q-pa-md">
+                <q-btn
+                  @click="applyProxyToValue"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
             </div>
-            <div class="row justify-between q-pa-md">
-              <q-btn
-                @click="applyProxyToValue"
-                label="OK"
-                color="primary"
-                flat
-                v-close-popup
-              />
-              <q-btn
-                label="Cancel"
-                color="primary"
-                flat
-                v-close-popup
-              />
-            </div>
-          </div>
-        </q-popup-proxy>
-      </q-icon>
-    </template>
-  </q-input>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+  </r-field>
 </template>
 
 <script>
+import rField from './rField'
 import { date } from 'quasar'
 
 export default {
+  components: {
+    rField
+  },
   data: () => ({
     datetimeInputMask: '####.##.## ##:##:##.###',
     datetimeInputRules: [
