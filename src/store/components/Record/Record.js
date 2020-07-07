@@ -1,6 +1,4 @@
-import {
-  fetchApiRPC
-} from 'src/common/service.api.rpc'
+import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
   state: {

@@ -1,6 +1,4 @@
-import {
-  fetchApiRPC
-} from 'src/common/service.api.rpc'
+import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
   state: {
@@ -12,14 +10,14 @@ export default {
     }
   },
   mutations: {
-    TYPE_METADATA_UPDATE(state, response) {
+    TYPE_METADATA_UPDATE (state, response) {
       state.typeMetadata = response
     }
   },
   actions: {
-    async TYPE_METADATA_FETCH(context, TypeID = 0) {
+    async TYPE_METADATA_FETCH (context, TypeID = 0) {
       const response = await fetchApiRPC('Dev.TypeMetadata', {
-        TypeID: TypeID
+        TypeID
       })
       context.commit('TYPE_METADATA_UPDATE', response)
     }
