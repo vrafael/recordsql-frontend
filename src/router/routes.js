@@ -1,8 +1,8 @@
 const routes = [
-  // {
-  //   path: '/record',
-  //   redirect: '/record/:id/fields'
-  // },
+  {
+    path: '/record/:id/',
+    redirect: '/record/:id/fields'
+  },
   {
     path: '/',
     component: () => import('layouts/rMainLayout.vue'),
@@ -18,7 +18,7 @@ const routes = [
       path: '/record',
       component: () => import('pages/rRecords.vue'),
       children: [{
-        path: '/:id/fields',
+        path: '/record/:id/fields',
         component: () => import('components/Records/rFields')
       },
       {
