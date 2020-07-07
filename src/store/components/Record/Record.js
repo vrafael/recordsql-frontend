@@ -1,21 +1,23 @@
-import { fetchApiRPC } from 'src/common/service.api.rpc'
+import {
+  fetchApiRPC
+} from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    RECORD: {}
+    record: {}
   },
   getters: {
     RECORD_GET: (state) => {
-      return state.RECORD
+      return state.record
     }
   },
   mutations: {
-    RECORD_UPDATE (state, response) {
-      state.RECORD = response
+    RECORD_UPDATE(state, response) {
+      state.record = response
     }
   },
   actions: {
-    async RECORD_FETCH (context, params) {
+    async RECORD_FETCH(context, params) {
       const response = await fetchApiRPC('Dev.RecordGet', params)
       context.commit('RECORD_UPDATE', response)
     }

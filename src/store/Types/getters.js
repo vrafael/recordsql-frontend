@@ -1,5 +1,5 @@
-function TYPETREE_GET (state) {
-  return state.typetree
+function TYPETREE_GET(state) {
+  return state.typeTree
 }
 
 export default {
