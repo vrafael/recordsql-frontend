@@ -52,7 +52,7 @@
           >
             <q-route-tab
               exact
-              to="/194/fields"
+              to="/record/194/fields"
               name="fields"
               label="Fields"
             />
