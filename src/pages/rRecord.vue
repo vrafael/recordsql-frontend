@@ -58,7 +58,7 @@
             />
             <q-route-tab
               exact
-              to="/record/relations"
+              to="/record/194/relations"
               name="relations"
               label="Relations"
             />

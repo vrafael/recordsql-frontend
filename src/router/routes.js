@@ -1,35 +1,42 @@
-const routes = [
-  {
-    path: '/record/:id/',
-    redirect: '/record/:id/fields'
-  },
-  {
-    path: '/',
-    component: () => import('layouts/rMainLayout.vue'),
-    children: [{
+const routes = [{
+  path: '/record/:id(\\d+)',
+  redirect: '/record/:id/fields'
+}, {
+  path: '/',
+  component: () => import('layouts/rMainLayout.vue'),
+  children: [{
       path: '',
+      name: 'home',
       component: () => import('pages/rHome.vue')
     },
     {
       path: '/types',
+      name: 'types',
       component: () => import('pages/rTypes.vue')
     },
     {
-      path: '/record',
-      component: () => import('pages/rRecords.vue'),
+      path: '/record/:id(\\d+)',
+      name: 'record',
+      component: () => import('pages/rRecord.vue'),
+      props: (route) => ({
+        id: parseInt(route.params.id)
+      }),
       children: [{
-        path: '/record/:id/fields',
-        component: () => import('components/Records/rFields')
-      },
-      {
-        path: 'relations',
-        component: () => import('components/Records/rRelations')
-      }
+          path: 'fields',
+          name: 'recordfields',
+          component: () => import('components/Record/rFields'),
+          props: true
+        },
+        {
+          path: 'relations',
+          name: 'recordrelations',
+          component: () => import('components/Record/rRelations'),
+          props: true
+        }
       ]
     }
-    ]
-  }
-]
+  ]
+}]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
