@@ -1,12 +1,8 @@
 <template>
-  <r-filter
-    label="Link"
-    :enable.sync="enable"
-  >
+  <r-field label="Link">
     <q-field
-      class="col-9 q-field--with-bottom"
       v-model="value"
-      :disable="!enable"
+      class="q-field--with-bottom"
       outlined
       dense
       clearable
@@ -16,10 +12,8 @@
         class="items-center"
       >
         <r-object
-          v-for="item in value"
-          :key="item.ID"
-          :object="item"
-          :remove="removeItem"
+          v-if="value"
+          :object="value"
           style="max-width: 150px;"
         />
       </template>
@@ -35,6 +29,7 @@
                 :key="type.TypeID"
                 clickable
                 v-close-popup
+                context-menu
               >
                 <div
                   class="row items-center"
@@ -56,40 +51,26 @@
         </q-icon>
       </template>
     </q-field>
-  </r-filter>
+  </r-field>
 </template>
 
 <script>
-import rFilter from './rFilter'
+import rField from './rField'
 import rObject from '../../rObject'
 
 export default {
   components: {
-    rFilter,
+    rField,
     rObject
   },
   data: () => ({
-    enable: false,
-    value: [{
+    value: {
       ID: 1,
       TypeIcon: 'las la-birthday-cake',
       TypeName: 'Cake',
       StateName: 'Приготовлен',
       Name: 'Наполеон'
-    }, {
-      ID: 2,
-      TypeIcon: 'las la-hippo',
-      TypeName: 'Гиппопотам',
-      Name: 'Big Hippo'
-    }, {
-      ID: 96,
-      TypeID: 46,
-      TypeName: 'Рыбка',
-      TypeIcon: 'las la-fish',
-      StateName: 'Накормлена',
-      StateColor: 'green',
-      Name: 'Ponio'
-    }],
+    },
     types: [{
       TypeID: 10,
       TypeName: 'Рыбка',
@@ -103,14 +84,6 @@ export default {
       TypeTag: 'Hippo',
       TypeOwnerID: 1
     }]
-  }),
-  methods: {
-    removeItem (item) {
-      const index = this.value.indexOf(item)
-      if (index !== -1) {
-        this.value.splice(index, 1)
-      }
-    }
-  }
+  })
 }
 </script>

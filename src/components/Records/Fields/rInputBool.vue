@@ -1,28 +1,25 @@
 <template>
-  <r-filter
-    label="Boolean"
-    :enable.sync="enable"
-  >
+  <r-field label="Boolean">
     <q-checkbox
+      slot="prepend"
+      class="q-field--with-bottom"
       toggle-indeterminate
       indeterminate-value="null"
       v-model="value"
-      :disable="!enable"
       :label="value.toString().toUpperCase()"
       dense
     />
-  </r-filter>
+  </r-field>
 </template>
 
 <script>
-import rFilter from './rFilter'
+import rField from './rField'
 
 export default {
   components: {
-    rFilter
+    rField
   },
   data: () => ({
-    enable: false,
     value: false
   })
 }

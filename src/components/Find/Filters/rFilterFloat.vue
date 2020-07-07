@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Bigint"
+    label="Float"
     :enable.sync="enable"
   >
     <q-input
@@ -8,7 +8,7 @@
       type="number"
       v-model="valueFrom"
       :disable="!enable"
-      :rules="bigintInputRules"
+      :rules="intInputRules"
       outlined
       dense
       ref="inputFrom"
@@ -21,7 +21,7 @@
       type="number"
       v-model="valueTo"
       :disable="!enable"
-      :rules="bigintInputRules"
+      :rules="intInputRules"
       outlined
       dense
       ref="inputTo"
@@ -34,18 +34,14 @@
 <script>
 import rFilter from './rFilter'
 
-const maxBigint = Math.pow(2, 63) - 1,
-  minBigint = -Math.pow(2, 63)
-
 export default {
   components: {
     rFilter
   },
   data: () => ({
-    bigintInputRules: [
-      val => (val !== null && val !== '') || 'Please input integer number',
-      val => (/^-?\d*$/.test(val)) || 'Please use number format',
-      val => (val > minBigint && val < maxBigint) || 'Please use big integer value between -2^63 and 2^63-1'
+    intInputRules: [
+      val => (val !== null && val !== '') || 'Please input float number',
+      val => (/^-?\d*(.\d*)?$/.test(val)) || 'Please use float number format'
     ],
     enable: false,
     valueFrom: null,

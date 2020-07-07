@@ -1,17 +1,12 @@
 <template>
-  <r-filter
-    label="Color"
-    :enable.sync="enable"
-  >
+  <r-field label="Color">
     <q-input
-      class="col-9"
+      ref="input"
       v-model="value"
       :rules="colorInputRules"
-      :disable="!enable"
       mask="\#XXXXXXXX"
       outlined
       dense
-      ref="input"
       clearable
       @clear="reset"
     >
@@ -51,16 +46,15 @@
         </q-popup-proxy>
       </q-icon>
     </q-input>
-  </r-filter>
+  </r-field>
 </template>
 
 <script>
-import rFilter from './rFilter'
-// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
+import rField from './rField'
 
 export default {
   components: {
-    rFilter
+    rField
   },
   data: () => ({
     colorInputRules: [

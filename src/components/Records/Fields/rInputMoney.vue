@@ -1,60 +1,30 @@
 <template>
-  <r-filter
-    label="Money"
-    :enable.sync="enable"
-  >
+  <r-field label="Money">
     <q-field
-      class="col-4"
-      ref="inputFrom"
-      v-model="valueFrom"
+      ref="input"
+      v-model="value"
       v-bind="$attrs"
       :rules="moneyInputRules"
-      :disable="!enable"
       outlined
       dense
       clearable
-      @clear="resetFrom"
+      @clear="reset"
     >
       <template #control="{ id, value, emitValue }">
         <input
-          class="q-field__input text-right"
+          class="q-field__input"
           v-money="moneyFormat"
           :value="value"
           @change="e => emitValue(e.target.value)"
           :id="id"
-          autofocus
         >
       </template>
     </q-field>
-    <q-space />
-    <q-field
-      class="col-4"
-      ref="inputTo"
-      v-model="valueTo"
-      v-bind="$attrs"
-      :rules="moneyInputRules"
-      :disable="!enable"
-      outlined
-      dense
-      clearable
-      @clear="resetTo"
-    >
-      <template #control="{ id, value, emitValue }">
-        <input
-          class="q-field__input text-right"
-          v-money="moneyFormat"
-          :value="value"
-          @change="e => emitValue(e.target.value)"
-          :id="id"
-          autofocus
-        >
-      </template>
-    </q-field>
-  </r-filter>
+  </r-field>
 </template>
 
 <script>
-import rFilter from './rFilter'
+import rField from './rField'
 import { VMoney } from 'v-money'
 
 const minMoney = -922337203685477,
@@ -62,7 +32,7 @@ const minMoney = -922337203685477,
 
 export default {
   components: {
-    rFilter
+    rField
   },
   data: () => ({
     moneyInputRules: [
@@ -70,9 +40,7 @@ export default {
       val => (/^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$/.test(val)) || 'Please use money format',
       val => (parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
     ],
-    enable: false,
-    valueFrom: null,
-    valueTo: null,
+    value: null,
     moneyFormat: {
       decimal: '.',
       thousands: ',',
@@ -83,16 +51,10 @@ export default {
     }
   }),
   methods: {
-    resetFrom () {
-      this.valueFrom = null
+    reset () {
+      this.value = null
       setTimeout(() => {
-        this.$refs.inputFrom.resetValidation()
-      })
-    },
-    resetTo () {
-      this.valueTo = null
-      setTimeout(() => {
-        this.$refs.inputTo.resetValidation()
+        this.$refs.input.resetValidation()
       })
     }
   },

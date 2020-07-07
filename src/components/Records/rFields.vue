@@ -1,35 +1,18 @@
 <template>
   <q-form class="q-pa-md">
-    <r-field-identity />
-
-    <r-field-link
-      label="Type"
-      input-icon="mdi-format-list-bulleted-type"
-      dropdown-icon="mdi-format-list-bulleted-type"
-    />
-
-    <r-field-link
-      label="State"
-      input-icon="mdi-state-machine"
-      dropdown-icon="mdi-state-machine"
-    />
-
-    <r-field-link
-      label="Currency"
-      input-icon="mdi-currency-usd"
-      dropdown-icon="mdi-currency-usd"
-    />
-
-    <r-field-string />
-    <r-field-text />
-    <r-field-money />
-    <r-field-datetime />
-    <r-field-bool />
-    <r-field-color />
-    <r-field-date />
-    <r-field-time />
-    <r-field-int />
-    <r-field-float />
+    <r-input-link />
+    <r-input-text />
+    <r-input-string />
+    <r-input-money />
+    <r-input-bigint />
+    <r-input-int />
+    <r-input-float />
+    <r-input-identifier />
+    <r-input-time />
+    <r-input-datetime />
+    <r-input-date />
+    <r-input-color />
+    <r-input-bool />
 
     <div class="row q-pt-md">
       <q-btn
@@ -66,33 +49,37 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import rFieldBool from './Fields/rFieldBool'
-import rFieldColor from './Fields/rFieldColor'
-import rFieldDate from './Fields/rFieldDate'
-import rFieldDatetime from './Fields/rFieldDatetime'
-import rFieldIdentity from './Fields/rFieldIdentity'
-import rFieldInt from './Fields/rFieldInt'
-import rFieldMoney from './Fields/rFieldMoney'
-import rFieldString from './Fields/rFieldString'
-import rFieldText from './Fields/rFieldText'
-import rFieldTime from './Fields/rFieldTime'
-import rFieldFloat from './Fields/rFieldFloat'
-import rFieldLink from './Fields/rFieldLink'
+import rField from './Fields/rField'
+import rInputBool from './Fields/rInputBool'
+import rInputColor from './Fields/rInputColor'
+import rInputDate from './Fields/rInputDate'
+import rInputDatetime from './Fields/rInputDatetime'
+import rInputTime from './Fields/rInputTime'
+import rInputIdentifier from './Fields/rInputIdentifier'
+import rInputFloat from './Fields/rInputFloat'
+import rInputInt from './Fields/rInputInt'
+import rInputBigint from './Fields/rInputBigint'
+import rInputMoney from './Fields/rInputMoney'
+import rInputString from './Fields/rInputString'
+import rInputText from './Fields/rInputText'
+import rInputLink from './Fields/rInputLink'
 
 export default {
   components: {
-    rFieldBool,
-    rFieldColor,
-    rFieldDate,
-    rFieldDatetime,
-    rFieldIdentity,
-    rFieldInt,
-    rFieldMoney,
-    rFieldString,
-    rFieldText,
-    rFieldTime,
-    rFieldFloat,
-    rFieldLink
+    rField,
+    rInputBool,
+    rInputColor,
+    rInputDate,
+    rInputDatetime,
+    rInputTime,
+    rInputIdentifier,
+    rInputFloat,
+    rInputInt,
+    rInputBigint,
+    rInputMoney,
+    rInputString,
+    rInputText,
+    rInputLink
   },
   async mounted () {
     const recordID = Number(this.$route.params.id)
