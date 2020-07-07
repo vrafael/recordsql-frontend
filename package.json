@@ -5,7 +5,10 @@
   "productName": "RecordSQL",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
-  "author": "coldrain96 <Justtryagain961@gmail.com>",
+  "contributors": [
+    "Kamil Bikmetov <Justtryagain961@gmail.com>",
+    "Rafael Valiullin <vrafael@mail.ru>"
+  ],
   "private": true,
   "scripts": {
     "dev": "quasar dev",
