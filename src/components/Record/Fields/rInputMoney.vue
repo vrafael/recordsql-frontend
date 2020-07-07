@@ -10,7 +10,7 @@
       clearable
       @clear="reset"
     >
-      <template #control="{ id, value, emitValue }">
+      <template #control="{ id, emitValue }">
         <input
           class="q-field__input"
           v-money="moneyFormat"

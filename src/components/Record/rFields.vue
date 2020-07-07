@@ -49,7 +49,6 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import rField from './Fields/rField'
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
 import rInputDate from './Fields/rInputDate'
@@ -66,7 +65,6 @@ import rInputLink from './Fields/rInputLink'
 
 export default {
   components: {
-    rField,
     rInputBool,
     rInputColor,
     rInputDate,
