@@ -26,7 +26,7 @@
             transition-hide="scale"
           >
             <div class="col">
-              <div class="row">
+              <div class="row no-wrap">
                 <q-date
                   v-model="proxyValueFrom"
                   :mask="datetimeMask"
