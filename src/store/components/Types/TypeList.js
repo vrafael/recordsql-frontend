@@ -12,12 +12,12 @@ export default {
     }
   },
   mutations: {
-    TYPE_LIST_UPDATE(state, response) {
+    TYPE_LIST_UPDATE (state, response) {
       state.typeList = response
     }
   },
   actions: {
-    async TYPE_LIST_FETCH({
+    async TYPE_LIST_FETCH ({
       commit
     }) {
       const response = await fetchApiRPC('Dev.TypeList')

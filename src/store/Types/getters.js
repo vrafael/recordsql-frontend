@@ -1,4 +1,4 @@
-function TYPETREE_GET(state) {
+function TYPETREE_GET (state) {
   return state.typeTree
 }
 
