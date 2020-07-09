@@ -10,12 +10,12 @@ export default {
     }
   },
   mutations: {
-    RECORD_UPDATE(state, response) {
+    RECORD_UPDATE (state, response) {
       state.record = response
     }
   },
   actions: {
-    async RECORD_FETCH(context, params) {
+    async RECORD_FETCH (context, params) {
       const response = await fetchApiRPC('Dev.RecordGet', params)
       if (response && response.length > 0) {
         const _record = response[0]
