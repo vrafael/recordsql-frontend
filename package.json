@@ -5,9 +5,15 @@
   "productName": "RecordSQL",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
-  "author": "coldrain96 <Justtryagain961@gmail.com>",
+  "contributors": [
+    "Kamil Bikmetov <Justtryagain961@gmail.com>",
+    "Rafael Valiullin <vrafael@mail.ru>"
+  ],
   "private": true,
   "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
     "lint": "eslint --fix --ext .js,.vue src",
     "commitizen": "yarn global add commitizen"
   },
