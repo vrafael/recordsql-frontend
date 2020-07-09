@@ -1,9 +1,9 @@
 <template>
-  <r-field label="Text">
+  <r-field :field="field">
     <q-input
       type="textarea"
       class="q-field--with-bottom"
-      v-model="value"
+      :value="value"
       dense
       outlined
       clearable
@@ -18,9 +18,14 @@ export default {
   components: {
     rField
   },
-  data () {
-    return {
-      value: ''
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
     }
   }
 }

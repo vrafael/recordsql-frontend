@@ -1,9 +1,9 @@
 <template>
-  <r-field label="Int">
+  <r-field :field="field">
     <q-input
       type="number"
       ref="input"
-      v-model="value"
+      :value="value"
       :rules="intInputRules"
       outlined
       dense
@@ -28,9 +28,18 @@ export default {
       val => (val !== null && val !== '') || 'Please input integer number',
       val => (/^-?\d*$/.test(val)) || 'Please use number format',
       val => (val >= minInt && val <= maxInt) || `Please use integer value between ${minInt} and ${maxInt}`
-    ],
-    value: null
+    ]
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
+    }
+  },
   methods: {
     reset () {
       setTimeout(() => {

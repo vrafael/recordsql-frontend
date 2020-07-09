@@ -1,9 +1,9 @@
 <template>
-  <r-field label="Bigint">
+  <r-field :field="field">
     <q-input
       type="number"
       ref="input"
-      v-model="value"
+      :value="value"
       :rules="bigintInputRules"
       outlined
       dense
@@ -28,9 +28,18 @@ export default {
       val => (val !== null && val !== '') || 'Please input integer number',
       val => (/^-?\d*$/.test(val)) || 'Please use number format',
       val => (val >= minBigint && val <= maxBigint) || `Please use integer value between ${minBigint} and ${maxBigint}`
-    ],
-    value: null
+    ]
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
+    }
+  },
   methods: {
     reset () {
       setTimeout(() => {

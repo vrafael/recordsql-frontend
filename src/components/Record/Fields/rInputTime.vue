@@ -1,8 +1,8 @@
 <template>
-  <r-field label="Time">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
       :mask="timeInputMask"
       :rules="timeInputRules"
       outlined
@@ -63,10 +63,18 @@ export default {
       val => (/^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "HH:mm:ss.nnn"'
     ],
     timeMask: 'HH:mm:ss',
-    enable: false,
-    value: '',
     proxyValue: Date.now()
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
   methods: {
     applyProxyToValue () {
       const proxytime = date.extractDate(this.proxyValue, this.timeMask)

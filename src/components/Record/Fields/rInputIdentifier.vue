@@ -1,9 +1,9 @@
 <template>
-  <r-field label="Identifier">
+  <r-field :field="field">
     <q-input
       type="number"
       class="q-field--with-bottom"
-      v-model="value"
+      :value="value"
       outlined
       dense
       readonly
@@ -18,8 +18,15 @@ export default {
   components: {
     rField
   },
-  data: () => ({
-    value: null
-  })
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
+    }
+  }
 }
 </script>

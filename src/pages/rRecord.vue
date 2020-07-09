@@ -3,24 +3,25 @@
     <div class="full-width">
       <q-card>
         <q-card-section class="bg-linear text-white">
-          <div class="row items-center ">
+          <div class="row items-center">
             <div class="items-start q-mx-sm">
               <q-icon
-                name="las la-laptop"
-                style="font-size: 3em;"
+                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : ''"
+                style="font-size:3em;"
               />
             </div>
             <div class="col">
               <div class="text-h6">
-                Заявка на ПК от 31.03.2020
+                {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
               </div>
               <div class="text-subtitle2">
-                Обеспечение офиса
+                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : '' }}
               </div>
             </div>
 
             <q-fab
               v-model="transitions"
+              v-show="RECORD_GET"
               label="Transitions"
               vertical-actions-align="left"
               color="accent"
@@ -52,13 +53,13 @@
           >
             <q-route-tab
               exact
-              to="/record/194/fields"
+              to="fields"
               name="fields"
               label="Fields"
             />
             <q-route-tab
               exact
-              to="/record/194/relations"
+              to="relations"
               name="relations"
               label="Relations"
             />
@@ -72,11 +73,32 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
+  props: {
+    id: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   data () {
     return {
       tab: 'fields',
       transitions: false
+    }
+  },
+  methods: {
+    ...mapActions(['TYPE_METADATA_FETCH', 'RECORD_FETCH'])
+  },
+  computed: {
+    ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
+  },
+  async mounted () {
+    await this.TYPE_METADATA_FETCH({ ID: this.id })
+    if (this.id) {
+      await this.RECORD_FETCH({ ID: this.id })
     }
   }
 }

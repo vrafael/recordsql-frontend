@@ -1,8 +1,8 @@
 <template>
-  <r-field label="Datetime">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       outlined
@@ -67,19 +67,27 @@ export default {
     rField
   },
   data: () => ({
-    datetimeInputMask: '####.##.## ##:##:##.###',
+    datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d\s([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "YYYY.MM.DD HH:mm:ss.nnn"'
+      val => (/^[\d]{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])\s([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
     ],
-    datetimeMask: 'YYYY.MM.DD HH:mm:ss',
-    enable: false,
-    value: '',
+    datetimeMask: 'YYYY-MM-DD HH:mm:ss',
     proxyValue: Date.now()
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
   methods: {
     applyProxyToValue () {
       const proxydatetime = date.extractDate(this.proxyValue, this.datetimeMask)
-      this.value = date.formatDate(proxydatetime, 'YYYY.MM.DD HH:mm:ss.SSS')
+      this.value = date.formatDate(proxydatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
     },
     applyValueToProxy () {
       this.proxyValue = this.value
