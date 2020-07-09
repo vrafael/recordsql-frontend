@@ -1,7 +1,3 @@
-function TYPETREE_GET (state) {
-  return state.typeTree
-}
-
 function TYPE_LIST_GET (state) {
   return state.typeList
 }
@@ -36,7 +32,6 @@ function TYPE_LIST_NESTED_GET (state) {
 }
 
 export default {
-  TYPETREE_GET,
   TYPE_LIST_GET,
   TYPE_LIST_NESTED_GET
 }
