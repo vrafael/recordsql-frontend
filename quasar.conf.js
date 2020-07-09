@@ -87,10 +87,13 @@ module.exports = function ( /* ctx */ ) {
       proxy: {
         '/api/rpc/': {
           target: 'http://record.2rsoft.com',
-          changeOrigin: true,
+          changeOrigin: true
         }
       }
     },
+
+    // source map for debugging: https://webpack.js.org/configuration/devtool/#development
+    devtool: '#eval-cheap-module-source-map',
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
