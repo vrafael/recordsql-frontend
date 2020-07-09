@@ -90,7 +90,6 @@ export default {
   },
   computed: {
     ...mapGetters('Types', {
-      typetree: 'TYPETREE_GET',
       nestedTypeLists: 'TYPE_LIST_NESTED_GET'
     })
   }
