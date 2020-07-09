@@ -1,7 +1,15 @@
 <template>
   <div class="row">
     <div class="col-3">
-      {{ label }}
+      <div class="row items-center">
+        <q-icon
+          :name="field.Type.Icon"
+          color="accent"
+          size="20px"
+          class="q-mr-sm"
+        />
+        {{ field.Name }}
+      </div>
     </div>
     <div class="col-9">
       <slot />
@@ -12,8 +20,8 @@
 <script>
 export default {
   props: {
-    label: {
-      type: String,
+    field: {
+      type: Object,
       required: true
     }
   }

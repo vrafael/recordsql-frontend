@@ -1,8 +1,8 @@
 <template>
-  <r-field label="Color">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
       outlined
@@ -61,8 +61,6 @@ export default {
       val => (val && val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',
       val => /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
-    enable: false,
-    value: '',
     helperColor: {
       style: {
         backgroundColor: '',
@@ -79,6 +77,16 @@ export default {
       }
     }
   },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
   mounted () {
     this.helperColor.style.backgroundColor = this.value
   },
@@ -90,7 +98,7 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
-      this.helperColor.style.backgroundColor = null
+      this.helperColor.style.backgroundColor = this.value
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })

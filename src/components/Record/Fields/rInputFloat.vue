@@ -1,9 +1,8 @@
 <template>
-  <r-field label="Float">
+  <r-field :field="field">
     <q-input
-      type="number"
       ref="input"
-      v-model="value"
+      :value="value"
       :rules="floatInputRules"
       outlined
       dense
@@ -24,9 +23,18 @@ export default {
     floatInputRules: [
       val => (val !== null && val !== '') || 'Please input float number',
       val => (/^-?\d*(.\d*)?$/.test(val)) || 'Please use float number format'
-    ],
-    value: null
+    ]
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
+    }
+  },
   methods: {
     reset () {
       setTimeout(() => {

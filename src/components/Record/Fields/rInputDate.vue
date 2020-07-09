@@ -1,8 +1,8 @@
 <template>
-  <r-field label="Date">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
       :mask="dateInputMask"
       :rules="dateInputRules"
       outlined
@@ -55,15 +55,23 @@ export default {
     rField
   },
   data: () => ({
-    dateInputMask: '####.##.##',
+    dateInputMask: '####-##-##',
     dateInputRules: [
-      val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val)) || 'Please use format "YYYY.MM.DD"'
+      val => (/^[\d]{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/.test(val)) || 'Please use format "YYYY-MM-DD"'
     ],
-    dateMask: 'YYYY.MM.DD',
-    enable: false,
-    value: '',
+    dateMask: 'YYYY-MM-DD',
     proxyValue: Date.now()
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
   methods: {
     applyProxyToValue () {
       this.value = this.proxyValue

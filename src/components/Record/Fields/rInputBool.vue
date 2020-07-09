@@ -1,12 +1,11 @@
 <template>
-  <r-field label="Boolean">
+  <r-field :field="field">
     <q-checkbox
-      slot="prepend"
       class="q-field--with-bottom"
       toggle-indeterminate
       indeterminate-value="null"
-      v-model="value"
-      :label="value.toString().toUpperCase()"
+      :value="value"
+      :label="label"
       dense
     />
   </r-field>
@@ -19,8 +18,20 @@ export default {
   components: {
     rField
   },
-  data: () => ({
-    value: false
-  })
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Boolean,
+      default: null
+    }
+  },
+  computed: {
+    label: function () {
+      return this.value ? this.value.toString().toUpperCase() : 'NULL'
+    }
+  }
 }
 </script>

@@ -2,7 +2,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    record: {}
+    record: null
   },
   getters: {
     RECORD_GET: (state) => {
@@ -17,7 +17,12 @@ export default {
   actions: {
     async RECORD_FETCH(context, params) {
       const response = await fetchApiRPC('Dev.RecordGet', params)
-      context.commit('RECORD_UPDATE', response)
+      if (response && response.length > 0) {
+        const _record = response[0]
+        context.commit('RECORD_UPDATE', _record)
+      } else {
+        context.commit('RECORD_UPDATE', null)
+      }
     }
   }
 }

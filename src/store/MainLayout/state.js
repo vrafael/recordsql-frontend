@@ -1,7 +1,6 @@
 export default function () {
   return {
-    links: [
-      {
+    links: [{
         label: 'Home',
         icon: 'mdi-home',
         link: '/',
@@ -16,7 +15,7 @@ export default function () {
       {
         label: 'Records',
         icon: 'mdi-database',
-        link: '/record/194/fields',
+        link: '/record/215/fields',
         separator: false
       }
     ]

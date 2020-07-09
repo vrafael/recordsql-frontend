@@ -1,10 +1,10 @@
 <template>
-  <r-field label="Money">
+  <r-field :field="field">
     <q-field
       ref="input"
-      v-model="value"
-      v-bind="$attrs"
+      :value="value"
       :rules="moneyInputRules"
+      v-bind="$attrs"
       outlined
       dense
       clearable
@@ -40,7 +40,6 @@ export default {
       val => (/^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$/.test(val)) || 'Please use money format',
       val => (parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
     ],
-    value: null,
     moneyFormat: {
       decimal: '.',
       thousands: ',',
@@ -56,6 +55,16 @@ export default {
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+    }
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
     }
   },
   directives: {

@@ -1,7 +1,7 @@
 <template>
-  <r-field label="Link">
+  <r-field :field="field">
     <q-field
-      v-model="value"
+      :value="value"
       class="q-field--with-bottom"
       outlined
       dense
@@ -19,14 +19,15 @@
       </template>
       <template #append>
         <q-icon
+          v-show="iconsShow"
           name="search"
           class="cursor-pointer"
         >
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in types"
-                :key="type.TypeID"
+                v-for="type in field.Check.FieldLinkValueType"
+                :key="type.ID"
                 clickable
                 v-close-popup
                 context-menu
@@ -36,13 +37,13 @@
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.TypeIcon"
+                    :name="type.Icon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.TypeName}...` }}
+                    {{ `${type.Name}...` }}
                   </div>
                 </div>
               </q-item>
@@ -63,14 +64,22 @@ export default {
     rField,
     rObject
   },
-  data: () => ({
-    value: {
-      ID: 1,
-      TypeIcon: 'las la-birthday-cake',
-      TypeName: 'Cake',
-      StateName: 'Приготовлен',
-      Name: 'Наполеон'
+  props: {
+    field: {
+      type: Object,
+      required: true
     },
+    value: {
+      type: Object,
+      default: null
+    }
+  },
+  computed: {
+    iconsShow: function () {
+      return !!this.field && this.field.hasOwnProperty('Check') && this.field.Check.hasOwnProperty('FieldLinkValueType')
+    }
+  },
+  data: () => ({
     types: [{
       TypeID: 10,
       TypeName: 'Рыбка',

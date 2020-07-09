@@ -1,8 +1,8 @@
 <template>
-  <r-field label="String">
+  <r-field :field="field">
     <q-input
       class="q-field--with-bottom"
-      v-model="value"
+      :value="value"
       outlined
       dense
       clearable
@@ -17,9 +17,14 @@ export default {
   components: {
     rField
   },
-  data () {
-    return {
-      value: null
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
     }
   }
 }
