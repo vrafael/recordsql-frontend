@@ -15,31 +15,6 @@
       <r-filter-date />
       <r-filter-color />
       <r-filter-bool />
-
-      <!--div class="row">
-        <q-btn
-          color="primary"
-          style="width: 140px"
-        >
-          <q-icon
-            left
-            name="check"
-          />
-          Apply
-        </q-btn>
-        <q-space />
-
-        <q-btn
-          color="primary"
-          style="width: 140px"
-        >
-          <q-icon
-            left
-            name="close"
-          />
-          Clean
-        </q-btn>
-      </div-->
     </q-form>
   </div>
 </template>
