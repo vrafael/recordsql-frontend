@@ -32,7 +32,7 @@ function TYPE_LIST_NESTED_GET (state) {
         })
       })
   }
-  return typesParser(null)
+  return [typesParser(null)]
 }
 
 export default {
