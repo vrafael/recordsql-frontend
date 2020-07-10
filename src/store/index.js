@@ -18,7 +18,7 @@ import Record from 'src/store/components/Record/Record'
  * with the Store instance.
  */
 
-export default function ( /* { ssrContext } */ ) {
+export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       MainLayout,

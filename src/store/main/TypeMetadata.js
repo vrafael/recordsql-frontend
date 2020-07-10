@@ -13,12 +13,12 @@ export default {
     }
   },
   mutations: {
-    TYPE_METADATA_UPDATE(state, response) {
+    TYPE_METADATA_UPDATE (state, response) {
       state.typeMetadata = response
     }
   },
   actions: {
-    async TYPE_METADATA_FETCH(context, params) {
+    async TYPE_METADATA_FETCH (context, params) {
       const response = await fetchApiRPC('Dev.TypeMetadata', params)
       if (response && response.length > 0) {
         const metadata = response[0]
