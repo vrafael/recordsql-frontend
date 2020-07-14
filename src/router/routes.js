@@ -10,9 +10,12 @@ const routes = [{
     component: () => import('pages/rHome.vue')
   },
   {
-    path: '/types',
+    path: '/types/:typeID(\\d+)?',
     name: 'types',
-    component: () => import('pages/rTypes.vue')
+    component: () => import('pages/rTypes.vue'),
+    props: (route) => ({
+      typeID: parseInt(route.params.typeID)
+    })
   },
   {
     path: '/record/:id(\\d+)',

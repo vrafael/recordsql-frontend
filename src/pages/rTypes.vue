@@ -85,6 +85,13 @@ export default {
       }
     }
   },
+  props: {
+    typeID: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   async mounted () {
     await this.$store.dispatch('Types/TYPE_LIST_FETCH')
   },
