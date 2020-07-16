@@ -4,6 +4,7 @@
       type="textarea"
       class="q-field--with-bottom"
       :value="value"
+      @change="updateFieldDataOnChange($event.target.value)"
       dense
       outlined
       clearable
@@ -26,6 +27,12 @@ export default {
     value: {
       type: String,
       default: null
+    }
+  },
+  methods: {
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

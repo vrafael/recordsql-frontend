@@ -2,6 +2,7 @@
   <r-field :field="field">
     <q-field
       :value="value"
+      @change="updateFieldDataOnChange($event.target.value)"
       class="q-field--with-bottom"
       outlined
       dense
@@ -93,6 +94,12 @@ export default {
       TypeTag: 'Hippo',
       TypeOwnerID: 1
     }]
-  })
+  }),
+  methods: {
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
+    }
+  }
 }
 </script>

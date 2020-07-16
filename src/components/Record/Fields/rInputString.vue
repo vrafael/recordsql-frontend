@@ -6,6 +6,7 @@
       outlined
       dense
       clearable
+      @change="updateFieldDataOnChange($event.target.value)"
     />
   </r-field>
 </template>
@@ -25,6 +26,12 @@ export default {
     value: {
       type: String,
       default: null
+    }
+  },
+  methods: {
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

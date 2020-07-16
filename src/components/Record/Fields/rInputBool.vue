@@ -5,6 +5,7 @@
       toggle-indeterminate
       indeterminate-value="null"
       :value="value"
+      @change="updateFieldDataOnChange($event.target.value)"
       :label="label"
       dense
     />
@@ -31,6 +32,12 @@ export default {
   computed: {
     label: function () {
       return this.value ? this.value.toString().toUpperCase() : 'NULL'
+    }
+  },
+  methods: {
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

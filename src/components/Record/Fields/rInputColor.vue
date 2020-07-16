@@ -3,6 +3,7 @@
     <q-input
       ref="input"
       :value="value"
+      @change="updateFieldDataOnChange($event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
       outlined
@@ -102,6 +103,10 @@ export default {
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+    },
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

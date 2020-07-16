@@ -5,6 +5,7 @@
       ref="input"
       :value="value"
       :rules="bigintInputRules"
+      @change="updateFieldDataOnChange($event.target.value)"
       outlined
       dense
       clearable
@@ -45,6 +46,10 @@ export default {
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+    },
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

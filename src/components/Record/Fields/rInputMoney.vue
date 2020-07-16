@@ -10,12 +10,12 @@
       clearable
       @clear="reset"
     >
-      <template #control="{ id, emitValue }">
+      <template #control="{ id, updateFieldDataOnChange }">
         <input
           class="q-field__input"
           v-money="moneyFormat"
           :value="value"
-          @change="e => emitValue(e.target.value)"
+          @change="updateFieldDataOnChange($event.target.value)"
           :id="id"
         >
       </template>
@@ -55,6 +55,11 @@ export default {
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+    },
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      console.log(eventValue)
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   },
   props: {
