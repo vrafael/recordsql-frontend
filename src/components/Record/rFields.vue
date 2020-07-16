@@ -6,7 +6,7 @@
         :is="field.componentInput"
         :field="field"
         :key="field.ID"
-        :value="fieldValue(field)"
+        :value="RECORD_GET[field.Tag]"
       />
     </template>
 
@@ -79,9 +79,9 @@ export default {
     ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET'])
   },
   methods: {
-    fieldValue: function (field) {
-      return !!this.RECORD_GET && this.RECORD_GET.hasOwnProperty(field.Tag) ? this.RECORD_GET[field.Tag] : null
-    }
+    // fieldValue: function (field) {
+    //   return !!this.RECORD_GET && this.RECORD_GET.hasOwnProperty(field.Tag) ? this.RECORD_GET[field.Tag] : null
+    // }
   }
 }
 </script>
