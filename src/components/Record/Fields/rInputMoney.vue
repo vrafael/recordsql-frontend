@@ -10,7 +10,7 @@
       clearable
       @clear="reset"
     >
-      <template #control="{ id, updateFieldDataOnChange }">
+      <template #control="{ id }">
         <input
           class="q-field__input"
           v-money="moneyFormat"
@@ -58,7 +58,6 @@ export default {
     },
     updateFieldDataOnChange (eventValue) {
       const field = this.field
-      console.log(eventValue)
       this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   },
