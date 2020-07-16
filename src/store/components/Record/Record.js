@@ -12,6 +12,10 @@ export default {
   mutations: {
     RECORD_UPDATE (state, response) {
       state.record = response
+    },
+    RECORD_UPDATE_ON_CHANGE (state, response) {
+      const [editedValue, field] = response
+      state.record[field.Tag] = editedValue
     }
   },
   actions: {
@@ -22,6 +26,10 @@ export default {
       } else {
         context.commit('RECORD_UPDATE', null)
       }
+    },
+    async RECORD_STATE_UPDATE_INIT (context, payload) {
+      const response = payload
+      return response ? context.commit('RECORD_UPDATE_ON_CHANGE', response) : null
     }
   }
 }
