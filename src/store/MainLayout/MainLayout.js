@@ -1,5 +1,6 @@
-export default function () {
-  return {
+export default {
+  namespaced: true,
+  state: {
     links: [{
       label: 'Home',
       icon: 'mdi-home',
@@ -19,5 +20,10 @@ export default function () {
       separator: false
     }
     ]
+  },
+  getters: {
+    MENU_GET (state) {
+      return state.links
+    }
   }
 }

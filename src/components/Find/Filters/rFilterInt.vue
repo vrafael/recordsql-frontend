@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Int"
+    :field="field"
     :enable.sync="enable"
   >
     <q-input
@@ -40,6 +40,12 @@ const maxInt = Math.pow(2, 31) - 1,
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     intInputRules: [

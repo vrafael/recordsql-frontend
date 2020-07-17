@@ -5,6 +5,13 @@
     unit="%"
     :limits="[0, 60]"
   >
+    <q-inner-loading :showing="TYPE_METADATA_LOADING_STATE_GET()">
+      <q-spinner-gears
+        size="50px"
+        color="primary"
+      />
+    </q-inner-loading>
+
     <template #before>
       <r-filters />
     </template>
@@ -19,12 +26,12 @@
     </template>
     <template #after>
       <q-table
-        :data="data"
-        :columns="columns"
-        row-key="ID"
+        :data="FIND_GET()"
+        :columns="TYPE_METADATA_COLUMNS_GET()"
+        row-key="TYPE_METADATA_IDENTIFIER_GET()"
         class="q-pa-sm"
         dense
-        :pagination="pagination"
+        pagination=""
       >
         <template #top>
           <q-btn color="primary">
@@ -62,19 +69,23 @@
 <script>
 import rFilters from './rFilters'
 import rObject from '../rObject'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
     rFilters,
     rObject
   },
+  props: {
+    typeID: {
+      type: Number,
+      required: true
+    }
+  },
   data () {
     return {
       splitter: 40,
       splitterRestore: null,
-      pagination: {
-        rowsNumber: 0
-      },
       columns: [
         {
           name: 'ID',
@@ -174,6 +185,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH']),
+    ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET', 'TYPE_METADATA_COLUMNS_GET', 'TYPE_METADATA_IDENTIFIER_GET', 'FIND_GET']),
     filtersShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -184,7 +197,19 @@ export default {
       } else {
         this.splitter = 25
       }
+    },
+    async refresh () {
+      await this.TYPE_METADATA_FETCH({ TypeID: this.typeID })
+      await this.FIND_FETCH({ TypeID: this.typeID })
     }
+  },
+  watch: {
+    typeID: async function () {
+      await this.refresh()
+    }
+  },
+  async mounted () {
+    await this.refresh()
   }
 }
 </script>

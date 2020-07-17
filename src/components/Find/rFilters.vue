@@ -4,17 +4,14 @@
       <span class="text-h6">Filters</span>
     </q-banner>
     <q-form class="q-pa-md">
-      <r-filter-float />
-      <r-filter-string />
-      <r-filter-money />
-      <r-filter-link />
-      <r-filter-bigint />
-      <r-filter-int />
-      <r-filter-datetime />
-      <r-filter-time />
-      <r-filter-date />
-      <r-filter-color />
-      <r-filter-bool />
+      <template v-show="!!TYPE_METADATA_FILTERS_GET">
+        <component
+          v-for="field in TYPE_METADATA_FILTERS_GET"
+          :is="field.componentFilter"
+          :field="field"
+          :key="field.ID"
+        />
+      </template>
 
       <!--div class="row">
         <q-btn
@@ -56,6 +53,7 @@ import rFilterLink from './Filters/rFilterLink'
 import rFilterMoney from './Filters/rFilterMoney'
 import rFilterString from './Filters/rFilterString'
 import rFilterFloat from './Filters/rFilterFloat'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -70,6 +68,9 @@ export default {
     rFilterMoney,
     rFilterString,
     rFilterFloat
+  },
+  computed: {
+    ...mapGetters(['TYPE_METADATA_FILTERS_GET', 'TYPE_METADATA_LOADING_STATE_GET'])
   }
 }
 </script>

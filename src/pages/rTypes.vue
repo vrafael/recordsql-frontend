@@ -20,23 +20,31 @@
           label-key="Name"
           children-key="children"
           node-key="ID"
-          :selected.sync="selected"
           :expanded.sync="expanded"
           selectable
+          :selected.sync="selected"
           selected-color="primary"
         >
           <template #default-header="prop">
-            <div class="row items-center">
-              <q-icon
-                :name="prop.node.Icon"
-                color="accent"
-                size="28px"
-                class="q-mr-sm"
-              />
-              <div class="text-weight-bold text-primary">
-                {{ prop.node.Name }}
+            <router-link
+              :to="{ name: 'types', params: { typeID: prop.node.ID }}"
+              v-slot="{ navigate }"
+            >
+              <div
+                class="row items-center no-wrap"
+                @click="navigate"
+              >
+                <q-icon
+                  :name="prop.node.Icon"
+                  color="accent"
+                  size="28px"
+                  class="q-mr-sm"
+                />
+                <div class="ellipsis text-weight-bold">
+                  {{ prop.node.Name }}
+                </div>
               </div>
-            </div>
+            </router-link>
           </template>
         </q-tree>
       </template>
@@ -50,7 +58,10 @@
         />
       </template>
       <template #after>
-        <r-find />
+        <r-find
+          v-show="!!typeID"
+          :type-i-d="parseInt(typeID)"
+        />
       </template>
     </q-splitter>
   </q-page>
@@ -69,7 +80,7 @@ export default {
       splitter: 25,
       splitterRestore: null,
       expanded: [1, 2],
-      selected: null
+      selected: [this.typeID]
     }
   },
   methods: {

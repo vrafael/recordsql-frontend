@@ -3,11 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import MainLayout from './MainLayout'
-import Types from './Types'
-import TypeList from 'src/store/components/Types/TypeList'
-import TypeMetadata from 'src/store/main/TypeMetadata'
-import Record from 'src/store/components/Record/Record'
+import MainLayout from './MainLayout/MainLayout'
+import Types from './Types/Types'
+import TypeMetadata from './main/TypeMetadata'
+import Record from './components/Record'
+import Find from './components/Find'
 
 /*
  * If not building with SSR mode, you can
@@ -23,9 +23,9 @@ export default function (/* { ssrContext } */) {
     modules: {
       MainLayout,
       Types,
-      TypeList,
       TypeMetadata,
-      Record
+      Record,
+      Find
     },
 
     // enable strict mode (adds overhead!)

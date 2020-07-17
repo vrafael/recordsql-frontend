@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Date"
+    :field="field"
     :enable.sync="enable"
   >
     <q-input
@@ -105,6 +105,12 @@ import rFilter from './rFilter'
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     dateInputMask: '####.##.##',
