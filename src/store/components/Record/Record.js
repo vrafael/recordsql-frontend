@@ -8,6 +8,9 @@ export default {
   getters: {
     RECORD_GET: (state) => {
       return state.record
+    },
+    RECORD_ORIGIN_GET: (state) => {
+      return state.recordOrigin
     }
   },
   mutations: {
