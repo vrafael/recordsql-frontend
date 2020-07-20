@@ -59,7 +59,6 @@ export default {
     },
     onChange (emitValue, event) {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
-      console.log('val: ', val, ' origin val: ', event.target.value)
       emitValue(val)
       this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [val, this.field])
     }
