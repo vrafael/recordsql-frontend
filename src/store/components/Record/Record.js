@@ -11,6 +11,11 @@ export default {
     },
     RECORD_ORIGIN_GET: (state) => {
       return state.recordOrigin
+    },
+    RECORD_COMPARE_STATE: (state) => {
+      const localState = JSON.stringify(state.record)
+      const originState = JSON.stringify(state.recordOrigin)
+      return localState === originState
     }
   },
   mutations: {
