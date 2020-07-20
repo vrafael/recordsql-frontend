@@ -76,7 +76,7 @@ export default {
     rInputLink
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET'])
+    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET', 'RECORD_ORIGIN_GET', 'RECORD_COMPARE_STATE'])
   },
   methods: {
     // fieldValue: function (field) {
