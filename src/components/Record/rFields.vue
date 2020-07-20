@@ -82,6 +82,12 @@ export default {
     // fieldValue: function (field) {
     //   return !!this.RECORD_GET && this.RECORD_GET.hasOwnProperty(field.Tag) ? this.RECORD_GET[field.Tag] : null
     // }
+    // compareState () {
+    //   const localState = JSON.stringify(this.$store.getters.RECORD_GET)
+    //   const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET)
+    //   console.log(localState === originState)
+    //   return localState === originState
+    // }
   }
 }
 </script>
