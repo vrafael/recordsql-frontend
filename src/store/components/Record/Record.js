@@ -2,7 +2,8 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
   state: {
-    record: null
+    record: null,
+    recordOrigin: null
   },
   getters: {
     RECORD_GET: (state) => {
@@ -11,7 +12,8 @@ export default {
   },
   mutations: {
     RECORD_UPDATE (state, response) {
-      state.record = response
+      state.record = { ...response }
+      state.recordOrigin = { ...response }
     },
     RECORD_UPDATE_ON_CHANGE (state, response) {
       const [editedValue, field] = response
