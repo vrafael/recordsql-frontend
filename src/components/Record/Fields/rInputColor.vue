@@ -3,7 +3,7 @@
     <q-input
       ref="input"
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
       outlined
@@ -74,7 +74,7 @@ export default {
   watch: {
     value: function (val) {
       if (val && (val.length === 4 || val.length === 7 || val.length === 9)) {
-        this.helperColor.style.backgroundColor = val
+        this.$data.helperColor.style.backgroundColor = val
       }
     }
   },
@@ -89,7 +89,7 @@ export default {
     }
   },
   mounted () {
-    this.helperColor.style.backgroundColor = this.value
+    this.$data.helperColor.style.backgroundColor = this.value
   },
   methods: {
     applyProxyToValue () {
