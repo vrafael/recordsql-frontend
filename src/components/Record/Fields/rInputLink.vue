@@ -6,7 +6,7 @@
       class="q-field--with-bottom"
       outlined
       dense
-      clearable
+      :clearable="compareWithOriginValue()"
     >
       <template
         #control
@@ -99,6 +99,12 @@ export default {
     updateFieldDataOnChange (eventValue) {
       const field = this.field
       this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.$store.getters.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   }
 }

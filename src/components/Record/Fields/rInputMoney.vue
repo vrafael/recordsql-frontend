@@ -7,6 +7,7 @@
       v-bind="$attrs"
       outlined
       dense
+      :clearable="compareWithOriginValue()"
       @clear="() => reset()"
     >
       <template #control="{ id, emitValue }">
@@ -62,6 +63,12 @@ export default {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
       emitValue(val)
       this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [val, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.$store.getters.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   },
   props: {
