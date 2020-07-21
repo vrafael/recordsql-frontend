@@ -2,7 +2,7 @@
   <r-field :field="field">
     <q-input
       ref="input"
-      :value="value"
+      :value="`#${value}`"
       @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
