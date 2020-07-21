@@ -27,6 +27,7 @@
         <q-btn
           color="primary"
           style="width: 140px"
+          :disable="compareState()"
         >
           <q-icon
             left
@@ -37,6 +38,7 @@
         <q-btn
           color="red"
           icon="delete"
+          :disable="compareState()"
         />
       </q-btn-group>
     </div>
