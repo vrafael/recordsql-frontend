@@ -6,6 +6,7 @@
       :value="value"
       outlined
       dense
+      :clearable="compareWithOriginValue()"
       @clear="() => reset()"
       @change="event => updateFieldDataOnChange(event.target.value)"
     />
@@ -41,6 +42,12 @@ export default {
       })
       const originValue = this.$store.getters.RECORD_ORIGIN_GET[fieldTag]
       this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [originValue, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.$store.getters.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   }
 }
