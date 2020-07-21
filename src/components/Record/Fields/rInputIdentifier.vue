@@ -4,7 +4,6 @@
       type="number"
       class="q-field--with-bottom"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
       readonly
@@ -27,12 +26,6 @@ export default {
     value: {
       type: Number,
       default: null
-    }
-  },
-  methods: {
-    updateFieldDataOnChange (eventValue) {
-      const field = this.field
-      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
     }
   }
 }

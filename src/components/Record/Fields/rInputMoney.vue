@@ -37,8 +37,6 @@ export default {
   data: () => ({
     moneyInputRules: [
       val => (val !== null && val !== '') || 'Please input money value',
-      // val => (/^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$/.test(val)) || 'Please use money format',
-      // val => (parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
       val => (val > minMoney && val < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
     ],
     moneyFormat: {
