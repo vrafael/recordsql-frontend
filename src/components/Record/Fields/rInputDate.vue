@@ -3,7 +3,7 @@
     <q-input
       ref="input"
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :mask="dateInputMask"
       :rules="dateInputRules"
       outlined

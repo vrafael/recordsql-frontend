@@ -4,7 +4,7 @@
       type="number"
       ref="input"
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="intInputRules"
       outlined
       dense

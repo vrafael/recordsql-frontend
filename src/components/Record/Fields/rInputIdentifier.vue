@@ -4,7 +4,7 @@
       type="number"
       class="q-field--with-bottom"
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
       readonly

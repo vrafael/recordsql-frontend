@@ -5,7 +5,7 @@
       ref="input"
       :value="value"
       :rules="bigintInputRules"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
       clearable

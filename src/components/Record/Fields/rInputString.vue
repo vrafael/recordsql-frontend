@@ -6,7 +6,7 @@
       outlined
       dense
       clearable
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
     />
   </r-field>
 </template>

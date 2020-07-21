@@ -2,7 +2,7 @@
   <r-field :field="field">
     <q-field
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       class="q-field--with-bottom"
       outlined
       dense
