@@ -8,8 +8,7 @@
       :rules="dateInputRules"
       outlined
       dense
-      clearable
-      @clear="reset"
+      @clear="() => reset()"
     >
       <template #append>
         <q-icon
@@ -81,9 +80,12 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.$store.getters.RECORD_ORIGIN_GET[fieldTag]
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [originValue, this.field])
     },
     updateFieldDataOnChange (eventValue) {
       const field = this.field

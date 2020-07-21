@@ -8,8 +8,7 @@
       mask="\#XXXXXXXX"
       outlined
       dense
-      clearable
-      @clear="reset"
+      @clear="() => reset()"
     >
       <div
         slot="prepend"
@@ -99,10 +98,13 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
-      this.helperColor.style.backgroundColor = this.value
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.$store.getters.RECORD_ORIGIN_GET[fieldTag]
+      this.$data.helperColor.style.backgroundColor = `#${originValue}`
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [originValue, this.field])
     },
     updateFieldDataOnChange (eventValue) {
       const field = this.field

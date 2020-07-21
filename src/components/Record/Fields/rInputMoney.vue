@@ -7,8 +7,7 @@
       v-bind="$attrs"
       outlined
       dense
-      clearable
-      @clear="reset"
+      @clear="() => reset()"
     >
       <template #control="{ id, emitValue }">
         <input
@@ -52,10 +51,12 @@ export default {
   }),
   methods: {
     reset () {
-      this.value = null
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.$store.getters.RECORD_ORIGIN_GET[fieldTag]
+      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [originValue, this.field])
     },
     onChange (emitValue, event) {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
