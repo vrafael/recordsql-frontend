@@ -5,7 +5,7 @@
       toggle-indeterminate
       indeterminate-value="null"
       :value="value"
-      @change="updateFieldDataOnChange($event.target.value)"
+      @input="event => updateFieldDataOnChange(event)"
       :label="label"
       dense
     />
@@ -25,13 +25,13 @@ export default {
       required: true
     },
     value: {
-      type: Boolean,
+      type: [Boolean, String],
       default: null
     }
   },
   computed: {
     label: function () {
-      return this.value ? this.value.toString().toUpperCase() : 'NULL'
+      return this.value.toString().toUpperCase()
     }
   },
   methods: {
