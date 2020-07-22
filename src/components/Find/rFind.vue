@@ -13,7 +13,7 @@
     </q-inner-loading>
 
     <template #before>
-      <r-filters />
+      <r-filter-list />
     </template>
     <template #separator>
       <q-btn
@@ -73,13 +73,13 @@
 </template>
 
 <script>
-import rFilters from './rFilters'
+import rFilterList from './rFilterList'
 import rObject from '../rObject'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
-    rFilters,
+    rFilterList,
     rObject
   },
   props: {
