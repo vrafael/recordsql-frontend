@@ -14,8 +14,12 @@
           <span class="text-h6">Types</span>
         </q-banner>
         <q-tree
-          :nodes="typetree"
-          node-key="id"
+          v-for="(typeList, index) in [nestedTypeLists]"
+          :key="typeList.id"
+          :nodes="typeList[index]"
+          label-key="Name"
+          children-key="children"
+          node-key="ID"
           :selected.sync="selected"
           :expanded.sync="expanded"
           selectable
@@ -24,13 +28,13 @@
           <template #default-header="prop">
             <div class="row items-center">
               <q-icon
-                :name="prop.node.icon"
+                :name="prop.node.Icon"
                 color="accent"
                 size="28px"
                 class="q-mr-sm"
               />
               <div class="text-weight-bold text-primary">
-                {{ prop.node.label }}
+                {{ prop.node.Name }}
               </div>
             </div>
           </template>
@@ -81,9 +85,12 @@ export default {
       }
     }
   },
+  async mounted () {
+    await this.$store.dispatch('Types/TYPE_LIST_FETCH')
+  },
   computed: {
     ...mapGetters('Types', {
-      typetree: 'TYPETREE_GET'
+      nestedTypeLists: 'TYPE_LIST_NESTED_GET'
     })
   }
 }

@@ -1,23 +1,20 @@
 <template>
   <q-form class="q-pa-md">
-    <r-input-link />
-    <r-input-text />
-    <r-input-string />
-    <r-input-money />
-    <r-input-bigint />
-    <r-input-int />
-    <r-input-float />
-    <r-input-identifier />
-    <r-input-time />
-    <r-input-datetime />
-    <r-input-date />
-    <r-input-color />
-    <r-input-bool />
+    <template v-show="!!RECORD_GET && !!TYPE_METADATA_INPUTS_GET">
+      <component
+        v-for="field in TYPE_METADATA_INPUTS_GET"
+        :is="field.componentInput"
+        :field="field"
+        :key="field.ID"
+        :value="RECORD_GET[field.Tag]"
+      />
+    </template>
 
     <div class="row q-pt-md">
       <q-btn
         color="primary"
         style="width: 140px"
+        :disable="compareState()"
       >
         <q-icon
           left
@@ -30,6 +27,7 @@
         <q-btn
           color="primary"
           style="width: 140px"
+          :disable="compareState()"
         >
           <q-icon
             left
@@ -40,6 +38,7 @@
         <q-btn
           color="red"
           icon="delete"
+          :disable="compareState()"
         />
       </q-btn-group>
     </div>
@@ -49,7 +48,6 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import rField from './Fields/rField'
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
 import rInputDate from './Fields/rInputDate'
@@ -66,7 +64,6 @@ import rInputLink from './Fields/rInputLink'
 
 export default {
   components: {
-    rField,
     rInputBool,
     rInputColor,
     rInputDate,
@@ -81,11 +78,15 @@ export default {
     rInputText,
     rInputLink
   },
-  async mounted () {
-    const recordID = Number(this.$route.params.id)
-    await this.$store.dispatch('RECORD_FETCH', { ID: recordID, TypeID: 54 })
-    // console.log(this.$store.getters.RECORD_GET)
+  computed: {
+    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET', 'RECORD_ORIGIN_GET', 'RECORD_COMPARE_STATE'])
   },
-  computed: mapGetters(['RECORD_GET'])
+  methods: {
+    compareState () {
+      const localState = JSON.stringify(this.RECORD_GET)
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
+      return localState === originState
+    }
+  }
 }
 </script>

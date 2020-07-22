@@ -1,11 +1,12 @@
 <template>
-  <r-field label="Link">
+  <r-field :field="field">
     <q-field
-      v-model="value"
+      :value="value"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       class="q-field--with-bottom"
       outlined
       dense
-      clearable
+      :clearable="compareWithOriginValue()"
     >
       <template
         #control
@@ -19,14 +20,15 @@
       </template>
       <template #append>
         <q-icon
+          v-show="iconsShow"
           name="search"
           class="cursor-pointer"
         >
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in types"
-                :key="type.TypeID"
+                v-for="type in field.Check.FieldLinkValueType"
+                :key="type.ID"
                 clickable
                 v-close-popup
                 context-menu
@@ -36,13 +38,13 @@
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.TypeIcon"
+                    :name="type.Icon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.TypeName}...` }}
+                    {{ `${type.Name}...` }}
                   </div>
                 </div>
               </q-item>
@@ -55,6 +57,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
 
@@ -63,14 +66,23 @@ export default {
     rField,
     rObject
   },
-  data: () => ({
-    value: {
-      ID: 1,
-      TypeIcon: 'las la-birthday-cake',
-      TypeName: 'Cake',
-      StateName: 'Приготовлен',
-      Name: 'Наполеон'
+  props: {
+    field: {
+      type: Object,
+      required: true
     },
+    value: {
+      type: Object,
+      default: null
+    }
+  },
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
+    iconsShow: function () {
+      return !!this.field && this.field.hasOwnProperty('Check') && this.field.Check.hasOwnProperty('FieldLinkValueType')
+    }
+  },
+  data: () => ({
     types: [{
       TypeID: 10,
       TypeName: 'Рыбка',
@@ -84,6 +96,19 @@ export default {
       TypeTag: 'Hippo',
       TypeOwnerID: 1
     }]
-  })
+  }),
+  methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    updateFieldDataOnChange (eventValue) {
+      const field = this.field
+      this.RECORD_STATE_UPDATE_INIT([eventValue, field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
+    }
+  }
 }
 </script>

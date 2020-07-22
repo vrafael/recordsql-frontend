@@ -8,7 +8,6 @@ import Types from './Types'
 import TypeList from 'src/store/components/Types/TypeList'
 import TypeMetadata from 'src/store/main/TypeMetadata'
 import Record from 'src/store/components/Record/Record'
-import RecordBuffer from 'src/store/components/Record/RecordBuffer'
 
 /*
  * If not building with SSR mode, you can
@@ -26,8 +25,7 @@ export default function (/* { ssrContext } */) {
       Types,
       TypeList,
       TypeMetadata,
-      Record,
-      RecordBuffer
+      Record
     },
 
     // enable strict mode (adds overhead!)

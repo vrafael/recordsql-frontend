@@ -1,14 +1,15 @@
 <template>
-  <r-field label="Date">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :mask="dateInputMask"
       :rules="dateInputRules"
       outlined
       dense
-      clearable
-      @clear="reset"
+      :clearable="compareWithOriginValue()"
+      @clear="() => reset()"
     >
       <template #append>
         <q-icon
@@ -48,6 +49,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -55,16 +57,28 @@ export default {
     rField
   },
   data: () => ({
-    dateInputMask: '####.##.##',
+    dateInputMask: '####-##-##',
     dateInputRules: [
-      val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val)) || 'Please use format "YYYY.MM.DD"'
+      val => (/^[\d]{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/.test(val)) || 'Please use format "YYYY-MM-DD"'
     ],
-    dateMask: 'YYYY.MM.DD',
-    enable: false,
-    value: '',
+    dateMask: 'YYYY-MM-DD',
     proxyValue: Date.now()
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+  },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     applyProxyToValue () {
       this.value = this.proxyValue
     },
@@ -72,9 +86,21 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
+      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+    },
+    updateFieldDataOnChange (eventValue) {
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   }
 }

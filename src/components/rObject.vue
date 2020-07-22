@@ -1,11 +1,10 @@
 <template>
   <q-card
     :key="object.ID"
-    class="row q-mr-sm items-center"
+    class="row q-mr-sm items-center no-wrap"
     flat
     bordered
     dense
-    style="height: 30px;"
   >
     <q-avatar
       color="grey-4"
@@ -34,6 +33,8 @@
     <q-badge
       v-show="object.StateName"
       :color="object.StateColor"
+      class="q-mx-sm"
+      style="border-radius: 5px"
     >
       {{ object.StateName ? object.StateName.charAt(0) : '' }}
     </q-badge>

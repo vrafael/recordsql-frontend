@@ -1,14 +1,15 @@
 <template>
-  <r-field label="Time">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="value"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :mask="timeInputMask"
       :rules="timeInputRules"
       outlined
       dense
-      clearable
-      @clear="reset"
+      :clearable="compareWithOriginValue()"
+      @clear="() => reset()"
     >
       <template #append>
         <q-icon
@@ -50,6 +51,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 import { date } from 'quasar'
 
@@ -60,14 +62,26 @@ export default {
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [
-      val => (/^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "HH:mm:ss.nnn"'
+      val => (/^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?$/.test(val)) || 'Please use format "HH:mm:ss.nnn"'
     ],
     timeMask: 'HH:mm:ss',
-    enable: false,
-    value: '',
     proxyValue: Date.now()
   }),
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+  },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     applyProxyToValue () {
       const proxytime = date.extractDate(this.proxyValue, this.timeMask)
       this.value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
@@ -76,9 +90,21 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
+      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+    },
+    updateFieldDataOnChange (eventValue) {
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   }
 }

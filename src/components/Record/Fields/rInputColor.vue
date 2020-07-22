@@ -1,14 +1,15 @@
 <template>
-  <r-field label="Color">
+  <r-field :field="field">
     <q-input
       ref="input"
-      v-model="value"
+      :value="`#${value}`"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
       outlined
       dense
-      clearable
-      @clear="reset"
+      :clearable="compareWithOriginValue()"
+      @clear="() => reset()"
     >
       <div
         slot="prepend"
@@ -50,6 +51,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -61,8 +63,6 @@ export default {
       val => (val && val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',
       val => /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
-    enable: false,
-    value: '',
     helperColor: {
       style: {
         backgroundColor: '',
@@ -75,14 +75,28 @@ export default {
   watch: {
     value: function (val) {
       if (val && (val.length === 4 || val.length === 7 || val.length === 9)) {
-        this.helperColor.style.backgroundColor = val
+        this.$data.helperColor.style.backgroundColor = val
       }
     }
   },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: String,
+      default: null
+    }
+  },
   mounted () {
-    this.helperColor.style.backgroundColor = this.value
+    this.$data.helperColor.style.backgroundColor = this.value
+  },
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
   },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     applyProxyToValue () {
       this.value = this.proxyValue
     },
@@ -90,10 +104,22 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
-      this.helperColor.style.backgroundColor = null
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
+      this.$data.helperColor.style.backgroundColor = `#${originValue}`
+      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+    },
+    updateFieldDataOnChange (eventValue) {
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   }
 }
