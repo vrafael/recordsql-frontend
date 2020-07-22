@@ -70,7 +70,7 @@ export default {
     rFilterFloat
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_FILTERS_GET', 'TYPE_METADATA_LOADING_STATE_GET'])
+    ...mapGetters(['TYPE_METADATA_FILTERS_GET'])
   }
 }
 </script>

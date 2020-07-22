@@ -14,7 +14,7 @@
           <span class="text-h6">Types</span>
         </q-banner>
         <q-tree
-          v-for="(typeList, index) in [nestedTypeLists]"
+          v-for="(typeList, index) in [TYPE_LIST_NESTED_GET]"
           :key="typeList.id"
           :nodes="typeList[index]"
           label-key="Name"
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import rFind from '../components/Find/rFind'
 
 export default {
@@ -84,6 +84,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('Types', ['TYPE_LIST_FETCH']),
     typetreeShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -104,12 +105,10 @@ export default {
     }
   },
   async mounted () {
-    await this.$store.dispatch('Types/TYPE_LIST_FETCH')
+    await this.TYPE_LIST_FETCH()
   },
   computed: {
-    ...mapGetters('Types', {
-      nestedTypeLists: 'TYPE_LIST_NESTED_GET'
-    })
+    ...mapGetters('Types', ['TYPE_LIST_NESTED_GET'])
   }
 }
 </script>

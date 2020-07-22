@@ -5,7 +5,7 @@
     unit="%"
     :limits="[0, 60]"
   >
-    <q-inner-loading :showing="TYPE_METADATA_LOADING_STATE_GET()">
+    <q-inner-loading :showing="TYPE_METADATA_LOADING_STATE_GET">
       <q-spinner-gears
         size="50px"
         color="primary"
@@ -27,9 +27,9 @@
     <template #after>
       <q-table
         :data="find"
-        :columns="TYPE_METADATA_COLUMNS_GET()"
-        :row-key="TYPE_METADATA_IDENTIFIER_GET()"
-        :loading="FIND_LOADING_STATE_GET()"
+        :columns="TYPE_METADATA_COLUMNS_GET"
+        :row-key="TYPE_METADATA_IDENTIFIER_GET"
+        :loading="FIND_LOADING_STATE_GET"
         class="q-pa-sm my-sticky-dynamic"
         dense
         virtual-scroll
@@ -98,12 +98,6 @@ export default {
     }
   },
   computed: {
-    find () {
-      return Object.freeze(this.FIND_GET().slice())
-    }
-  },
-  methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH', 'FIND_FETCH_NEXT']),
     ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET',
       'TYPE_METADATA_COLUMNS_GET',
       'TYPE_METADATA_IDENTIFIER_GET',
@@ -111,6 +105,12 @@ export default {
       'FIND_EOF_GET',
       'FIND_LOADING_STATE_GET',
       'FIND_LENGTH_GET']),
+    find () {
+      return Object.freeze(this.FIND_GET.slice())
+    }
+  },
+  methods: {
+    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH', 'FIND_FETCH_NEXT']),
     filtersShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -130,7 +130,7 @@ export default {
       await this.FIND_FETCH_NEXT({ TypeID: this.typeID })
     },
     onScroll ({ to, ref }) {
-      if (this.FIND_LOADING_STATE_GET() !== true && !this.FIND_EOF_GET() && to === this.FIND_LENGTH_GET() - 1) {
+      if (this.FIND_LOADING_STATE_GET !== true && !this.FIND_EOF_GET && to === this.FIND_LENGTH_GET - 1) {
         setTimeout(async () => {
           this.dataFetch()
 
