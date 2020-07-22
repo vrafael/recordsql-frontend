@@ -45,40 +45,40 @@ export default {
   },
   actions: {
     async FIND_FETCH (context, params) {
-      const _pageNumber = 1
+      const pageNumber = 1
 
       context.commit('FIND_PAGENUMBER_RESET')
 
-      const _params = {
+      const paramsPage = {
         ...params,
         PageSize: context.state.pageSize,
-        PageNumber: _pageNumber
+        PageNumber: pageNumber
       }
 
-      const _response = await fetchApiRPC('Dev.RecordFind', _params)
+      const response = await fetchApiRPC('Dev.RecordFind', paramsPage)
 
-      if (_response) {
-        context.commit('FIND_UPDATE', _response)
+      if (response) {
+        context.commit('FIND_UPDATE', response)
       } else {
         context.commit('FIND_UPDATE', [])
       }
     },
     async FIND_FETCH_NEXT (context, params) {
       if (!context.state.isEOF) {
-        const _pageNumber = context.state.pageNumber + 1
+        const pageNumber = context.state.pageNumber + 1
         context.commit('FIND_LOADING_SET', true)
         context.commit('FIND_PAGENUMBER_NEXT')
 
-        const _params = {
+        const paramsPage = {
           ...params,
           PageSize: context.state.pageSize,
-          PageNumber: _pageNumber
+          PageNumber: pageNumber
         }
 
-        const _response = await fetchApiRPC('Dev.RecordFind', _params)
+        const response = await fetchApiRPC('Dev.RecordFind', paramsPage)
 
-        if (_response) {
-          context.commit('FIND_APPEND', _response)
+        if (response) {
+          context.commit('FIND_APPEND', response)
         }
       }
     }
