@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
 
@@ -76,6 +77,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
     iconsShow: function () {
       return !!this.field && this.field.hasOwnProperty('Check') && this.field.Check.hasOwnProperty('FieldLinkValueType')
     }
@@ -96,14 +98,15 @@ export default {
     }]
   }),
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     updateFieldDataOnChange (eventValue) {
       const field = this.field
-      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
+      this.RECORD_STATE_UPDATE_INIT([eventValue, field])
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.$store.getters.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET[fieldTag])
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
       return localState !== originState
     }
   }

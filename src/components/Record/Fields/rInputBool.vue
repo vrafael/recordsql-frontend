@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -35,9 +36,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     updateFieldDataOnChange (eventValue) {
-      const field = this.field
-      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
     }
   }
 }

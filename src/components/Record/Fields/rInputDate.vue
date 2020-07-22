@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -73,7 +74,11 @@ export default {
       default: null
     }
   },
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+  },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     applyProxyToValue () {
       this.value = this.proxyValue
     },
@@ -85,17 +90,16 @@ export default {
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
-      const originValue = this.$store.getters.RECORD_ORIGIN_GET[fieldTag]
-      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [originValue, this.field])
+      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
+      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
     },
     updateFieldDataOnChange (eventValue) {
-      const field = this.field
-      this.$store.dispatch('RECORD_STATE_UPDATE_INIT', [eventValue, field])
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.$store.getters.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET[fieldTag])
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
       return localState !== originState
     }
   }

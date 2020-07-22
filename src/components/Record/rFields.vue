@@ -83,8 +83,8 @@ export default {
   },
   methods: {
     compareState () {
-      const localState = JSON.stringify(this.$store.getters.RECORD_GET)
-      const originState = JSON.stringify(this.$store.getters.RECORD_ORIGIN_GET)
+      const localState = JSON.stringify(this.RECORD_GET)
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
       return localState === originState
     }
   }
