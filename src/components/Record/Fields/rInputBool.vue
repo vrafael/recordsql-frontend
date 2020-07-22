@@ -5,6 +5,7 @@
       toggle-indeterminate
       indeterminate-value="null"
       :value="value"
+      @input="event => updateFieldDataOnChange(event)"
       :label="label"
       dense
     />
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -24,13 +26,19 @@ export default {
       required: true
     },
     value: {
-      type: Boolean,
+      type: [Boolean, String],
       default: null
     }
   },
   computed: {
     label: function () {
-      return this.value ? this.value.toString().toUpperCase() : 'NULL'
+      return this.value.toString().toUpperCase()
+    }
+  },
+  methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    updateFieldDataOnChange (eventValue) {
+      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
     }
   }
 }

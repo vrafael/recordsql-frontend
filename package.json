@@ -5,10 +5,22 @@
   "productName": "RecordSQL",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
-  "author": "coldrain96 <Justtryagain961@gmail.com>",
+  "contributors": [
+    "Kamil Bikmetov <Justtryagain961@gmail.com>",
+    "Rafael Valiullin <vrafael@mail.ru>"
+  ],
   "private": true,
   "scripts": {
-    "lint": "eslint --fix --ext .js,.vue src"
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "lint": "eslint --fix --ext .js,.vue src",
+    "commitizen": "yarn global add commitizen"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS -g './config/git/commitlint.js'"
+    }
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -17,8 +29,11 @@
     "v-money": "^0.8.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.0.1",
     "@quasar/app": "^1.0.0",
     "babel-eslint": "^10.0.1",
+    "commitizen": "^4.1.2",
+    "cz-customizable": "^6.2.1",
     "eslint": "^7.2.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-loader": "^3.0.3",
@@ -26,7 +41,8 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^7.0.0-alpha.6"
+    "eslint-plugin-vue": "^7.0.0-alpha.6",
+    "husky": "^4.2.5"
   },
   "engines": {
     "node": ">= 10.18.1",
@@ -38,5 +54,13 @@
   ],
   "resolutions": {
     "@babel/parser": "7.7.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "config/git/commitizen.js"
+    }
   }
 }

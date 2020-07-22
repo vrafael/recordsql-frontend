@@ -6,7 +6,7 @@
         :is="field.componentInput"
         :field="field"
         :key="field.ID"
-        :value="fieldValue(field)"
+        :value="RECORD_GET[field.Tag]"
       />
     </template>
 
@@ -14,6 +14,7 @@
       <q-btn
         color="primary"
         style="width: 140px"
+        :disable="compareState()"
       >
         <q-icon
           left
@@ -26,6 +27,7 @@
         <q-btn
           color="primary"
           style="width: 140px"
+          :disable="compareState()"
         >
           <q-icon
             left
@@ -36,6 +38,7 @@
         <q-btn
           color="red"
           icon="delete"
+          :disable="compareState()"
         />
       </q-btn-group>
     </div>
@@ -76,11 +79,13 @@ export default {
     rInputLink
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET'])
+    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET', 'RECORD_ORIGIN_GET', 'RECORD_COMPARE_STATE'])
   },
   methods: {
-    fieldValue: function (field) {
-      return !!this.RECORD_GET && this.RECORD_GET.hasOwnProperty(field.Tag) ? this.RECORD_GET[field.Tag] : null
+    compareState () {
+      const localState = JSON.stringify(this.RECORD_GET)
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
+      return localState === originState
     }
   }
 }

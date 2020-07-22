@@ -7,15 +7,15 @@
       v-bind="$attrs"
       outlined
       dense
-      clearable
-      @clear="reset"
+      :clearable="compareWithOriginValue()"
+      @clear="() => reset()"
     >
       <template #control="{ id, emitValue }">
         <input
           class="q-field__input"
           v-money="moneyFormat"
           :value="value"
-          @change="e => emitValue(e.target.value)"
+          @change="event => onChange(emitValue, event)"
           :id="id"
         >
       </template>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import rField from './rField'
 import { VMoney } from 'v-money'
 
@@ -37,8 +38,7 @@ export default {
   data: () => ({
     moneyInputRules: [
       val => (val !== null && val !== '') || 'Please input money value',
-      val => (/^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$/.test(val)) || 'Please use money format',
-      val => (parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
+      val => (val > minMoney && val < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
     ],
     moneyFormat: {
       decimal: '.',
@@ -49,12 +49,29 @@ export default {
       masked: false
     }
   }),
+  computed: {
+    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+  },
   methods: {
+    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     reset () {
-      this.value = null
+      const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
+      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+    },
+    onChange (emitValue, event) {
+      const val = parseFloat(event.target.value.replace(/,/g, ''))
+      emitValue(val)
+      this.RECORD_STATE_UPDATE_INIT([val, this.field])
+    },
+    compareWithOriginValue () {
+      const fieldTag = this.field.Tag.toString()
+      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
+      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
+      return localState !== originState
     }
   },
   props: {

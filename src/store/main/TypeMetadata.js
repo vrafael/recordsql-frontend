@@ -78,7 +78,9 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'left'
+                align: 'left',
+                classes: 'ellipsis no-wrap',
+                style: 'width: 70px'
               }
               break
             case 'FieldMoney':
@@ -180,7 +182,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'left'
+                align: 'left',
+                classes: 'text-uppercase'
               }
               break
           }
