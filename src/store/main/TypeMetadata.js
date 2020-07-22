@@ -64,7 +64,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag, // row => row.Type.Name,
-                align: 'left'
+                align: 'left',
+                style: 'max-width: 200px; width: 200px'
               }
               break
             case 'FieldText':
@@ -80,7 +81,7 @@ export default {
                 field: field.Tag,
                 align: 'left',
                 classes: 'ellipsis no-wrap',
-                style: 'width: 70px'
+                style: 'max-width:200px; width:200px'
               }
               break
             case 'FieldMoney':
@@ -90,7 +91,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'right'
+                align: 'right',
+                style: 'max-width: 100px; width: 100px'
               }
               break
             case 'FieldBigint':
@@ -132,7 +134,8 @@ export default {
                 label: field.Name,
                 field: field.Tag,
                 // sortable: true,
-                align: 'right'
+                align: 'right',
+                style: 'max-width: 100px; width: 100px'
               }
               break
             case 'FieldTime':
@@ -142,7 +145,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'right'
+                align: 'left',
+                style: 'max-width: 100px; width: 100px'
               }
               break
             case 'FieldDatetime':
@@ -152,7 +156,9 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'right'
+                format: (val) => val.replace('T', ' '),
+                align: 'left',
+                style: 'max-width: 150px; width: 150px'
               }
               break
             case 'FieldDate':
@@ -162,7 +168,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'right'
+                align: 'left',
+                style: 'max-width: 100px; width: 100px'
               }
               break
             case 'FieldColor':
@@ -172,7 +179,8 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                align: 'right'
+                align: 'right',
+                style: 'max-width: 100px; width: 100px'
               }
               break
             case 'FieldBool':
@@ -183,7 +191,8 @@ export default {
                 label: field.Name,
                 field: field.Tag,
                 align: 'left',
-                classes: 'text-uppercase'
+                classes: 'text-uppercase',
+                style: 'max-width: 100px; width: 100px'
               }
               break
           }
