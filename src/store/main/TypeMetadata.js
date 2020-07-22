@@ -19,17 +19,22 @@ export default {
       return state.typeMetadata.Fields ? state.typeMetadata.Fields.filter(field => field.componentFilter) : null
     },
     TYPE_METADATA_COLUMNS_GET: (state) => {
-      return state.typeMetadata.Fields ? state.typeMetadata.Fields.filter(field => field.componentColumn).map(field => field.componentColumn) : null
+      if (state.typeMetadata.Fields) {
+        const _columns = state.typeMetadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
     },
     TYPE_METADATA_IDENTIFIER_GET: (state) => {
-      let _identifier = null
       if (state.typeMetadata.Fields) {
         const _field = state.typeMetadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
         if (_field) {
-          _identifier = _field.Tag
+          return _field.Tag
         }
       }
-      return _identifier
+      return null
     }
   },
   mutations: {

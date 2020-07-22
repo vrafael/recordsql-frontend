@@ -26,12 +26,18 @@
     </template>
     <template #after>
       <q-table
-        :data="FIND_GET()"
+        :data="find"
         :columns="TYPE_METADATA_COLUMNS_GET()"
-        row-key="TYPE_METADATA_IDENTIFIER_GET()"
-        class="q-pa-sm"
+        :row-key="TYPE_METADATA_IDENTIFIER_GET()"
+        :loading="FIND_LOADING_STATE_GET()"
+        class="q-pa-sm my-sticky-dynamic"
         dense
-        pagination=""
+        virtual-scroll
+        :virtual-scroll-item-size="48"
+        :virtual-scroll-sticky-size-start="48"
+        :pagination="pagination"
+        :rows-per-page-options="[0]"
+        @virtual-scroll="onScroll"
       >
         <template #top>
           <q-btn color="primary">
@@ -86,107 +92,25 @@ export default {
     return {
       splitter: 40,
       splitterRestore: null,
-      columns: [
-        {
-          name: 'ID',
-          required: true,
-          label: 'ID',
-          field: row => row.ID,
-          sortable: true,
-          align: 'right'
-        }, {
-          name: 'Type',
-          label: 'Тип',
-          field: 'Type', // row => row.Type.Name,
-          align: 'left'
-        }, {
-          name: 'State',
-          label: 'Состояние',
-          field: 'State',
-          align: 'left'
-        }, {
-          name: 'Name',
-          label: 'Имя',
-          field: 'Name',
-          align: 'left'
-        }
-      ],
-      data: [
-        {
-          ID: 194,
-          Type: {
-            ID: 54,
-            TypeID: 5,
-            TypeName: 'Тип справочника',
-            TypeIcon: 'las la-th-large',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Хранимая процедура',
-            Icon: 'las la-code'
-          },
-          State: {
-            ID: 96,
-            TypeID: 46,
-            TypeName: 'Состояние',
-            TypeIcon: 'las la-bookmark',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Сформирован'
-          },
-          Name: 'Dev.Swagger'
-        },
-        {
-          ID: 193,
-          Type: {
-            ID: 54,
-            TypeID: 5,
-            TypeName: 'Тип справочника',
-            TypeIcon: 'las la-th-large',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Хранимая процедура',
-            Icon: 'las la-code'
-          },
-          State: {
-            ID: 96,
-            TypeID: 46,
-            TypeName: 'Состояние',
-            TypeIcon: 'las la-bookmark',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Сформирован'
-          },
-          Name: 'Dev.RecordDel'
-        },
-        {
-          ID: 192,
-          Type: {
-            ID: 54,
-            TypeID: 5,
-            TypeName: 'Тип справочника',
-            TypeIcon: 'las la-th-large',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Хранимая процедура',
-            Icon: 'las la-code'
-          },
-          State: {
-            ID: 96,
-            TypeID: 46,
-            TypeName: 'Состояние',
-            TypeIcon: 'las la-bookmark',
-            StateName: 'Сформирован',
-            StateColor: 'green',
-            Name: 'Сформирован'
-          },
-          Name: 'Dev.RecordFind'
-        }
-      ]
+      pagination: {
+        rowsPerPage: 0
+      }
+    }
+  },
+  computed: {
+    find () {
+      return Object.freeze(this.FIND_GET().slice())
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH']),
-    ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET', 'TYPE_METADATA_COLUMNS_GET', 'TYPE_METADATA_IDENTIFIER_GET', 'FIND_GET']),
+    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH', 'FIND_FETCH_NEXT']),
+    ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET',
+      'TYPE_METADATA_COLUMNS_GET',
+      'TYPE_METADATA_IDENTIFIER_GET',
+      'FIND_GET',
+      'FIND_EOF_GET',
+      'FIND_LOADING_STATE_GET',
+      'FIND_LENGTH_GET']),
     filtersShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -201,6 +125,20 @@ export default {
     async refresh () {
       await this.TYPE_METADATA_FETCH({ TypeID: this.typeID })
       await this.FIND_FETCH({ TypeID: this.typeID })
+    },
+    async dataFetch () {
+      await this.FIND_FETCH_NEXT({ TypeID: this.typeID })
+    },
+    onScroll ({ to, ref }) {
+      if (this.FIND_LOADING_STATE_GET() !== true && !this.FIND_EOF_GET() && to === this.FIND_LENGTH_GET() - 1) {
+        setTimeout(async () => {
+          this.dataFetch()
+
+          await this.$nextTick(() => {
+            ref.refresh()
+          })
+        }, 0)
+      }
     }
   },
   watch: {
@@ -213,3 +151,21 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.my-sticky-dynamic
+  height: 600px
+
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    background-color: #fff
+
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:last-child th
+    top: 48px
+  thead tr:first-child th
+    top: 0
+</style>
