@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Boolean"
+    :field="field"
     :enable.sync="enable"
   >
     <q-checkbox
@@ -20,6 +20,12 @@ import rFilter from './rFilter'
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     enable: false,

@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="String"
+    :field="field"
     :enable.sync="enable"
   >
     <q-input
@@ -21,6 +21,12 @@ import rFilter from './rFilter'
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     enable: false,

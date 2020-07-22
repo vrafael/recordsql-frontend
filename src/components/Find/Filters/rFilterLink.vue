@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Link"
+    :field="field"
     :enable.sync="enable"
   >
     <q-field
@@ -27,27 +27,29 @@
         <q-icon
           name="search"
           class="cursor-pointer"
+          v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('FieldLinkValueType')"
         >
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in types"
-                :key="type.TypeID"
+                v-for="type in field.Check.FieldLinkValueType"
+                :key="type.ID"
                 clickable
                 v-close-popup
+                context-menu
               >
                 <div
                   class="row items-center"
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.TypeIcon"
+                    :name="type.Icon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.TypeName}...` }}
+                    {{ `${type.Name}...` }}
                   </div>
                 </div>
               </q-item>
@@ -68,28 +70,15 @@ export default {
     rFilter,
     rObject
   },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
+  },
   data: () => ({
     enable: false,
-    value: [{
-      ID: 1,
-      TypeIcon: 'las la-birthday-cake',
-      TypeName: 'Cake',
-      StateName: 'Приготовлен',
-      Name: 'Наполеон'
-    }, {
-      ID: 2,
-      TypeIcon: 'las la-hippo',
-      TypeName: 'Гиппопотам',
-      Name: 'Big Hippo'
-    }, {
-      ID: 96,
-      TypeID: 46,
-      TypeName: 'Рыбка',
-      TypeIcon: 'las la-fish',
-      StateName: 'Накормлена',
-      StateColor: 'green',
-      Name: 'Ponio'
-    }],
+    value: [],
     types: [{
       TypeID: 10,
       TypeName: 'Рыбка',

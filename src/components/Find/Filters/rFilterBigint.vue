@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Bigint"
+    :field="field"
     :enable.sync="enable"
   >
     <q-input
@@ -40,6 +40,12 @@ const maxBigint = Math.pow(2, 63) - 1,
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     bigintInputRules: [

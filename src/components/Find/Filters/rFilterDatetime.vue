@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Datetime"
+    :field="field"
     :enable.sync="enable"
   >
     <q-input
@@ -130,6 +130,12 @@ import { date } from 'quasar'
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     datetimeInputMask: '####.##.## ##:##:##.###',

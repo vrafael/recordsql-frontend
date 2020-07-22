@@ -14,29 +14,37 @@
           <span class="text-h6">Types</span>
         </q-banner>
         <q-tree
-          v-for="(typeList, index) in [nestedTypeLists]"
+          v-for="(typeList, index) in [TYPE_LIST_NESTED_GET]"
           :key="typeList.id"
           :nodes="typeList[index]"
           label-key="Name"
           children-key="children"
           node-key="ID"
-          :selected.sync="selected"
           :expanded.sync="expanded"
           selectable
+          :selected.sync="selected"
           selected-color="primary"
         >
           <template #default-header="prop">
-            <div class="row items-center">
-              <q-icon
-                :name="prop.node.Icon"
-                color="accent"
-                size="28px"
-                class="q-mr-sm"
-              />
-              <div class="text-weight-bold text-primary">
-                {{ prop.node.Name }}
+            <router-link
+              :to="{ name: 'types', params: { typeID: prop.node.ID }}"
+              v-slot="{ navigate }"
+            >
+              <div
+                class="row items-center no-wrap"
+                @click="navigate"
+              >
+                <q-icon
+                  :name="prop.node.Icon"
+                  color="accent"
+                  size="28px"
+                  class="q-mr-sm"
+                />
+                <div class="ellipsis text-weight-bold">
+                  {{ prop.node.Name }}
+                </div>
               </div>
-            </div>
+            </router-link>
           </template>
         </q-tree>
       </template>
@@ -50,14 +58,17 @@
         />
       </template>
       <template #after>
-        <r-find />
+        <r-find
+          v-show="!!typeID"
+          :type-i-d="parseInt(typeID)"
+        />
       </template>
     </q-splitter>
   </q-page>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import rFind from '../components/Find/rFind'
 
 export default {
@@ -69,10 +80,11 @@ export default {
       splitter: 25,
       splitterRestore: null,
       expanded: [1, 2],
-      selected: null
+      selected: [this.typeID]
     }
   },
   methods: {
+    ...mapActions('Types', ['TYPE_LIST_FETCH']),
     typetreeShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -85,13 +97,18 @@ export default {
       }
     }
   },
+  props: {
+    typeID: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   async mounted () {
-    await this.$store.dispatch('Types/TYPE_LIST_FETCH')
+    await this.TYPE_LIST_FETCH()
   },
   computed: {
-    ...mapGetters('Types', {
-      nestedTypeLists: 'TYPE_LIST_NESTED_GET'
-    })
+    ...mapGetters('Types', ['TYPE_LIST_NESTED_GET'])
   }
 }
 </script>

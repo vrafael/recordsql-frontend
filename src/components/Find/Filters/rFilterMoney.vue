@@ -1,6 +1,6 @@
 <template>
   <r-filter
-    label="Money"
+    :field="field"
     :enable.sync="enable"
   >
     <q-field
@@ -63,6 +63,12 @@ const minMoney = -922337203685477,
 export default {
   components: {
     rFilter
+  },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    }
   },
   data: () => ({
     moneyInputRules: [
