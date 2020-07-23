@@ -123,11 +123,11 @@ export default {
       }
     },
     async refresh () {
-      await this.TYPE_METADATA_FETCH(this.typeID ? { TypeID: this.typeID } : { TypeID: 1 })
-      await this.FIND_FETCH(this.typeID ? { TypeID: this.typeID } : { TypeID: 1 })
+      await this.TYPE_METADATA_FETCH({ TypeID: this.typeID })
+      await this.FIND_FETCH({ TypeID: this.typeID })
     },
     async dataFetch () {
-      await this.FIND_FETCH_NEXT(this.typeID ? { TypeID: this.typeID } : { TypeID: 1 })
+      await this.FIND_FETCH_NEXT({ TypeID: this.typeID })
     },
     onScroll ({ to, ref }) {
       if (this.FIND_LOADING_STATE_GET !== true && !this.FIND_EOF_GET && to === this.FIND_LENGTH_GET - 1) {
