@@ -90,8 +90,8 @@ export default {
   },
   data () {
     return {
-      splitter: 40,
-      splitterRestore: null,
+      splitter: 0,
+      splitterRestore: 40,
       pagination: {
         rowsPerPage: 0
       }
@@ -154,7 +154,7 @@ export default {
 
 <style lang="sass">
 .my-sticky-dynamic
-  height: 600px
+  height: 800px
 
   .q-table__top,
   .q-table__bottom,
