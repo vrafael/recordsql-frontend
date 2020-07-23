@@ -57,7 +57,7 @@
               align="left"
             >
               <r-object
-                v-if="typeof(col.value) === 'object'"
+                v-if="col.value && typeof(col.value) === 'object'"
                 :key="col.ID"
                 :object="col.value"
               />
