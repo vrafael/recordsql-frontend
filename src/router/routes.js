@@ -1,7 +1,4 @@
 const routes = [{
-  path: '/record/:id(\\d+)',
-  redirect: '/record/:id/fields'
-}, {
   path: '/',
   component: () => import('layouts/rMainLayout.vue'),
   children: [{
