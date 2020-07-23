@@ -156,7 +156,7 @@ export default {
                 name: field.Tag,
                 label: field.Name,
                 field: field.Tag,
-                format: (val) => val.replace('T', ' '),
+                format: (val) => val ? val.replace('T', ' ') : null,
                 align: 'left',
                 style: 'max-width: 150px; width: 150px'
               }

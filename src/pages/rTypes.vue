@@ -59,7 +59,7 @@
       </template>
       <template #after>
         <r-find
-          v-show="!!typeID"
+          v-if="!!typeID"
           :type-i-d="parseInt(typeID)"
         />
       </template>
