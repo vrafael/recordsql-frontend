@@ -154,7 +154,7 @@ export default {
 
 <style lang="sass">
 .my-sticky-dynamic
-  height: 800px
+  height: 600px
 
   .q-table__top,
   .q-table__bottom,
