@@ -51,21 +51,21 @@
             align="left"
             narrow-indicator
           >
-            <q-route-tab
+            <q-tab
               exact
-              to="fields"
               name="fields"
               label="Fields"
+              @click="changeCurrentTabComponent('rFields')"
             />
-            <q-route-tab
+            <q-tab
               exact
-              to="relations"
               name="relations"
               label="Relations"
+              @click="changeCurrentTabComponent('rRelations')"
             />
           </q-tabs>
           <q-separator />
-          <router-view />
+          <component :is="currentTabComponent"/>
         </q-card-section>
       </q-card>
     </div>
@@ -74,6 +74,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import rFields from '../components/Record/rFields'
+import rRelations from '../components/Record/rRelations'
 
 export default {
   props: {
@@ -83,14 +85,22 @@ export default {
       default: null
     }
   },
+  components: {
+    rFields,
+    rRelations
+  },
   data () {
     return {
       tab: 'fields',
-      transitions: false
+      transitions: false,
+      currentTabComponent: 'rFields'
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'RECORD_FETCH'])
+    ...mapActions(['TYPE_METADATA_FETCH', 'RECORD_FETCH']),
+    changeCurrentTabComponent (tabComponent) {
+      this.$data.currentTabComponent = tabComponent
+    }
   },
   computed: {
     ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
