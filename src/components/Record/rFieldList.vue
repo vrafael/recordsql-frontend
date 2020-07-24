@@ -1,6 +1,6 @@
 <template>
   <q-form class="q-pa-md">
-    <template v-show="!!RECORD_GET && !!TYPE_METADATA_INPUTS_GET">
+    <template v-if="!!TYPE_METADATA_INPUTS_GET">
       <component
         v-for="field in TYPE_METADATA_INPUTS_GET"
         :is="field.componentInput"

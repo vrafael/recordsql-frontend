@@ -55,17 +55,17 @@
               exact
               name="fields"
               label="Fields"
-              @click="changeCurrentTabComponent('rFields')"
+              @click="changeCurrentTabComponent('rFieldList')"
             />
             <q-tab
               exact
               name="relations"
               label="Relations"
-              @click="changeCurrentTabComponent('rRelations')"
+              @click="changeCurrentTabComponent('rRelationList')"
             />
           </q-tabs>
           <q-separator />
-          <component :is="currentTabComponent"/>
+          <component :is="currentTabComponent" />
         </q-card-section>
       </q-card>
     </div>
@@ -74,8 +74,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import rFields from '../components/Record/rFields'
-import rRelations from '../components/Record/rRelations'
+import rFieldList from 'components/Record/rFieldList'
+import rRelationList from 'components/Record/rRelationList'
 
 export default {
   props: {
@@ -86,8 +86,8 @@ export default {
     }
   },
   components: {
-    rFields,
-    rRelations
+    rFieldList,
+    rRelationList
   },
   data () {
     return {
