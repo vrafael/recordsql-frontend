@@ -97,7 +97,7 @@ export default {
     return {
       tab: 'fields',
       transitions: false,
-      currentTabComponent: 'rFields'
+      currentTabComponent: 'rFieldList'
     }
   },
   methods: {
