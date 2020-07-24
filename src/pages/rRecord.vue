@@ -83,6 +83,10 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    typeTag: {
+      type: String,
+      required: true
     }
   },
   components: {

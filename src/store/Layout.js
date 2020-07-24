@@ -16,7 +16,7 @@ export default {
     {
       label: 'Records',
       icon: 'mdi-database',
-      link: '/record/215',
+      link: '/record/Test',
       separator: false
     }
     ]
