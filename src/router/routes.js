@@ -7,9 +7,9 @@ const routes = [{
     component: () => import('pages/rHome.vue')
   },
   {
-    path: '/types/:typeID(\\d+)?',
-    name: 'types',
-    component: () => import('pages/rTypes.vue'),
+    path: '/type/:typeID(\\d+)?',
+    name: 'type',
+    component: () => import('pages/rType.vue'),
     props: (route) => ({
       typeID: parseInt(route.params.typeID)
     })

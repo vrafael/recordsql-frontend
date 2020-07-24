@@ -10,7 +10,7 @@ export default {
     {
       label: 'Types',
       icon: 'mdi-puzzle',
-      link: '/types',
+      link: '/type',
       separator: false
     },
     {

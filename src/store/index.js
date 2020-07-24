@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import MainLayout from './MainLayout/MainLayout'
-import Types from './Types/Types'
+import Type from './Type'
 import TypeMetadata from './main/TypeMetadata'
 import Record from './components/Record'
 import Find from './components/Find'
@@ -22,7 +22,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       MainLayout,
-      Types,
+      Type,
       TypeMetadata,
       Record,
       Find
