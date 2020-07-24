@@ -5,9 +5,9 @@ Vue.use(Vuex)
 
 import MainLayout from './MainLayout/MainLayout'
 import Type from './Type'
-import TypeMetadata from './main/TypeMetadata'
-import Record from './components/Record'
-import Find from './components/Find'
+import TypeMetadata from './TypeMetadata'
+import Record from './Record'
+import Find from './Find'
 
 /*
  * If not building with SSR mode, you can
