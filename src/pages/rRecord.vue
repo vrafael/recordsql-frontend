@@ -21,7 +21,7 @@
 
             <q-fab
               v-model="transitions"
-              v-show="RECORD_GET"
+              v-if="RECORD_GET"
               label="Transitions"
               vertical-actions-align="left"
               color="accent"

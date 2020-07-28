@@ -20,7 +20,7 @@
       </template>
       <template #append>
         <q-icon
-          v-show="iconsShow"
+          v-if="iconsShow"
           name="search"
           class="cursor-pointer"
         >
