@@ -37,7 +37,9 @@ export default {
   methods: {
     ...mapActions(['RECORD_STATE_UPDATE_INIT']),
     updateFieldDataOnChange (eventValue) {
-      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+      const obj = { [`${this.field.Tag}`]: eventValue }
+      console.log(obj)
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     reset () {
       const fieldTag = this.field.Tag.toString()
@@ -45,7 +47,8 @@ export default {
         this.$refs.input.resetValidation()
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+      const obj = { [`${this.field.Tag}`]: originValue }
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

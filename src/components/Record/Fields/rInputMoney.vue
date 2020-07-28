@@ -60,12 +60,14 @@ export default {
         this.$refs.input.resetValidation()
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+      const obj = { [`${this.field.Tag}`]: originValue }
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     onChange (emitValue, event) {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
       emitValue(val)
-      this.RECORD_STATE_UPDATE_INIT([val, this.field])
+      const obj = { [`${this.field.Tag}`]: val }
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

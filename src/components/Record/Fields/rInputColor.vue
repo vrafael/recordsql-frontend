@@ -110,10 +110,12 @@ export default {
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
       this.$data.helperColor.style.backgroundColor = `#${originValue}`
-      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+      const obj = { [`${this.field.Tag}`]: originValue }
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     updateFieldDataOnChange (eventValue) {
-      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+      const obj = { [`${this.field.Tag}`]: eventValue }
+      this.RECORD_STATE_UPDATE_INIT(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()
