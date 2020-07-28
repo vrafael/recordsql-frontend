@@ -201,6 +201,78 @@ export default {
       } else {
         context.commit('TYPE_METADATA_UPDATE', {})
       }
+    },
+    async TYPE_METADATA_FETCH_WITH_RECORD_INIT (context, params) {
+      const response = await fetchApiRPC('Dev.TypeMetadata', params)
+      if (response && response.length > 0) {
+        const metadata = response[0]
+        metadata.Fields.map(field => {
+          switch (field.Type.Tag) {
+            case 'FieldLink':
+            case 'FieldLinkToType':
+              field.componentInput = 'r-input-link'
+              field.componentFilter = 'r-filter-link'
+              break
+            case 'FieldText':
+              field.componentInput = 'r-input-text'
+              field.componentFilter = 'r-filter-string'
+              break
+            case 'FieldString':
+              field.componentInput = 'r-input-string'
+              field.componentFilter = 'r-filter-string'
+              break
+            case 'FieldMoney':
+              field.componentInput = 'r-input-money'
+              field.componentFilter = 'r-filter-money'
+              break
+            case 'FieldBigint':
+              field.componentInput = 'r-input-bigint'
+              field.componentFilter = 'r-filter-bigint'
+              break
+            case 'FieldInt':
+              field.componentInput = 'r-input-int'
+              field.componentFilter = 'r-filter-int'
+              break
+            case 'FieldFloat':
+              field.componentInput = 'r-input-float'
+              field.componentFilter = 'r-filter-float'
+              break
+            case 'FieldIdentifier':
+              field.componentInput = 'r-input-identifier'
+              field.componentFilter = 'r-filter-bigint'
+              break
+            case 'FieldTime':
+              field.componentInput = 'r-input-time'
+              field.componentFilter = 'r-filter-time'
+              break
+            case 'FieldDatetime':
+              field.componentInput = 'r-input-datetime'
+              field.componentFilter = 'r-filter-datetime'
+              break
+            case 'FieldDate':
+              field.componentInput = 'r-input-date'
+              field.componentFilter = 'r-filter-date'
+              break
+            case 'FieldColor':
+              field.componentInput = 'r-input-color'
+              field.componentFilter = 'r-filter-color'
+              break
+            case 'FieldBool':
+              field.componentInput = 'r-input-bool'
+              field.componentFilter = 'r-filter-bool'
+              break
+          }
+        })
+        const metadataFields = metadata.Fields
+        const emptyRecord = {}
+        metadataFields.forEach((field) => {
+          emptyRecord[field.Tag] = null
+        })
+        context.dispatch('RECORD_STATE_UPDATE_INIT', { emptyRecord, isEmpty: true }, { root: true })
+        context.commit('TYPE_METADATA_UPDATE', metadata)
+      } else {
+        context.commit('TYPE_METADATA_UPDATE', {})
+      }
     }
   }
 }
