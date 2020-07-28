@@ -38,8 +38,7 @@ export default {
       }
     },
     async RECORD_STATE_UPDATE_INIT (context, payload) {
-      const response = payload
-      return response ? context.commit('RECORD_UPDATE_ON_CHANGE', response) : null
+      return payload ? context.commit('RECORD_UPDATE_ON_CHANGE', payload) : null
     }
   }
 }
