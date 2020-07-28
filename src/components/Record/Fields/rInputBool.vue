@@ -32,7 +32,9 @@ export default {
   },
   computed: {
     label: function () {
-      return this.value.toString().toUpperCase()
+      return this.value === null
+        ? 'NULL'
+        : this.value.toString().toUpperCase()
     }
   },
   methods: {
