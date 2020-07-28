@@ -24,8 +24,14 @@ export default {
       state.recordOrigin = { ...response }
     },
     RECORD_UPDATE_ON_CHANGE (state, response) {
-      const [editedValue, field] = response
-      state.record[field.Tag] = editedValue
+      if (!response.isEmpty) {
+        for (const fieldItem in response) {
+          state.record[fieldItem] = response[fieldItem]
+        }
+      } else {
+        state.record = response.emptyRecord
+        state.recordOrigin = response.emptyRecord
+      }
     }
   },
   actions: {
