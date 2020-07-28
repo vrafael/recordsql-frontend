@@ -6,7 +6,7 @@
           <div class="row items-center">
             <div class="items-start q-mx-sm">
               <q-icon
-                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : ''"
+                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : this.TYPE_METADATA_GET.Icon"
                 style="font-size:3em;"
               />
             </div>
@@ -15,7 +15,7 @@
                 {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
               </div>
               <div class="text-subtitle2">
-                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : '' }}
+                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : this.TYPE_METADATA_GET.Name }}
               </div>
             </div>
 
