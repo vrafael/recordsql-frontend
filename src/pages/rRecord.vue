@@ -101,7 +101,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'RECORD_FETCH']),
+    ...mapActions([
+      'TYPE_METADATA_FETCH',
+      'TYPE_METADATA_FETCH_WITH_RECORD_INIT',
+      'RECORD_FETCH',
+      'RECORD_STATE_UPDATE_INIT'
+    ]),
     changeCurrentTabComponent (tabComponent) {
       this.$data.currentTabComponent = tabComponent
     }
