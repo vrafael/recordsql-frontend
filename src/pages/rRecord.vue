@@ -114,10 +114,12 @@ export default {
   computed: {
     ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
   },
-  async mounted () {
-    await this.TYPE_METADATA_FETCH({ ID: this.id })
+  mounted () {
     if (this.id) {
-      await this.RECORD_FETCH({ ID: this.id })
+      this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+      this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
+    } else {
+      this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
     }
   }
 }
