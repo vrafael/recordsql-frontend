@@ -90,7 +90,7 @@ export default {
     ...mapGetters(['RECORD_ORIGIN_GET', 'RECORD_GET'])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     applyProxyToValue () {
       const proxydatetime = date.extractDate(this.proxyValue, this.datetimeMask)
       this.value = date.formatDate(proxydatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
@@ -105,11 +105,11 @@ export default {
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
       const obj = { [`${this.field.Tag}`]: originValue }
-      this.RECORD_STATE_UPDATE_INIT(obj)
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_INIT(obj)
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

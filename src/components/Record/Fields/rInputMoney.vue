@@ -53,7 +53,7 @@ export default {
     ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     reset () {
       const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
@@ -61,13 +61,13 @@ export default {
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
       const obj = { [`${this.field.Tag}`]: originValue }
-      this.RECORD_STATE_UPDATE_INIT(obj)
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     onChange (emitValue, event) {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
       emitValue(val)
       const obj = { [`${this.field.Tag}`]: val }
-      this.RECORD_STATE_UPDATE_INIT(obj)
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

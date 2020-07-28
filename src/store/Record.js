@@ -24,13 +24,8 @@ export default {
       state.recordOrigin = { ...response }
     },
     RECORD_UPDATE_ON_CHANGE (state, response) {
-      if (!response.isEmpty) {
-        for (const fieldItem in response) {
-          state.record[fieldItem] = response[fieldItem]
-        }
-      } else {
-        state.record = response.emptyRecord
-        state.recordOrigin = response.emptyRecord
+      for (const fieldItem in response) {
+        state.record[fieldItem] = response[fieldItem]
       }
     }
   },
@@ -43,8 +38,13 @@ export default {
         context.commit('RECORD_UPDATE', null)
       }
     },
-    async RECORD_STATE_UPDATE_INIT (context, payload) {
-      return payload ? context.commit('RECORD_UPDATE_ON_CHANGE', payload) : null
+    async RECORD_STATE_UPDATE_FIELD (context, payload) {
+      if (payload) {
+        context.commit('RECORD_UPDATE_ON_CHANGE', payload)
+      }
+    },
+    async RECORD_STATE_INIT (context, payload) {
+      context.commit('RECORD_UPDATE', payload)
     }
   }
 }

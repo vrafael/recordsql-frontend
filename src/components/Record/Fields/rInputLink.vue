@@ -98,10 +98,10 @@ export default {
     }]
   }),
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_INIT(obj)
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

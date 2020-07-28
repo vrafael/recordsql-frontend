@@ -105,7 +105,7 @@ export default {
       'TYPE_METADATA_FETCH',
       'TYPE_METADATA_FETCH_WITH_RECORD_INIT',
       'RECORD_FETCH',
-      'RECORD_STATE_UPDATE_INIT'
+      'RECORD_STATE_UPDATE_FIELD'
     ]),
     changeCurrentTabComponent (tabComponent) {
       this.$data.currentTabComponent = tabComponent
