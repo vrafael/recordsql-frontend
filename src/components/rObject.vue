@@ -23,7 +23,7 @@
           <span class="text-bold q-ml-xs">{{ object.Name }}</span>
         </div>
         <q-badge
-          v-show="object.StateName"
+          v-if="object.StateName"
           :color="object.StateColor"
         >
           {{ object.StateName }}
@@ -31,7 +31,7 @@
       </div>
     </q-tooltip>
     <q-badge
-      v-show="object.StateName"
+      v-if="object.StateName"
       :color="object.StateColor"
       class="q-mx-sm"
       style="border-radius: 5px"
@@ -39,7 +39,7 @@
       {{ object.StateName ? object.StateName.charAt(0) : '' }}
     </q-badge>
     <q-btn
-      v-show="remove"
+      v-if="remove"
       size="xs"
       flat
       dense

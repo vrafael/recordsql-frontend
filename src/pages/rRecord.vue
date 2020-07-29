@@ -6,7 +6,7 @@
           <div class="row items-center">
             <div class="items-start q-mx-sm">
               <q-icon
-                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : ''"
+                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : this.TYPE_METADATA_GET.Icon"
                 style="font-size:3em;"
               />
             </div>
@@ -15,13 +15,13 @@
                 {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
               </div>
               <div class="text-subtitle2">
-                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : '' }}
+                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : this.TYPE_METADATA_GET.Name }}
               </div>
             </div>
 
             <q-fab
               v-model="transitions"
-              v-show="RECORD_GET"
+              v-if="RECORD_GET"
               label="Transitions"
               vertical-actions-align="left"
               color="accent"
@@ -51,21 +51,21 @@
             align="left"
             narrow-indicator
           >
-            <q-route-tab
+            <q-tab
               exact
-              to="fields"
               name="fields"
               label="Fields"
+              @click="changeCurrentTabComponent('rFieldList')"
             />
-            <q-route-tab
+            <q-tab
               exact
-              to="relations"
               name="relations"
               label="Relations"
+              @click="changeCurrentTabComponent('rRelationList')"
             />
           </q-tabs>
           <q-separator />
-          <router-view />
+          <component :is="currentTabComponent" />
         </q-card-section>
       </q-card>
     </div>
@@ -74,6 +74,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import rFieldList from 'components/Record/rFieldList'
+import rRelationList from 'components/Record/rRelationList'
 
 export default {
   props: {
@@ -81,24 +83,43 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    typeTag: {
+      type: String,
+      required: true
     }
+  },
+  components: {
+    rFieldList,
+    rRelationList
   },
   data () {
     return {
       tab: 'fields',
-      transitions: false
+      transitions: false,
+      currentTabComponent: 'rFieldList'
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'RECORD_FETCH'])
+    ...mapActions([
+      'TYPE_METADATA_FETCH',
+      'TYPE_METADATA_FETCH_WITH_RECORD_INIT',
+      'RECORD_FETCH',
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
+    changeCurrentTabComponent (tabComponent) {
+      this.$data.currentTabComponent = tabComponent
+    }
   },
   computed: {
     ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
   },
-  async mounted () {
-    await this.TYPE_METADATA_FETCH({ ID: this.id })
+  mounted () {
     if (this.id) {
-      await this.RECORD_FETCH({ ID: this.id })
+      this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+      this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
+    } else {
+      this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
     }
   }
 }

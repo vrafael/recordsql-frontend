@@ -10,13 +10,13 @@ export default {
     {
       label: 'Types',
       icon: 'mdi-puzzle',
-      link: '/types',
+      link: '/type',
       separator: false
     },
     {
       label: 'Records',
       icon: 'mdi-database',
-      link: '/record/215/fields',
+      link: '/record/Test',
       separator: false
     }
     ]

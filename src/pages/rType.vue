@@ -27,7 +27,7 @@
         >
           <template #default-header="prop">
             <router-link
-              :to="{ name: 'types', params: { typeID: prop.node.ID }}"
+              :to="{ name: 'type', params: { typeID: prop.node.ID }}"
               v-slot="{ navigate }"
             >
               <div
@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Types', ['TYPE_LIST_FETCH']),
+    ...mapActions('Type', ['TYPE_LIST_FETCH']),
     typetreeShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -108,7 +108,7 @@ export default {
     await this.TYPE_LIST_FETCH()
   },
   computed: {
-    ...mapGetters('Types', ['TYPE_LIST_NESTED_GET'])
+    ...mapGetters('Type', ['TYPE_LIST_NESTED_GET'])
   }
 }
 </script>

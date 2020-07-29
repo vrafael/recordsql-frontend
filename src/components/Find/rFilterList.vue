@@ -4,7 +4,7 @@
       <span class="text-h6">Filters</span>
     </q-banner>
     <q-form class="q-pa-md">
-      <template v-show="!!TYPE_METADATA_FILTERS_GET">
+      <template v-if="!!TYPE_METADATA_FILTERS_GET">
         <component
           v-for="field in TYPE_METADATA_FILTERS_GET"
           :is="field.componentFilter"

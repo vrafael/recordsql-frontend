@@ -93,7 +93,7 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('MainLayout', {
+    ...mapGetters('Layout', {
       menu: 'MENU_GET'
     })
   }

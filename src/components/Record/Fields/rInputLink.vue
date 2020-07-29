@@ -20,7 +20,7 @@
       </template>
       <template #append>
         <q-icon
-          v-show="iconsShow"
+          v-if="iconsShow"
           name="search"
           class="cursor-pointer"
         >
@@ -98,10 +98,10 @@ export default {
     }]
   }),
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     updateFieldDataOnChange (eventValue) {
-      const field = this.field
-      this.RECORD_STATE_UPDATE_INIT([eventValue, field])
+      const obj = { [`${this.field.Tag}`]: eventValue }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

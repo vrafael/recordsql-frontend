@@ -24,8 +24,9 @@ export default {
       state.recordOrigin = { ...response }
     },
     RECORD_UPDATE_ON_CHANGE (state, response) {
-      const [editedValue, field] = response
-      state.record[field.Tag] = editedValue
+      for (const fieldItem in response) {
+        state.record[fieldItem] = response[fieldItem]
+      }
     }
   },
   actions: {
@@ -37,9 +38,13 @@ export default {
         context.commit('RECORD_UPDATE', null)
       }
     },
-    async RECORD_STATE_UPDATE_INIT (context, payload) {
-      const response = payload
-      return response ? context.commit('RECORD_UPDATE_ON_CHANGE', response) : null
+    async RECORD_STATE_UPDATE_FIELD (context, payload) {
+      if (payload) {
+        context.commit('RECORD_UPDATE_ON_CHANGE', payload)
+      }
+    },
+    async RECORD_STATE_INIT (context, payload) {
+      context.commit('RECORD_UPDATE', payload)
     }
   }
 }

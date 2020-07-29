@@ -3,11 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-import MainLayout from './MainLayout/MainLayout'
-import Types from './Types/Types'
-import TypeMetadata from './main/TypeMetadata'
-import Record from './components/Record'
-import Find from './components/Find'
+import Layout from './Layout'
+import Type from './Type'
+import TypeMetadata from './TypeMetadata'
+import Record from './Record'
+import Find from './Find'
 
 /*
  * If not building with SSR mode, you can
@@ -21,8 +21,8 @@ import Find from './components/Find'
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      MainLayout,
-      Types,
+      Layout,
+      Type,
       TypeMetadata,
       Record,
       Find

@@ -2,7 +2,7 @@
   <r-field :field="field">
     <q-input
       ref="input"
-      :value="`#${value}`"
+      :value="value"
       @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
@@ -96,7 +96,7 @@ export default {
     ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     applyProxyToValue () {
       this.value = this.proxyValue
     },
@@ -110,10 +110,12 @@ export default {
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
       this.$data.helperColor.style.backgroundColor = `#${originValue}`
-      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+      const obj = { [`${this.field.Tag}`]: originValue }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     updateFieldDataOnChange (eventValue) {
-      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+      const obj = { [`${this.field.Tag}`]: eventValue }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

@@ -53,19 +53,21 @@ export default {
     ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     reset () {
       const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
       const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      this.RECORD_STATE_UPDATE_INIT([originValue, this.field])
+      const obj = { [`${this.field.Tag}`]: originValue }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     onChange (emitValue, event) {
       const val = parseFloat(event.target.value.replace(/,/g, ''))
       emitValue(val)
-      this.RECORD_STATE_UPDATE_INIT([val, this.field])
+      const obj = { [`${this.field.Tag}`]: val }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
       const fieldTag = this.field.Tag.toString()

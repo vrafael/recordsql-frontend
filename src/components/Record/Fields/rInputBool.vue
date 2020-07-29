@@ -32,13 +32,16 @@ export default {
   },
   computed: {
     label: function () {
-      return this.value.toString().toUpperCase()
+      return this.value === null
+        ? 'NULL'
+        : this.value.toString().toUpperCase()
     }
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_INIT']),
+    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     updateFieldDataOnChange (eventValue) {
-      this.RECORD_STATE_UPDATE_INIT([eventValue, this.field])
+      const obj = { [`${this.field.Tag}`]: eventValue }
+      this.RECORD_STATE_UPDATE_FIELD(obj)
     }
   }
 }
