@@ -11,7 +11,6 @@ const routes = [{
     name: 'type',
     component: () => import('pages/rType.vue'),
     props: (route) => ({
-      typeID: parseInt(route.params.typeID),
       typeTag: route.params.typeTag
     })
   },

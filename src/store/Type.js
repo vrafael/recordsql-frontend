@@ -1,11 +1,8 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
-  namespaced: true,
   state: {
-    typeList: [],
-    selected: [],
-    expanded: []
+    typeList: []
   },
   getters: {
     TYPE_LIST_GET (state) {
