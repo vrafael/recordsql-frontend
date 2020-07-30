@@ -84,7 +84,8 @@ export default {
     ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     applyProxyToValue () {
       const proxytime = date.extractDate(this.proxyValue, this.timeMask)
-      this.value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+      const value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+      this.updateFieldDataOnChange(value)
     },
     applyValueToProxy () {
       this.proxyValue = this.value

@@ -79,7 +79,7 @@ export default {
   computed: {
     ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
     iconsShow: function () {
-      return !!this.field && this.field.hasOwnProperty('Check') && this.field.Check.hasOwnProperty('FieldLinkValueType')
+      return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
     }
   },
   data: () => ({
