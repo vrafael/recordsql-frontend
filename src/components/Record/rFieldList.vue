@@ -15,6 +15,7 @@
         color="primary"
         style="width: 140px"
         :disable="compareState()"
+        @click="setObj()"
       >
         <q-icon
           left
@@ -38,7 +39,7 @@
         <q-btn
           color="red"
           icon="delete"
-          :disable="compareState()"
+          @click="deleteObj()"
         />
       </q-btn-group>
     </div>
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
@@ -82,10 +83,22 @@ export default {
     ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET', 'RECORD_ORIGIN_GET', 'RECORD_COMPARE_STATE'])
   },
   methods: {
+    ...mapActions([
+      'RECORD_UPLOAD',
+      'RECORD_DELETE'
+    ]),
     compareState () {
       const localState = JSON.stringify(this.RECORD_GET)
       const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
       return localState === originState
+    },
+    setObj () {
+      this.RECORD_UPLOAD(this.RECORD_GET)
+      // this.RECORD_GET
+    },
+    deleteObj (key) {
+      // const record = this.RECORD_GET
+      // this.RECORD_DELETE()
     }
   }
 }
