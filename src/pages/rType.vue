@@ -27,7 +27,7 @@
         >
           <template #default-header="prop">
             <router-link
-              :to="{ name: 'type', params: { typeID: prop.node.ID }}"
+              :to="{ name: 'type', params: { typeTag: prop.node.Tag, typeID: prop.node.ID }}"
               v-slot="{ navigate }"
             >
               <div

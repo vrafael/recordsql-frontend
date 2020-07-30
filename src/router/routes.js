@@ -7,11 +7,12 @@ const routes = [{
     component: () => import('pages/rHome.vue')
   },
   {
-    path: '/type/:typeID(\\d+)?',
+    path: '/type/:typeTag([a-zA-Z0-9]+)?/:typeID(\\d+)?',
     name: 'type',
     component: () => import('pages/rType.vue'),
     props: (route) => ({
-      typeID: parseInt(route.params.typeID)
+      typeID: parseInt(route.params.typeID),
+      typeTag: route.params.typeTag
     })
   },
   {
