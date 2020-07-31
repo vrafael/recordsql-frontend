@@ -37,7 +37,7 @@ export default {
   },
   data: () => ({
     moneyInputRules: [
-      val => (val !== null && val !== '') || 'Please input money value',
+      val => (val !== '') || 'Please input money value',
       val => (val > minMoney && val < maxMoney) || `Please use money value between ${minMoney} and ${maxMoney}`
     ],
     moneyFormat: {
