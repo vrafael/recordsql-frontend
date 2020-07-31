@@ -29,6 +29,7 @@
           color="primary"
           style="width: 140px"
           :disable="compareState()"
+          @click="resetFieldsValueToOrigin()"
         >
           <q-icon
             left
@@ -85,7 +86,8 @@ export default {
   methods: {
     ...mapActions([
       'RECORD_UPLOAD',
-      'RECORD_DELETE'
+      'RECORD_DELETE',
+      'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
     compareState () {
       const localState = JSON.stringify(this.RECORD_GET)
@@ -99,6 +101,9 @@ export default {
     deleteObj (key) {
       // const record = this.RECORD_GET
       // this.RECORD_DELETE()
+    },
+    resetFieldsValueToOrigin () {
+      this.RECORD_RESET_STATE_TO_ORIGIN()
     }
   }
 }
