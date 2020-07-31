@@ -110,7 +110,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH', 'FIND_FETCH_NEXT']),
+    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH',
+      'FIND_FETCH_NEXT',
+      'TYPE_METADATA_FETCH_WITH_FILTER_INIT']),
     filtersShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -123,8 +125,7 @@ export default {
       }
     },
     async refresh () {
-      await this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
-      await this.FIND_FETCH({ TypeTag: this.typeTag })
+      await this.TYPE_METADATA_FETCH_WITH_FILTER_INIT({ TypeTag: this.typeTag })
     },
     async dataFetch () {
       await this.FIND_FETCH_NEXT({ TypeTag: this.typeTag })

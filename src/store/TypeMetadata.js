@@ -1,5 +1,5 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
-import fieldMapping from './helpers/FieldMapping'
+import fieldsMapping from './helpers/fieldsMapping'
 
 export default {
   state: {
@@ -54,7 +54,7 @@ export default {
       if (response && response.length > 0) {
         const metadata = response[0]
 
-        metadata.Fields.map(fieldMapping)
+        metadata.Fields.map(fieldsMapping)
         context.commit('TYPE_METADATA_UPDATE', metadata)
       } else {
         context.commit('TYPE_METADATA_UPDATE', {})
@@ -64,7 +64,7 @@ export default {
       const response = await fetchApiRPC('Dev.TypeMetadata', params)
       if (response && response.length > 0) {
         const metadata = response[0]
-        metadata.Fields.map(fieldMapping)
+        metadata.Fields.map(fieldsMapping)
         const emptyRecord = {}
         metadata.Fields.forEach((field) => {
           emptyRecord[field.Tag] = null
@@ -73,6 +73,27 @@ export default {
         context.commit('TYPE_METADATA_UPDATE', metadata)
       } else {
         context.dispatch('RECORD_STATE_INIT', null, { root: true })
+        context.commit('TYPE_METADATA_UPDATE', {})
+      }
+    },
+    async TYPE_METADATA_FETCH_WITH_FILTER_INIT (context, params) {
+      const response = await fetchApiRPC('Dev.TypeMetadata', params)
+      if (response && response.length > 0) {
+        const metadata = response[0]
+        metadata.Fields.map(fieldsMapping)
+
+        const emptyFilters = {}
+        metadata.Fields
+          .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
+          .forEach(field => {
+            emptyFilters[field.Tag] = field.componentFilter.empty
+          })
+
+        context.dispatch('FILTER_STATE_INIT', emptyFilters, { root: true })
+        context.dispatch('FIND_FETCH', { TypeTag: params.TypeTag }, { root: true })
+        context.commit('TYPE_METADATA_UPDATE', metadata)
+      } else {
+        context.dispatch('FILTER_STATE_INIT', null, { root: true })
         context.commit('TYPE_METADATA_UPDATE', {})
       }
     }

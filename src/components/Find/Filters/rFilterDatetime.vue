@@ -1,7 +1,7 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-input
       class="col-4"

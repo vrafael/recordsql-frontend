@@ -3,7 +3,7 @@
     <div class="col-3">
       <div
         class="row items-center no-wrap"
-        @click="$emit('update:enable', !enable)"
+        @click="changeEnable"
       >
         <q-icon
           :name="field.Type.Icon"
@@ -16,8 +16,8 @@
         </span>
         <q-space />
         <q-toggle
-          :value="enable"
-          @input="inputEnable"
+          :value="filter.Enable"
+          @input="changeEnable"
         />
       </div>
     </div>
@@ -26,20 +26,27 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
-    enable: {
-      type: Boolean,
+    field: {
+      type: Object,
       required: true
     },
-    field: {
+    filter: {
       type: Object,
       required: true
     }
   },
   methods: {
-    inputEnable: function (value, evt) {
-      this.$emit('update:enable', value) // $emit('update:enable', $event.target.value)
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    changeEnable: function () {
+      const fieldTag = this.field.Tag
+      const filter = { ...this.filter }
+      filter.Enable = !filter.Enable
+      const obj = { [`${fieldTag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     }
   }
 }

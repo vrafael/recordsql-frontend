@@ -1,18 +1,19 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-input
       class="col-4"
-      v-model="valueFrom"
       :mask="dateInputMask"
       :rules="dateInputRules"
-      :disable="!enable"
+      :value="filter.ValueFrom"
+      :disable="!filter.Enable"
+      @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
       ref="inputFrom"
-      clearable
+      :clearable="filter.ValueFrom !== filterOrigin.ValueFrom"
       @clear="resetFrom"
     >
       <template #append>
@@ -52,14 +53,15 @@
     <q-space />
     <q-input
       class="col-4"
-      v-model="valueTo"
       :mask="dateInputMask"
       :rules="dateInputRules"
-      :disable="!enable"
+      :value="filter.ValueTo"
+      :disable="!filter.Enable"
+      @change="event => updateValueTo(event.target.value)"
       outlined
       dense
       ref="inputTo"
-      clearable
+      :clearable="filter.ValueTo !== filterOrigin.ValueTo"
       @clear="resetTo"
     >
       <template #append>
@@ -101,6 +103,7 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -108,6 +111,14 @@ export default {
   },
   props: {
     field: {
+      type: Object,
+      required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    },
+    filterOrigin: {
       type: Object,
       required: true
     }
@@ -118,40 +129,58 @@ export default {
       val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val)) || 'Please use format "YYYY.MM.DD"'
     ],
     dateMask: 'YYYY.MM.DD',
-    enable: false,
-    valueFrom: '',
     proxyValueFrom: Date.now(),
-    valueTo: '',
     proxyValueTo: Date.now()
   }),
   methods: {
-    applyProxyFromToValueFrom () {
-      this.valueFrom = this.proxyValueFrom
-      if (this.valueTo && this.valueFrom > this.valueTo) {
-        this.valueTo = this.valueFrom
-      }
-    },
-    applyValueFromToProxyFrom () {
-      this.proxyValueFrom = this.valueFrom
-    },
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueFrom = this.filterOrigin.ValueFrom
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
-    applyProxyToToValueTo () {
-      this.valueTo = this.proxyValueTo
-      if (this.valueFrom && this.valueTo < this.valueFrom) {
-        this.valueFrom = this.valueTo
+    updateValueFrom (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueFrom = eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    applyProxyFromToValueFrom () {
+      this.updateValueFrom(this.proxyValueFrom)
+      if (this.filter.ValueTo && this.proxyValueFrom > this.filter.ValueTo) {
+        this.updateValueTo(this.proxyValueFrom)
       }
     },
-    applyValueToToProxyTo () {
-      this.proxyValueTo = this.valueTo
+    applyValueFromToProxyFrom () {
+      this.proxyValueFrom = this.filter.ValueFrom
     },
     resetTo () {
       setTimeout(() => {
         this.$refs.inputTo.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueTo = this.filterOrigin.ValueTo
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    updateValueTo (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueTo = eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    applyProxyToToValueTo () {
+      this.updateValueTo(this.proxyValueTo)
+      if (this.filter.ValueFrom && this.proxyValueTo < this.filter.ValueFrom) {
+        this.updateValueFrom(this.proxyValueTo)
+      }
+    },
+    applyValueToToProxyTo () {
+      this.proxyValueTo = this.filter.ValueTo
     }
   }
 }

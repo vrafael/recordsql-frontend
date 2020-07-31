@@ -22,8 +22,7 @@ const routes = [{
       id: parseInt(route.params.id),
       typeTag: route.params.typeTag
     })
-  }
-  ]
+  }]
 }]
 
 // Always leave this as last one
