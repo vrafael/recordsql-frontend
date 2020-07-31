@@ -20,7 +20,6 @@ export default {
   },
   mutations: {
     RECORD_UPDATE (state, response) {
-      // console.log('response at record update: ', response)
       state.record = { ...response }
       state.recordOrigin = { ...response }
     },
@@ -33,7 +32,6 @@ export default {
   actions: {
     async RECORD_FETCH (context, params) {
       const response = await fetchApiRPC('Dev.RecordGet', params)
-      // console.log('record fetch: ', response)
       if (response) {
         context.commit('RECORD_UPDATE', response)
       } else {

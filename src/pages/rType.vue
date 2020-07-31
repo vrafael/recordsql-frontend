@@ -105,7 +105,6 @@ export default {
     }
   },
   async mounted () {
-    // console.log('this typelist nested', this)
     await this.TYPE_LIST_FETCH()
   },
   computed: {
