@@ -1,5 +1,5 @@
 <template>
-  <q-form class="q-pa-md">
+  <q-form ref="form" class="q-pa-md">
     <template v-if="!!TYPE_METADATA_INPUTS_GET && !!RECORD_GET">
       <component
         v-for="field in TYPE_METADATA_INPUTS_GET"
@@ -101,6 +101,7 @@ export default {
     },
     resetFieldsValueToOrigin () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
+      this.$refs.form.resetValidation()
     }
   }
 }
