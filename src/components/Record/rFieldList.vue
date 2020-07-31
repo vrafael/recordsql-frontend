@@ -96,11 +96,8 @@ export default {
     },
     setObj () {
       this.RECORD_UPLOAD(this.RECORD_GET)
-      // this.RECORD_GET
     },
     deleteObj (key) {
-      // const record = this.RECORD_GET
-      // this.RECORD_DELETE()
     },
     resetFieldsValueToOrigin () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
