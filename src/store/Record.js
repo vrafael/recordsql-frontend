@@ -27,6 +27,9 @@ export default {
       for (const fieldItem in response) {
         state.record[fieldItem] = response[fieldItem]
       }
+    },
+    RECORD_RESET_TO_ORIGIN (state) {
+      state.record = { ...state.recordOrigin }
     }
   },
   actions: {
@@ -63,6 +66,9 @@ export default {
       // console.log('on delete')
       // const obj = {  }
       // await fetchApiRPC('Dev.RecordDel', )
+    },
+    async RECORD_RESET_STATE_TO_ORIGIN (context) {
+      context.commit('RECORD_RESET_TO_ORIGIN')
     }
   }
 }
