@@ -1,5 +1,5 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
-
+import showNotify from 'src/common/service.notify'
 export default {
   state: {
     record: null,
@@ -52,13 +52,14 @@ export default {
       const obj = { Set: params }
       JSON.stringify(obj)
       const response = await fetchApiRPC('Dev.RecordSet', obj)
-      console.log('response: ', response)
-      // console.log('проверка: ', Object.keys(response).length === 0 && obj.constructor === Object)
-      // проверяем, что объект больше нуля, преобразовывая его в массив
-      // if (response && Object.keys(response).length === 0 && obj.constructor === Object) {
-      //   console.log('я вызвался')
-      // context.dispatch('RECORD_FETCH', { ID: response.ID })
-      // }
+      if (response && Object.keys(response).length !== 0 && response.constructor === Object) {
+        context.dispatch('RECORD_FETCH', { TypeTag: 'Test', ID: response.ID })
+      } else {
+        showNotify({
+          errorMessage: 'Response object not exists or equals to zero or it is not object.',
+          displayTimeMS: 5000
+        })
+      }
     },
     async RECORD_DELETE (context, params) {
       // console.log('on delete')
