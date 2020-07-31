@@ -1,6 +1,6 @@
 import { Notify } from 'quasar'
 
-export default function showNotifyByServerResponse ({ errorMessage, errorCode, displayTimeMS }) {
+export default function showNotify ({ errorMessage, errorCode, displayTimeMS }) {
   try {
     let notifyType
 

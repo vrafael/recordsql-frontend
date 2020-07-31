@@ -1,5 +1,5 @@
 import axios from 'axios'
-import showNotifyByServerResponse from './service.notify'
+import showNotify from './service.notify'
 
 export default async function fetchApiRPC (method, params) {
   return axios.post('/api/rpc/', {
@@ -9,7 +9,7 @@ export default async function fetchApiRPC (method, params) {
     if (response.status !== 200) {
       const errorMessage = response.data.error.message
       const errorCode = response.data.error.code
-      showNotifyByServerResponse({
+      showNotify({
         errorMessage: errorMessage,
         errorCode: errorCode,
         displayTimeMS: 5000
@@ -22,7 +22,7 @@ export default async function fetchApiRPC (method, params) {
       const { error } = response.data
       const errorMessage = response.data.error.message
       const errorCode = response.data.error.code
-      showNotifyByServerResponse({
+      showNotify({
         errorMessage: errorMessage,
         errorCode: errorCode,
         displayTimeMS: 5000
@@ -35,7 +35,7 @@ export default async function fetchApiRPC (method, params) {
       return response.data.result
     }
   }).catch(error => {
-    showNotifyByServerResponse({
+    showNotify({
       errorMessage: error,
       displayTimeMS: 5000
     })
