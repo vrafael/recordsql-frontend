@@ -1,5 +1,6 @@
 <template>
   <q-splitter
+    style="max-height: 85vh"
     v-model="splitter"
     horizontal
     unit="%"
@@ -155,7 +156,7 @@ export default {
 
 <style lang="sass">
 .my-sticky-dynamic
-  height: 600px
+  height: 100%
 
   .q-table__top,
   .q-table__bottom,
