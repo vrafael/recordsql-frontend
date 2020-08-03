@@ -46,7 +46,7 @@ export default {
   },
   data: () => ({
     bigintInputRules: [
-      val => (!val || /^-?\d*$/.test(val)) || 'Please use number format',
+      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
       val => (val > minBigint && val < maxBigint) || 'Please use big integer value between -2^63 and 2^63-1'
     ]
   }),
@@ -77,7 +77,8 @@ export default {
     },
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueFrom = Number(eventValue)
+      filter.ValueFrom = eventValue === '' ? null : Number(eventValue)
+      console.log(filter.ValueFrom)
       if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
         filter.ValueTo = filter.ValueFrom
       }
@@ -95,7 +96,7 @@ export default {
     },
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueTo = Number(eventValue)
+      filter.ValueTo = eventValue === '' ? null : Number(eventValue)
       if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
         filter.ValueFrom = filter.ValueTo
       }
