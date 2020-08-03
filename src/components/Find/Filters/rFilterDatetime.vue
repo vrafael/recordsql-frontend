@@ -149,11 +149,11 @@ export default {
     }
   },
   data: () => ({
-    datetimeInputMask: '####.##.## ##:##:##.###',
+    datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => !val || /^-?[\d]+\.[0-1]\d\.[0-3]\d\s([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val) || 'Please use format "YYYY.MM.DD HH:mm:ss.nnn"'
+      val => !val || /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[\sT]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?$/.test(val) || 'Please use format "YYYY.MM.DD HH:mm:ss.nnn"'
     ],
-    datetimeMask: 'YYYY.MM.DD HH:mm:ss',
+    datetimeMask: 'YYYY-MM-DD HH:mm:ss',
     proxyValueFrom: Date.now(),
     proxyValueTo: Date.now()
   }),
@@ -170,7 +170,7 @@ export default {
     },
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueFrom = date.formatDate(eventValue, 'YYYY.MM.DD HH:mm:ss.SSS')
+      filter.ValueFrom = eventValue
       if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
         filter.ValueTo = filter.ValueFrom
       }
@@ -178,7 +178,9 @@ export default {
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyFromToValueFrom () {
-      this.updateValueFrom(this.proxyValueFrom)
+      const proxytime = date.extractDate(this.proxyValueFrom, this.datetimeMask)
+      const value = date.formatDate(proxytime, 'YYYY-MM-DD HH:mm:ss.SSS')
+      this.updateValueFrom(value)
     },
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
@@ -194,7 +196,7 @@ export default {
     },
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueTo = date.formatDate(eventValue, 'YYYY.MM.DD HH:mm:ss.SSS')
+      filter.ValueTo = eventValue
       if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
         filter.ValueFrom = filter.ValueTo
       }
@@ -202,7 +204,9 @@ export default {
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyToToValueTo () {
-      this.updateValueTo(this.proxyValueTo)
+      const proxytime = date.extractDate(this.proxyValueTo, this.datetimeMask)
+      const value = date.formatDate(proxytime, 'YYYY-MM-DD HH:mm:ss.SSS')
+      this.updateValueTo(value)
     },
     applyValueToToProxyTo () {
       this.proxyValueTo = this.filter.ValueTo

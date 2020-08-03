@@ -104,6 +104,7 @@
 <script>
 import rFilter from './rFilter'
 import { mapActions } from 'vuex'
+import { date } from 'quasar'
 
 export default {
   components: {
@@ -124,11 +125,11 @@ export default {
     }
   },
   data: () => ({
-    dateInputMask: '####.##.##',
+    dateInputMask: '####-##-##',
     dateInputRules: [
-      val => !val || /^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val) || 'Please use format "YYYY.MM.DD"'
+      val => !val || /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/.test(val) || 'Please use format "YYYY-MM-DD"'
     ],
-    dateMask: 'YYYY.MM.DD',
+    dateMask: 'YYYY-MM-DD',
     proxyValueFrom: Date.now(),
     proxyValueTo: Date.now()
   }),
@@ -153,7 +154,9 @@ export default {
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyFromToValueFrom () {
-      this.updateValueFrom(this.proxyValueFrom)
+      const proxytime = date.extractDate(this.proxyValueFrom, this.dateMask)
+      const value = date.formatDate(proxytime, 'YYYY-MM-DD')
+      this.updateValueFrom(value)
     },
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
@@ -177,7 +180,9 @@ export default {
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyToToValueTo () {
-      this.updateValueTo(this.proxyValueTo)
+      const proxytime = date.extractDate(this.proxyValueTo, this.dateMask)
+      const value = date.formatDate(proxytime, 'YYYY-MM-DD')
+      this.updateValueTo(value)
     },
     applyValueToToProxyTo () {
       this.proxyValueTo = this.filter.ValueTo
