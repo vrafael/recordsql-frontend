@@ -21,10 +21,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldString':
       field.componentInput = 'r-input-string'
-      /* field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-string',
         empty: { Enable: false, IsNull: false, Value: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
@@ -63,10 +63,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldInt':
       field.componentInput = 'r-input-int'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-int',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
@@ -77,10 +77,10 @@ export default function fieldsMapping (field) {
     case 'FieldFloat':
       field.componentInput = 'r-input-float'
       field.componentFilter = 'r-filter-float'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-float',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
