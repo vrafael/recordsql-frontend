@@ -57,7 +57,7 @@ export default {
   },
   data: () => ({
     intInputRules: [
-      val => (val !== null && val !== '') || 'Please input float number',
+      val => (val !== '') || 'Please input float number',
       val => (/(^-?\d*(.\d*)?$)?/.test(val)) || 'Please use float number format'
     ]
   }),

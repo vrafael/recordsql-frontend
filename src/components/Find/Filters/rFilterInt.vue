@@ -60,13 +60,10 @@ export default {
   },
   data: () => ({
     intInputRules: [
-      val => (val !== null && val !== '') || 'Please input integer number',
+      val => (val !== '') || 'Please input integer number',
       val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
       val => (val > minInt && val < maxInt) || 'Please use integer value between -2^31 and 2^31-1'
-    ],
-    enable: false,
-    valueFrom: null,
-    valueTo: null
+    ]
   }),
   methods: {
     ...mapActions([
