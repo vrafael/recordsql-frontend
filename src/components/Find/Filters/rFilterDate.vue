@@ -126,7 +126,7 @@ export default {
   data: () => ({
     dateInputMask: '####.##.##',
     dateInputRules: [
-      val => (/^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val)) || 'Please use format "YYYY.MM.DD"'
+      val => !val || /^-?[\d]+\.[0-1]\d\.[0-3]\d$/.test(val) || 'Please use format "YYYY.MM.DD"'
     ],
     dateMask: 'YYYY.MM.DD',
     proxyValueFrom: Date.now(),
