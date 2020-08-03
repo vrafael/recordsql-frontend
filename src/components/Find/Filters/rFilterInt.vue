@@ -13,7 +13,7 @@
       outlined
       dense
       ref="inputFrom"
-      :clearable="filter.ValueTo !== filterOrigin.ValueTo"
+      :clearable="filter.ValueFrom !== filterOrigin.ValueFrom"
       @clear="resetFrom"
     />
     <q-space />
@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 
 const maxInt = Math.pow(2, 31) - 1,
   minInt = -Math.pow(2, 31)
@@ -44,6 +44,12 @@ export default {
   components: {
     rFilter
   },
+  data: () => ({
+    intInputRules: [
+      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
+      val => (val > minInt && val < maxInt) || 'Please use integer value between -2^31 and 2^31-1'
+    ]
+  }),
   props: {
     field: {
       type: Object,
@@ -58,17 +64,8 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    intInputRules: [
-      val => (val !== '') || 'Please input integer number',
-      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
-      val => (val > minInt && val < maxInt) || 'Please use integer value between -2^31 and 2^31-1'
-    ]
-  }),
   methods: {
-    ...mapActions([
-      'FILTER_STATE_UPDATE_FIELD'
-    ]),
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
@@ -80,8 +77,8 @@ export default {
     },
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueFrom = Number(eventValue)
-      if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
+      filter.ValueFrom = eventValue === '' ? null : Number(eventValue)
+      if (filter.ValueFrom && filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
         filter.ValueTo = filter.ValueFrom
       }
       const obj = { [`${this.field.Tag}`]: filter }
@@ -98,8 +95,8 @@ export default {
     },
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueTo = Number(eventValue)
-      if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
+      filter.ValueTo = eventValue === '' ? null : Number(eventValue)
+      if (filter.ValueFrom && filter.ValueTo && filter.ValueTo < filter.ValueFrom) {
         filter.ValueFrom = filter.ValueTo
       }
       const obj = { [`${this.field.Tag}`]: filter }

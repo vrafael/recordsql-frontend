@@ -78,8 +78,7 @@ export default {
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
       filter.ValueFrom = eventValue === '' ? null : Number(eventValue)
-      console.log(filter.ValueFrom)
-      if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
+      if (filter.ValueFrom && filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
         filter.ValueTo = filter.ValueFrom
       }
       const obj = { [`${this.field.Tag}`]: filter }
@@ -97,7 +96,7 @@ export default {
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
       filter.ValueTo = eventValue === '' ? null : Number(eventValue)
-      if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
+      if (filter.ValueFrom && filter.ValueTo && filter.ValueTo < filter.ValueFrom) {
         filter.ValueFrom = filter.ValueTo
       }
       const obj = { [`${this.field.Tag}`]: filter }
