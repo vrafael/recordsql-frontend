@@ -80,7 +80,7 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => !val || (val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',
+      val => !val || val.length === 7 || val.length === 9 || 'Please use 6-8 characters',
       val => !val || /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
@@ -94,7 +94,7 @@ export default {
   }),
   watch: {
     filter: function (filter) {
-      if (filter.Value && (filter.Value.length === 4 || filter.Value.length === 7 || filter.Value.length === 9)) {
+      if (filter.Value && (filter.Value.length === 7 || filter.Value.length === 9)) {
         this.helperColor.style.backgroundColor = filter.Value
       } else {
         this.helperColor.style.backgroundColor = null
