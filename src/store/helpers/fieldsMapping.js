@@ -106,10 +106,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldTime':
       field.componentInput = 'r-input-time'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-time',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
