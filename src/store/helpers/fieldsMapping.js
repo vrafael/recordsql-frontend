@@ -120,10 +120,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldDatetime':
       field.componentInput = 'r-input-datetime'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-datetime',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
