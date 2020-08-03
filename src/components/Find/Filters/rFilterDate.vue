@@ -146,14 +146,14 @@ export default {
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
       filter.ValueFrom = eventValue
+      if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
+        filter.ValueTo = filter.ValueFrom
+      }
       const obj = { [`${this.field.Tag}`]: filter }
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyFromToValueFrom () {
       this.updateValueFrom(this.proxyValueFrom)
-      if (this.filter.ValueTo && this.proxyValueFrom > this.filter.ValueTo) {
-        this.updateValueTo(this.proxyValueFrom)
-      }
     },
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
@@ -170,14 +170,14 @@ export default {
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
       filter.ValueTo = eventValue
+      if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
+        filter.ValueFrom = filter.ValueTo
+      }
       const obj = { [`${this.field.Tag}`]: filter }
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyToToValueTo () {
       this.updateValueTo(this.proxyValueTo)
-      if (this.filter.ValueFrom && this.proxyValueTo < this.filter.ValueFrom) {
-        this.updateValueFrom(this.proxyValueTo)
-      }
     },
     applyValueToToProxyTo () {
       this.proxyValueTo = this.filter.ValueTo

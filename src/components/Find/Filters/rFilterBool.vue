@@ -4,8 +4,6 @@
     :filter="filter"
   >
     <q-checkbox
-      toggle-indeterminate
-      indeterminate-value="null"
       :value="filter.Value"
       :disable="!filter.Enable"
       @input="event => updateValue(event)"
@@ -40,7 +38,7 @@ export default {
   computed: {
     label: function () {
       return this.filter.Value === null
-        ? 'NULL'
+        ? ''
         : this.filter.Value.toString().toUpperCase()
     }
   },

@@ -78,7 +78,10 @@ export default {
     },
     updateValueFrom (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueFrom = eventValue
+      filter.ValueFrom = Number(eventValue)
+      if (filter.ValueTo && filter.ValueFrom > filter.ValueTo) {
+        filter.ValueTo = filter.ValueFrom
+      }
       const obj = { [`${this.field.Tag}`]: filter }
       this.FILTER_STATE_UPDATE_FIELD(obj)
     },
@@ -93,7 +96,10 @@ export default {
     },
     updateValueTo (eventValue) {
       const filter = { ...this.filter }
-      filter.ValueTo = eventValue
+      filter.ValueTo = Number(eventValue)
+      if (filter.ValueFrom && filter.ValueTo < filter.ValueFrom) {
+        filter.ValueFrom = filter.ValueTo
+      }
       const obj = { [`${this.field.Tag}`]: filter }
       this.FILTER_STATE_UPDATE_FIELD(obj)
     }
