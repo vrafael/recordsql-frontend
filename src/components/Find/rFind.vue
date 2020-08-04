@@ -56,7 +56,7 @@
               :key="col.name"
               :props="props"
             >
-              <template v-if="!!props.colsMap[col.name].component">
+              <template v-if="col.value && !!props.colsMap[col.name].component">
                 <component
                   :is="props.colsMap[col.name].component"
                   :value="col.value"
