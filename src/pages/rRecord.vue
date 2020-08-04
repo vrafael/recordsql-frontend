@@ -112,6 +112,8 @@ export default {
   },
   data () {
     return {
+      currentTypeTag: null,
+      currentID: null,
       tab: 'fields',
       transitions: false,
       currentTabComponent: 'rFieldList'
@@ -128,11 +130,16 @@ export default {
       this.currentTabComponent = tabComponent
     },
     refresh () {
-      if (this.id) {
-        this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
-        this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
-      } else {
-        this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
+      if (this.currentTypeTag !== this.typeTag || this.currentID !== this.id) {
+        this.currentTypeTag = this.typeTag
+        this.currentID = this.id
+
+        if (this.id) {
+          this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+          this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
+        } else {
+          this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
+        }
       }
     }
   },
