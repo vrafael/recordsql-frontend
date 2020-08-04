@@ -1,6 +1,6 @@
 <template>
   <q-card
-    :key="object.ID"
+    :key="value.ID"
     class="row q-mr-sm items-center no-wrap"
     flat
     bordered
@@ -10,33 +10,33 @@
       color="grey-4"
       text-color="accent"
       font-size="20px"
-      :icon="object.TypeIcon"
+      :icon="value.TypeIcon"
       style="height: 100%; width: 25px"
     />
     <span class="ellipsis text-primary text-bold q-mx-xs">
-      {{ object.Name }}
+      {{ value.Name }}
     </span>
     <q-tooltip>
       <div class="col q-gutter-xs text-caption">
         <div class="row">
-          {{ object.TypeName }}
-          <span class="text-bold q-ml-xs">{{ object.Name }}</span>
+          {{ value.TypeName }}
+          <span class="text-bold q-ml-xs">{{ value.Name }}</span>
         </div>
         <q-badge
-          v-if="object.StateName"
-          :color="object.StateColor"
+          v-if="value.StateName"
+          :color="value.StateColor"
         >
-          {{ object.StateName }}
+          {{ value.StateName }}
         </q-badge>
       </div>
     </q-tooltip>
     <q-badge
-      v-if="object.StateName"
-      :color="object.StateColor"
+      v-if="value.StateName"
+      :color="value.StateColor"
       class="q-mx-sm"
       style="border-radius: 5px"
     >
-      {{ object.StateName ? object.StateName.charAt(0) : '' }}
+      {{ value.StateName ? value.StateName.charAt(0) : '' }}
     </q-badge>
     <q-btn
       v-if="remove"
@@ -53,7 +53,7 @@
 <script>
 export default {
   props: {
-    object: {
+    value: {
       type: Object,
       required: true
     },
@@ -66,7 +66,7 @@ export default {
   methods: {
     removeClick () {
       if (this.remove) {
-        this.remove(this.object)
+        this.remove(this.value)
       }
     }
   }

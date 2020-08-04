@@ -55,13 +55,13 @@
               v-for="col in props.cols"
               :key="col.name"
               :props="props"
-              align="left"
             >
-              <r-object
-                v-if="col.value && typeof(col.value) === 'object'"
-                :key="col.ID"
-                :object="col.value"
-              />
+              <template v-if="!!props.colsMap[col.name].component">
+                <component
+                  :is="props.colsMap[col.name].component"
+                  :value="col.value"
+                />
+              </template>
               <div v-else>
                 {{ col.value }}
               </div>

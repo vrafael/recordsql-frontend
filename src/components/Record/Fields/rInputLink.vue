@@ -14,7 +14,7 @@
       >
         <r-object
           v-if="value"
-          :object="value"
+          :value="value"
           style="max-width: 150px;"
         />
       </template>
