@@ -90,10 +90,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldIdentifier':
       field.componentInput = 'r-input-identifier'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-bigint',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         required: true,
