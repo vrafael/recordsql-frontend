@@ -1,26 +1,27 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-field
       class="col-9 q-field--with-bottom"
-      v-model="value"
-      :disable="!enable"
+      :value="filter.Value"
+      :disable="!filter.Enable"
       outlined
       dense
-      clearable
+      :clearable="filter.Value !== filterOrigin.Value"
+      @clear="reset"
     >
       <template
         #control
         class="items-center"
       >
         <r-object
-          v-for="item in value"
-          :key="item.ID"
-          :object="item"
-          :remove="removeItem"
-          style="max-width: 150px;"
+          v-for="object in filter.Value"
+          :key="object.ID"
+          :value="object"
+          :remove="removeObject"
+          style="max-width: 200px;"
         />
       </template>
       <template #append>
@@ -63,6 +64,7 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 import rObject from '../../rObject'
 
 export default {
@@ -74,31 +76,47 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    },
+    filterOrigin: {
+      type: Object,
+      required: true
     }
   },
-  data: () => ({
-    enable: false,
-    value: [],
-    types: [{
-      TypeID: 10,
-      TypeName: 'Рыбка',
-      TypeIcon: 'las la-fish',
-      TypeTag: 'Fish',
-      TypeOwnerID: 1
-    }, {
-      TypeID: 11,
-      TypeName: 'Гиппопотам',
-      TypeIcon: 'las la-hippo',
-      TypeTag: 'Hippo',
-      TypeOwnerID: 1
-    }]
-  }),
   methods: {
-    removeItem (item) {
-      const index = this.value.indexOf(item)
-      if (index !== -1) {
-        this.value.splice(index, 1)
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    reset () {
+      const filter = { ...this.filter }
+      filter.Value = this.filterOrigin.Value
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    insertObject (object) {
+      const filter = { ...this.filter }
+      if (filter.Value) {
+        const index = filter.Value.indexOf(object)
+        if (index === -1) {
+          filter.Value.push(object)
+        }
+      } else {
+        filter.Value = [object]
       }
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    removeObject (object) {
+      const filter = { ...this.filter }
+      if (filter.Value) {
+        const index = filter.Value.indexOf(object)
+        if (index !== -1) {
+          filter.Value.splice(index, 1)
+        }
+      }
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     }
   }
 }

@@ -15,7 +15,7 @@
         <r-object
           v-if="value"
           :value="value"
-          style="max-width: 150px;"
+          style="max-width: 300px;"
         />
       </template>
       <template #append>

@@ -78,6 +78,10 @@ import rFieldList from 'components/Record/rFieldList'
 import rRelationList from 'components/Record/rRelationList'
 
 export default {
+  components: {
+    rFieldList,
+    rRelationList
+  },
   props: {
     id: {
       type: Number,
@@ -88,10 +92,6 @@ export default {
       type: String,
       required: true
     }
-  },
-  components: {
-    rFieldList,
-    rRelationList
   },
   data () {
     return {
@@ -109,18 +109,26 @@ export default {
     ]),
     changeCurrentTabComponent (tabComponent) {
       this.$data.currentTabComponent = tabComponent
+    },
+    refresh () {
+      if (this.id) {
+        this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+        this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
+      } else {
+        this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
+      }
+    }
+  },
+  watch: {
+    typeTag: async function () {
+      await this.refresh()
     }
   },
   computed: {
     ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
   },
   mounted () {
-    if (this.id) {
-      this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
-      this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
-    } else {
-      this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
-    }
+    this.refresh()
   }
 }
 </script>

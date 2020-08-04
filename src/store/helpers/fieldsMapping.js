@@ -3,10 +3,10 @@ export default function fieldsMapping (field) {
     case 'FieldLink':
     case 'FieldLinkToType':
       field.componentInput = 'r-input-link'
-      /* field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-link',
         empty: { Enable: false, IsNull: false, Value: null }
-      } */
+      }
       field.componentColumn = {
         component: 'r-object',
         name: field.Tag,
