@@ -36,10 +36,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldMoney':
       field.componentInput = 'r-input-money'
-      /*       field.componentFilter = {
+      field.componentFilter = {
         component: 'r-filter-money',
         empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      } */
+      }
       field.componentColumn = {
         name: field.Tag,
         label: field.Name,
