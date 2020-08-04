@@ -13,9 +13,8 @@
         class="items-center"
       >
         <r-object
-          v-if="value"
+          v-if="value && value.ID"
           :value="value"
-          style="max-width: 300px;"
         />
       </template>
       <template #append>
@@ -82,21 +81,6 @@ export default {
       return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
     }
   },
-  data: () => ({
-    types: [{
-      TypeID: 10,
-      TypeName: 'Рыбка',
-      TypeIcon: 'las la-fish',
-      TypeTag: 'Fish',
-      TypeOwnerID: 1
-    }, {
-      TypeID: 11,
-      TypeName: 'Гиппопотам',
-      TypeIcon: 'las la-hippo',
-      TypeTag: 'Hippo',
-      TypeOwnerID: 1
-    }]
-  }),
   methods: {
     ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     updateFieldDataOnChange (eventValue) {
