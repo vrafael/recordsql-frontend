@@ -5,8 +5,20 @@
 </template>
 
 <script>
+import showNotify from './common/service.notify'
+import { ApiRpcError } from './common/service.api.rpc'
+
 export default {
-  name: 'App'
+  name: 'App',
+  errorCaptured (err, vm, info) {
+    if (err instanceof ApiRpcError) {
+      showNotify(err)
+    } else {
+      const notify = { code: 400, message: err.message }
+      showNotify(notify)
+    }
+    return false
+  }
   // async mounted () {
   //   await this.$store.dispatch('TYPE_METADATA_FETCH', 9)
   //   console.log('test: ', this.$store.getters.TYPE_METADATA_GET)

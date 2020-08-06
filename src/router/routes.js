@@ -15,11 +15,11 @@ const routes = [{
     })
   },
   {
-    path: '/record/:typeTag([a-zA-Z0-9]+)/:id(\\d+)?',
+    path: '/record/:typeTag([a-zA-Z0-9]+)/:identifier(\\d+)?',
     name: 'record',
     component: () => import('pages/rRecord.vue'),
     props: (route) => ({
-      id: parseInt(route.params.id),
+      identifier: parseInt(route.params.identifier),
       typeTag: route.params.typeTag
     })
   }

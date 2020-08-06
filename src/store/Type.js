@@ -44,8 +44,10 @@ export default {
   },
   actions: {
     async TYPE_LIST_FETCH ({ commit }) {
-      const response = await fetchApiRPC('Dev.TypeList')
-      commit('TYPE_LIST_UPDATE', response)
+      await fetchApiRPC('Dev.TypeList')
+        .then(response => {
+          commit('TYPE_LIST_UPDATE', response)
+        })
     }
   }
 }

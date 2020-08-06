@@ -1,5 +1,7 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 import showNotify from 'src/common/service.notify'
+// import showNotify from 'src/common/service.notify'
+
 export default {
   state: {
     record: null,
@@ -49,23 +51,26 @@ export default {
     async RECORD_STATE_INIT (context, payload) {
       context.commit('RECORD_UPDATE', payload)
     },
-    async RECORD_UPLOAD (context, params) {
-      const obj = { Set: params }
-      JSON.stringify(obj)
-      const response = await fetchApiRPC('Dev.RecordSet', obj)
-      if (response && Object.keys(response).length !== 0 && response.constructor === Object) {
-        context.dispatch('RECORD_FETCH', { TypeTag: 'Test', ID: response.ID })
-      } else {
-        showNotify({
-          errorMessage: 'Response object not exists or equals to zero or it is not object.',
-          displayTimeMS: 5000
+    async RECORD_UPLOAD (context) {
+      const typeTag = context.rootGetters.TYPE_METADATA_TYPETAG_GET
+      const identifier = context.rootGetters.TYPE_METADATA_IDENTIFIER_GET
+      const params = { TypeTag: typeTag, Set: context.state.record }
+      await fetchApiRPC('Dev.RecordSet', params)
+        .then(response => {
+          if (response && Object.keys(response).length !== 0 && response.constructor === Object) {
+            context.dispatch('RECORD_FETCH', { TypeTag: typeTag, Identifier: response[identifier] })
+          }
         })
-      }
     },
-    async RECORD_DELETE (context, params) {
-      // console.log('on delete')
-      // const obj = {  }
-      // await fetchApiRPC('Dev.RecordDel', )
+    async RECORD_DELETE (context) {
+      const typeTag = context.rootGetters.TYPE_METADATA_TYPETAG_GET
+      const identifier = context.rootGetters.TYPE_METADATA_IDENTIFIER_GET
+      const params = { TypeTag: typeTag, Identifier: context.state.record[identifier] }
+      await fetchApiRPC('Dev.RecordDel', params)
+        .then(() => {
+          showNotify({ message: 'Запись удалена!' })
+          this.$router.push({ name: 'home' })
+        })
     },
     async RECORD_RESET_STATE_TO_ORIGIN (context) {
       context.commit('RECORD_RESET_TO_ORIGIN')
