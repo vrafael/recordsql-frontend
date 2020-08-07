@@ -10,20 +10,28 @@ export default async function fetchApiRPC (method, params) {
       console.error(response)
       console.info(response)
       console.groupEnd()
+      throw new ApiRpcError(response.status, response.statusText)
     } else if (response.data.error) {
-      const {
-        error
-      } = response.data
-      console.groupCollapsed(`/api/rpc request error with code:${error.code}`)
-      console.error(error.message)
+      const { error } = response.data
+      const errorMessage = response.data.error.message
+      const errorCode = response.data.error.code
+      console.groupCollapsed(`/api/rpc request error with code:${errorCode}`)
+      console.error(error)
       console.info(response)
       console.groupEnd()
-    } else {
+      throw new ApiRpcError(errorCode, errorMessage)
+    } else if (response.data) {
       return response.data.result
     }
-  }).catch(error => {
-    console.groupCollapsed('/api/rpc connection error')
-    console.error(error)
-    console.groupEnd()
+    return true
   })
+}
+
+export class ApiRpcError extends Error {
+  constructor(code, message) {
+    super(message)
+    this.name = 'ApiRpcError'
+    this.message = message
+    this.code = code
+  }
 }

@@ -1,4 +1,5 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
+import showNotify from 'src/common/service.notify'
 
 export default {
   state: {
@@ -46,22 +47,21 @@ export default {
   actions: {
     async FIND_FETCH (context, params) {
       const pageNumber = 1
-
       context.commit('FIND_PAGENUMBER_RESET')
 
-      const paramsPage = {
+      const paramsWithPaging = {
         ...params,
         PageSize: context.state.pageSize,
         PageNumber: pageNumber
       }
 
-      const response = await fetchApiRPC('Dev.RecordFind', paramsPage)
-
-      if (response) {
-        context.commit('FIND_UPDATE', response)
-      } else {
-        context.commit('FIND_UPDATE', [])
-      }
+      await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
+        .then(response => {
+          context.commit('FIND_UPDATE', response)
+        }).catch(error => {
+          context.commit('FIND_UPDATE', [])
+          showNotify(error)
+        })
     },
     async FIND_FETCH_NEXT (context, params) {
       if (!context.state.isEOF) {
@@ -69,17 +69,16 @@ export default {
         context.commit('FIND_LOADING_SET', true)
         context.commit('FIND_PAGENUMBER_NEXT')
 
-        const paramsPage = {
+        const paramsWithPaging = {
           ...params,
           PageSize: context.state.pageSize,
           PageNumber: pageNumber
         }
 
-        const response = await fetchApiRPC('Dev.RecordFind', paramsPage)
-
-        if (response) {
-          context.commit('FIND_APPEND', response)
-        }
+        await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
+          .then(response => {
+            context.commit('FIND_APPEND', response)
+          })
       }
     }
   }

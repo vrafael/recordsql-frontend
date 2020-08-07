@@ -79,7 +79,7 @@ import rRelationList from 'components/Record/rRelationList'
 
 export default {
   props: {
-    id: {
+    identifier: {
       type: Number,
       required: false,
       default: null
@@ -115,9 +115,9 @@ export default {
     ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
   },
   mounted () {
-    if (this.id) {
+    if (this.identifier) {
       this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
-      this.RECORD_FETCH({ TypeTag: this.typeTag, ID: this.id })
+      this.RECORD_FETCH({ TypeTag: this.typeTag, Identifier: this.identifier })
     } else {
       this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
     }

@@ -1,11 +1,8 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 
 export default {
-  namespaced: true,
   state: {
-    typeList: [],
-    selected: [],
-    expanded: []
+    typeList: []
   },
   getters: {
     TYPE_LIST_GET (state) {
@@ -47,8 +44,10 @@ export default {
   },
   actions: {
     async TYPE_LIST_FETCH ({ commit }) {
-      const response = await fetchApiRPC('Dev.TypeList')
-      commit('TYPE_LIST_UPDATE', response)
+      await fetchApiRPC('Dev.TypeList')
+        .then(response => {
+          commit('TYPE_LIST_UPDATE', response)
+        })
     }
   }
 }

@@ -15,11 +15,11 @@
         </q-banner>
         <q-tree
           v-for="(typeList, index) in [TYPE_LIST_NESTED_GET]"
-          :key="typeList.id"
+          :key="typeList.Tag"
           :nodes="typeList[index]"
           label-key="Name"
           children-key="children"
-          node-key="ID"
+          node-key="Tag"
           :expanded.sync="expanded"
           selectable
           :selected.sync="selected"
@@ -27,7 +27,7 @@
         >
           <template #default-header="prop">
             <router-link
-              :to="{ name: 'type', params: { typeID: prop.node.ID }}"
+              :to="{ name: 'type', params: { typeTag: prop.node.Tag }}"
               v-slot="{ navigate }"
             >
               <div
@@ -59,8 +59,8 @@
       </template>
       <template #after>
         <r-find
-          v-if="!!typeID"
-          :type-i-d="parseInt(typeID)"
+          v-if="!!typeTag"
+          :type-tag="typeTag"
         />
       </template>
     </q-splitter>
@@ -79,12 +79,12 @@ export default {
     return {
       splitter: 25,
       splitterRestore: null,
-      expanded: [1, 2],
-      selected: [this.typeID]
+      expanded: ['Object', 'Directory'],
+      selected: this.typeTag
     }
   },
   methods: {
-    ...mapActions('Type', ['TYPE_LIST_FETCH']),
+    ...mapActions(['TYPE_LIST_FETCH']),
     typetreeShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
@@ -98,8 +98,8 @@ export default {
     }
   },
   props: {
-    typeID: {
-      type: Number,
+    typeTag: {
+      type: String,
       required: false,
       default: null
     }
@@ -108,7 +108,7 @@ export default {
     await this.TYPE_LIST_FETCH()
   },
   computed: {
-    ...mapGetters('Type', ['TYPE_LIST_NESTED_GET'])
+    ...mapGetters(['TYPE_LIST_NESTED_GET'])
   }
 }
 </script>

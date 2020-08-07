@@ -27,8 +27,8 @@ export default {
   },
   data: () => ({
     bigintInputRules: [
-      val => (val !== null && val !== '') || 'Please input integer number',
-      val => (/^-?\d*$/.test(val)) || 'Please use number format',
+      val => (val !== '') || 'Please input integer number',
+      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
       val => (val >= minBigint && val <= maxBigint) || `Please use integer value between ${minBigint} and ${maxBigint}`
     ]
   }),

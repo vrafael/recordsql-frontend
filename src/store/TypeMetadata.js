@@ -1,9 +1,11 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldMapping from './helpers/FieldMapping'
+import showNotify from 'src/common/service.notify'
 
 export default {
   state: {
     typeMetadata: {},
+    typeTag: null,
     loading: false
   },
   getters: {
@@ -36,6 +38,9 @@ export default {
         }
       }
       return null
+    },
+    TYPE_METADATA_TYPETAG_GET: (state) => {
+      return state.typeTag
     }
   },
   mutations: {
@@ -45,36 +50,45 @@ export default {
     },
     TYPE_METADATA_LOADING_SET (state, value) {
       state.loading = value
+    },
+    TYPE_METADATA_TYPETAG_SET (state, value) {
+      state.typeTag = value
     }
   },
   actions: {
     async TYPE_METADATA_FETCH (context, params) {
       context.commit('TYPE_METADATA_LOADING_SET', true)
-      const response = await fetchApiRPC('Dev.TypeMetadata', params)
-      if (response && response.length > 0) {
-        const metadata = response[0]
-
-        metadata.Fields.map(fieldMapping)
-        context.commit('TYPE_METADATA_UPDATE', metadata)
-      } else {
-        context.commit('TYPE_METADATA_UPDATE', {})
-      }
+      await fetchApiRPC('Dev.TypeMetadata', params)
+        .then(response => {
+          const metadata = response[0]
+          metadata.Fields.map(fieldMapping)
+          context.commit('TYPE_METADATA_UPDATE', metadata)
+          context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
+        }).catch(error => {
+          context.commit('TYPE_METADATA_UPDATE', {})
+          context.commit('TYPE_METADATA_TYPETAG_SET', null)
+          showNotify(error)
+        })
     },
     async TYPE_METADATA_FETCH_WITH_RECORD_INIT (context, params) {
-      const response = await fetchApiRPC('Dev.TypeMetadata', params)
-      if (response && response.length > 0) {
-        const metadata = response[0]
-        metadata.Fields.map(fieldMapping)
-        const emptyRecord = {}
-        metadata.Fields.forEach((field) => {
-          emptyRecord[field.Tag] = null
+      context.commit('TYPE_METADATA_LOADING_SET', true)
+      await fetchApiRPC('Dev.TypeMetadata', params)
+        .then(response => {
+          const metadata = response[0]
+          metadata.Fields.map(fieldMapping)
+          const emptyRecord = {}
+          metadata.Fields.forEach((field) => {
+            emptyRecord[field.Tag] = null
+          })
+          context.dispatch('RECORD_STATE_INIT', emptyRecord, { root: true })
+          context.commit('TYPE_METADATA_UPDATE', metadata)
+          context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
+        }).catch(error => {
+          context.dispatch('RECORD_STATE_INIT', null, { root: true })
+          context.commit('TYPE_METADATA_UPDATE', {})
+          context.commit('TYPE_METADATA_TYPETAG_SET', null)
+          showNotify(error)
         })
-        context.dispatch('RECORD_STATE_INIT', emptyRecord, { root: true })
-        context.commit('TYPE_METADATA_UPDATE', metadata)
-      } else {
-        context.dispatch('RECORD_STATE_INIT', null, { root: true })
-        context.commit('TYPE_METADATA_UPDATE', {})
-      }
     }
   }
 }

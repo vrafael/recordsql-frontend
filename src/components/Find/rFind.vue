@@ -1,5 +1,6 @@
 <template>
   <q-splitter
+    style="max-height: 85vh"
     v-model="splitter"
     horizontal
     unit="%"
@@ -83,8 +84,8 @@ export default {
     rObject
   },
   props: {
-    typeID: {
-      type: Number,
+    typeTag: {
+      type: String,
       required: true
     }
   },
@@ -123,11 +124,11 @@ export default {
       }
     },
     async refresh () {
-      await this.TYPE_METADATA_FETCH({ TypeID: this.typeID })
-      await this.FIND_FETCH({ TypeID: this.typeID })
+      await this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+      await this.FIND_FETCH({ TypeTag: this.typeTag })
     },
     async dataFetch () {
-      await this.FIND_FETCH_NEXT({ TypeID: this.typeID })
+      await this.FIND_FETCH_NEXT({ TypeTag: this.typeTag })
     },
     onScroll ({ to, ref }) {
       if (this.FIND_LOADING_STATE_GET !== true && !this.FIND_EOF_GET && to === this.FIND_LENGTH_GET - 1) {
@@ -142,7 +143,7 @@ export default {
     }
   },
   watch: {
-    typeID: async function () {
+    typeTag: async function () {
       await this.refresh()
     }
   },
@@ -154,7 +155,7 @@ export default {
 
 <style lang="sass">
 .my-sticky-dynamic
-  height: 600px
+  height: 100%
 
   .q-table__top,
   .q-table__bottom,
