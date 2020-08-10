@@ -1,11 +1,11 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 import showNotify from 'src/common/service.notify'
-// import showNotify from 'src/common/service.notify'
 
 export default {
   state: {
     record: null,
-    recordOrigin: null
+    recordOrigin: null,
+    loading: true
   },
   getters: {
     RECORD_GET: (state) => {
@@ -18,12 +18,16 @@ export default {
       const localState = JSON.stringify(state.record)
       const originState = JSON.stringify(state.recordOrigin)
       return localState === originState
+    },
+    RECORD_LOADING_GET: (state) => {
+      return state.loading
     }
   },
   mutations: {
     RECORD_UPDATE (state, response) {
       state.record = { ...response }
       state.recordOrigin = { ...response }
+      state.loading = false
     },
     RECORD_UPDATE_ON_CHANGE (state, response) {
       for (const fieldItem in response) {
@@ -32,10 +36,14 @@ export default {
     },
     RECORD_RESET_TO_ORIGIN (state) {
       state.record = { ...state.recordOrigin }
+    },
+    RECORD_LOADING_SET (state, value) {
+      state.loading = value
     }
   },
   actions: {
     async RECORD_FETCH (context, params) {
+      context.commit('RECORD_LOADING_SET', true)
       const response = await fetchApiRPC('Dev.RecordGet', params)
       if (response) {
         context.commit('RECORD_UPDATE', response)

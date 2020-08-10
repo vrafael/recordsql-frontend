@@ -13,9 +13,8 @@
         class="items-center"
       >
         <r-object
-          v-if="value"
-          :object="value"
-          style="max-width: 150px;"
+          v-if="value && value.ID"
+          :value="value"
         />
       </template>
       <template #append>
@@ -79,24 +78,9 @@ export default {
   computed: {
     ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
     iconsShow: function () {
-      return !!this.field && this.field.hasOwnProperty('Check') && this.field.Check.hasOwnProperty('FieldLinkValueType')
+      return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
     }
   },
-  data: () => ({
-    types: [{
-      TypeID: 10,
-      TypeName: 'Рыбка',
-      TypeIcon: 'las la-fish',
-      TypeTag: 'Fish',
-      TypeOwnerID: 1
-    }, {
-      TypeID: 11,
-      TypeName: 'Гиппопотам',
-      TypeIcon: 'las la-hippo',
-      TypeTag: 'Hippo',
-      TypeOwnerID: 1
-    }]
-  }),
   methods: {
     ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     updateFieldDataOnChange (eventValue) {

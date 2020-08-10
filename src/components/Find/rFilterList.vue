@@ -7,9 +7,11 @@
       <template v-if="!!TYPE_METADATA_FILTERS_GET">
         <component
           v-for="field in TYPE_METADATA_FILTERS_GET"
-          :is="field.componentFilter"
+          :is="field.componentFilter.component"
           :field="field"
           :key="field.ID"
+          :filter="FILTER_GET[field.Tag]"
+          :filter-origin="FILTER_ORIGIN_GET[field.Tag]"
         />
       </template>
 
@@ -70,7 +72,7 @@ export default {
     rFilterFloat
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_FILTERS_GET'])
+    ...mapGetters(['TYPE_METADATA_FILTERS_GET', 'FILTER_GET', 'FILTER_ORIGIN_GET'])
   }
 }
 </script>

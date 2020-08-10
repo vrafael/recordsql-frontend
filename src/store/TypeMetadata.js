@@ -1,5 +1,5 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
-import fieldMapping from './helpers/FieldMapping'
+import fieldsMapping from './helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 
 export default {
@@ -61,7 +61,7 @@ export default {
       await fetchApiRPC('Dev.TypeMetadata', params)
         .then(response => {
           const metadata = response[0]
-          metadata.Fields.map(fieldMapping)
+          metadata.Fields.map(fieldsMapping)
           context.commit('TYPE_METADATA_UPDATE', metadata)
           context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
         }).catch(error => {
@@ -75,7 +75,7 @@ export default {
       await fetchApiRPC('Dev.TypeMetadata', params)
         .then(response => {
           const metadata = response[0]
-          metadata.Fields.map(fieldMapping)
+          metadata.Fields.map(fieldsMapping)
           const emptyRecord = {}
           metadata.Fields.forEach((field) => {
             emptyRecord[field.Tag] = null
@@ -85,6 +85,29 @@ export default {
           context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
         }).catch(error => {
           context.dispatch('RECORD_STATE_INIT', null, { root: true })
+          context.commit('TYPE_METADATA_UPDATE', {})
+          context.commit('TYPE_METADATA_TYPETAG_SET', null)
+          showNotify(error)
+        })
+    },
+    async TYPE_METADATA_FETCH_WITH_FILTER_INIT (context, params) {
+      context.commit('TYPE_METADATA_LOADING_SET', true)
+      await fetchApiRPC('Dev.TypeMetadata', params)
+        .then(response => {
+          const metadata = response[0]
+          metadata.Fields.map(fieldsMapping)
+          const emptyFilters = {}
+          metadata.Fields
+            .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
+            .forEach(field => {
+              emptyFilters[field.Tag] = field.componentFilter.empty
+            })
+          context.dispatch('FILTER_STATE_INIT', emptyFilters, { root: true })
+          context.dispatch('FIND_FETCH', { TypeTag: params.TypeTag }, { root: true })
+          context.commit('TYPE_METADATA_UPDATE', metadata)
+          context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
+        }).catch(error => {
+          context.dispatch('FILTER_STATE_INIT', null, { root: true })
           context.commit('TYPE_METADATA_UPDATE', {})
           context.commit('TYPE_METADATA_TYPETAG_SET', null)
           showNotify(error)

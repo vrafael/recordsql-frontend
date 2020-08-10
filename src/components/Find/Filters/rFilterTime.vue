@@ -1,18 +1,19 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-input
       class="col-4"
-      v-model="valueFrom"
       :mask="timeInputMask"
       :rules="timeInputRules"
-      :disable="!enable"
+      :value="filter.ValueFrom"
+      :disable="!filter.Enable"
+      @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
       ref="inputFrom"
-      clearable
+      :clearable="filter.ValueFrom !== filterOrigin.ValueFrom"
       @clear="resetFrom"
     >
       <template #append>
@@ -56,14 +57,15 @@
 
     <q-input
       class="col-4"
-      v-model="valueTo"
       :mask="timeInputMask"
       :rules="timeInputRules"
-      :disable="!enable"
+      :value="filter.ValueTo"
+      :disable="!filter.Enable"
+      @change="event => updateValueTo(event.target.value)"
       outlined
       dense
       ref="inputTo"
-      clearable
+      :clearable="filter.ValueTo !== filterOrigin.ValueTo"
       @clear="resetTo"
     >
       <template #append>
@@ -107,6 +109,7 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 import { date } from 'quasar'
 
 export default {
@@ -117,52 +120,72 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    },
+    filterOrigin: {
+      type: Object,
+      required: true
     }
   },
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [
-      val => (/^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,3})?)?$/.test(val)) || 'Please use format "HH:mm:ss.nnn"'
+      val => !val || /^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{0,3})?)?$/.test(val) || 'Please use format "HH:mm:ss.nnn"'
     ],
     timeMask: 'HH:mm:ss',
-    enable: false,
-    valueFrom: '',
     proxyValueFrom: Date.now(),
-    valueTo: '',
     proxyValueTo: Date.now()
   }),
   methods: {
-    applyProxyFromToValueFrom () {
-      const proxytime = date.extractDate(this.proxyValueFrom, this.timeMask)
-      this.valueFrom = date.formatDate(proxytime, 'HH:mm:ss.SSS')
-
-      if (this.valueTo && this.valueFrom > this.valueTo) {
-        this.valueTo = this.valueFrom
-      }
-    },
-    applyValueFromToProxyFrom () {
-      this.proxyValueFrom = this.valueFrom
-    },
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueFrom = this.filterOrigin.ValueFrom
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
-    applyProxyToToValueTo () {
-      const proxytime = date.extractDate(this.proxyValueTo, this.timeMask)
-      this.valueTo = date.formatDate(proxytime, 'HH:mm:ss.SSS')
-
-      if (this.valueFrom && this.valueTo < this.valueFrom) {
-        this.valueFrom = this.valueTo
-      }
+    updateValueFrom (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueFrom = eventValue && eventValue === '' ? null : eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
-    applyValueToToProxyTo () {
-      this.proxyValueTo = this.valueTo
+    applyProxyFromToValueFrom () {
+      const proxytime = date.extractDate(this.proxyValueFrom, this.timeMask)
+      const value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+      this.updateValueFrom(value)
+    },
+    applyValueFromToProxyFrom () {
+      this.proxyValueFrom = this.filter.ValueFrom
     },
     resetTo () {
       setTimeout(() => {
         this.$refs.inputTo.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueTo = this.filterOrigin.ValueTo
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    updateValueTo (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueTo = eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    applyProxyToToValueTo () {
+      const proxytime = date.extractDate(this.proxyValueTo, this.timeMask)
+      const value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
+      this.updateValueTo(value)
+    },
+    applyValueToToProxyTo () {
+      this.proxyValueTo = this.filter.ValueTo
     }
   }
 }

@@ -1,18 +1,19 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-input
+      ref="input"
       class="col-9"
-      v-model="value"
+      :value="filter.Value"
+      @change="event => updateValue(event.target.value)"
       :rules="colorInputRules"
-      :disable="!enable"
+      :disable="!filter.Enable"
       mask="\#XXXXXXXX"
       outlined
       dense
-      ref="input"
-      clearable
+      :clearable="filter.Value !== filterOrigin.Value"
       @clear="reset"
     >
       <div
@@ -56,6 +57,7 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 // ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
 
 export default {
@@ -66,15 +68,21 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    },
+    filterOrigin: {
+      type: Object,
+      required: true
     }
   },
   data: () => ({
     colorInputRules: [
-      val => (val && val.length >= 7 && val.length <= 9) || 'Please use 6-8 characters',
-      val => /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => !val || val.length === 7 || val.length === 9 || 'Please use 6-8 characters',
+      val => !val || /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
-    enable: false,
-    value: '',
     helperColor: {
       style: {
         backgroundColor: '',
@@ -85,27 +93,40 @@ export default {
     proxyValue: ''
   }),
   watch: {
-    value: function (val) {
-      if (val && (val.length === 4 || val.length === 7 || val.length === 9)) {
-        this.helperColor.style.backgroundColor = val
+    filter: function (filter) {
+      if (filter.Value && (filter.Value.length === 7 || filter.Value.length === 9)) {
+        this.helperColor.style.backgroundColor = filter.Value
+      } else {
+        this.helperColor.style.backgroundColor = null
       }
     }
   },
   mounted () {
-    this.helperColor.style.backgroundColor = this.value
+    this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
-    applyProxyToValue () {
-      this.value = this.proxyValue
-    },
-    applyValueToProxy () {
-      this.proxyValue = this.value
-    },
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     reset () {
-      this.helperColor.style.backgroundColor = null
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.Value = this.filterOrigin.Value
+      this.helperColor.style.backgroundColor = `#${filter.Value}`
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    applyProxyToValue () {
+      this.updateValue(this.proxyValue)
+    },
+    applyValueToProxy () {
+      this.proxyValue = this.filter.Value
+    },
+    updateValue (eventValue) {
+      const filter = { ...this.filter }
+      filter.Value = eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     }
   }
 }

@@ -14,6 +14,10 @@ export default {
     if (err instanceof ApiRpcError) {
       showNotify(err)
     } else {
+      console.groupCollapsed('Application error')
+      console.error(err)
+      console.info(info)
+      console.groupEnd()
       const notify = { code: 400, message: err.message }
       showNotify(notify)
     }

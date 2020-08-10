@@ -1,14 +1,13 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-checkbox
-      toggle-indeterminate
-      indeterminate-value="null"
-      v-model="value"
-      :disable="!enable"
-      :label="value.toString().toUpperCase()"
+      :value="filter.Value"
+      :disable="!filter.Enable"
+      @input="event => updateValue(event)"
+      :label="label"
       dense
     />
   </r-filter>
@@ -16,6 +15,7 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -25,11 +25,40 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    }
+    /* filterOrigin: {
+      type: Object,
+      required: true
+    } */
+  },
+  computed: {
+    label: function () {
+      return this.filter.Value === null
+        ? ''
+        : this.filter.Value.toString().toUpperCase()
     }
   },
-  data: () => ({
-    enable: false,
-    value: false
-  })
+  methods: {
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    /* reset () {
+      setTimeout(() => {
+        this.$refs.input.resetValidation()
+      })
+      const filter = { ...this.filter }
+      filter.Value = this.filterOrigin.Value
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    }, */
+    updateValue (eventValue) {
+      const filter = { ...this.filter }
+      filter.Value = eventValue
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    }
+  }
 }
 </script>

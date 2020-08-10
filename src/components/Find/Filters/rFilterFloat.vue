@@ -1,31 +1,33 @@
 <template>
   <r-filter
     :field="field"
-    :enable.sync="enable"
+    :filter="filter"
   >
     <q-input
       class="col-4"
       type="number"
-      v-model="valueFrom"
-      :disable="!enable"
-      :rules="intInputRules"
+      :value="filter.ValueFrom"
+      :disable="!filter.Enable"
+      :rules="floatInputRules"
+      @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
       ref="inputFrom"
-      clearable
+      :clearable="filter.ValueFrom !== filterOrigin.ValueFrom"
       @clear="resetFrom"
     />
     <q-space />
     <q-input
       class="col-4"
       type="number"
-      v-model="valueTo"
-      :disable="!enable"
-      :rules="intInputRules"
+      :value="filter.ValueTo"
+      :disable="!filter.Enable"
+      :rules="floatInputRules"
+      @change="event => updateValueTo(event.target.value)"
       outlined
       dense
       ref="inputTo"
-      clearable
+      :clearable="filter.ValueTo !== filterOrigin.ValueTo"
       @clear="resetTo"
     />
   </r-filter>
@@ -33,36 +35,62 @@
 
 <script>
 import rFilter from './rFilter'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     rFilter
   },
+  data: () => ({
+    floatInputRules: [
+      val => (/(^-?\d*(.\d*)?$)?/.test(val)) || 'Please use float number format'
+    ]
+  }),
   props: {
     field: {
       type: Object,
       required: true
+    },
+    filter: {
+      type: Object,
+      required: true
+    },
+    filterOrigin: {
+      type: Object,
+      required: true
     }
   },
-  data: () => ({
-    intInputRules: [
-      val => (val !== null && val !== '') || 'Please input float number',
-      val => (/^-?\d*(.\d*)?$/.test(val)) || 'Please use float number format'
-    ],
-    enable: false,
-    valueFrom: null,
-    valueTo: null
-  }),
   methods: {
+    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueFrom = this.filterOrigin.ValueFrom
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    updateValueFrom (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueFrom = eventValue === '' ? null : Number(eventValue)
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     resetTo () {
       setTimeout(() => {
         this.$refs.inputTo.resetValidation()
       })
+      const filter = { ...this.filter }
+      filter.ValueTo = this.filterOrigin.ValueTo
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
+    },
+    updateValueTo (eventValue) {
+      const filter = { ...this.filter }
+      filter.ValueTo = eventValue === '' ? null : Number(eventValue)
+      const obj = { [`${this.field.Tag}`]: filter }
+      this.FILTER_STATE_UPDATE_FIELD(obj)
     }
   }
 }

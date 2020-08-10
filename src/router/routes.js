@@ -19,11 +19,10 @@ const routes = [{
     name: 'record',
     component: () => import('pages/rRecord.vue'),
     props: (route) => ({
-      identifier: parseInt(route.params.identifier),
+      identifier: route.params.identifier ? parseInt(route.params.identifier) : null,
       typeTag: route.params.typeTag
     })
-  }
-  ]
+  }]
 }]
 
 // Always leave this as last one

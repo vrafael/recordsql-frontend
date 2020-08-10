@@ -5,23 +5,34 @@
         <q-card-section class="bg-linear text-white">
           <div class="row items-center">
             <div class="items-start q-mx-sm">
+              <q-skeleton
+                v-if="RECORD_LOADING_GET"
+                type="QAvatar"
+              />
               <q-icon
+                v-else
                 :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : this.TYPE_METADATA_GET.Icon"
                 style="font-size:3em;"
               />
             </div>
             <div class="col">
-              <div class="text-h6">
-                {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
-              </div>
-              <div class="text-subtitle2">
-                {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : this.TYPE_METADATA_GET.Name }}
-              </div>
+              <template v-if="RECORD_LOADING_GET">
+                <q-skeleton type="text" />
+                <q-skeleton type="text" />
+              </template>
+              <template v-else>
+                <div class="text-h6">
+                  {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
+                </div>
+                <div class="text-subtitle2">
+                  {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : this.TYPE_METADATA_GET.Name }}
+                </div>
+              </template>
             </div>
 
             <q-fab
               v-model="transitions"
-              v-if="RECORD_GET"
+              v-if="!RECORD_LOADING_GET"
               label="Transitions"
               vertical-actions-align="left"
               color="accent"
@@ -67,6 +78,12 @@
           <q-separator />
           <component :is="currentTabComponent" />
         </q-card-section>
+        <q-inner-loading :showing="RECORD_LOADING_GET">
+          <q-spinner-gears
+            size="50px"
+            color="primary"
+          />
+        </q-inner-loading>
       </q-card>
     </div>
   </q-page>
@@ -78,6 +95,10 @@ import rFieldList from 'components/Record/rFieldList'
 import rRelationList from 'components/Record/rRelationList'
 
 export default {
+  components: {
+    rFieldList,
+    rRelationList
+  },
   props: {
     identifier: {
       type: Number,
@@ -89,12 +110,10 @@ export default {
       required: true
     }
   },
-  components: {
-    rFieldList,
-    rRelationList
-  },
   data () {
     return {
+      currentTypeTag: null,
+      currentIdentifier: null,
       tab: 'fields',
       transitions: false,
       currentTabComponent: 'rFieldList'
@@ -108,19 +127,35 @@ export default {
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     changeCurrentTabComponent (tabComponent) {
-      this.$data.currentTabComponent = tabComponent
+      this.currentTabComponent = tabComponent
+    },
+    refresh () {
+      if (this.currentTypeTag !== this.typeTag || this.currentIdentifier !== this.identifier) {
+        this.currentTypeTag = this.typeTag
+        this.currentIdentifier = this.identifier
+
+        if (this.identifier) {
+          this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+          this.RECORD_FETCH({ TypeTag: this.typeTag, Identifier: this.identifier })
+        } else {
+          this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
+        }
+      }
+    }
+  },
+  watch: {
+    typeTag: async function () {
+      await this.refresh()
+    },
+    id: async function () {
+      await this.refresh()
     }
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET'])
+    ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET', 'RECORD_LOADING_GET'])
   },
   mounted () {
-    if (this.identifier) {
-      this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
-      this.RECORD_FETCH({ TypeTag: this.typeTag, Identifier: this.identifier })
-    } else {
-      this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
-    }
+    this.refresh()
   }
 }
 </script>

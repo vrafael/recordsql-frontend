@@ -5,7 +5,7 @@ export default {
   state: {
     find: [],
     loading: false,
-    pageSize: 30,
+    pageSize: 50,
     pageNumber: 1,
     isEOF: false // достигнут конец списка
   },

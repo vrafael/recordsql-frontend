@@ -80,7 +80,8 @@ export default {
   methods: {
     ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
     applyProxyToValue () {
-      this.value = this.proxyValue
+      const value = this.proxyValue
+      this.updateFieldDataOnChange(value)
     },
     applyValueToProxy () {
       this.proxyValue = this.value

@@ -8,6 +8,7 @@ import Type from './Type'
 import TypeMetadata from './TypeMetadata'
 import Record from './Record'
 import Find from './Find'
+import Filter from './Filter'
 
 /*
  * If not building with SSR mode, you can
@@ -25,7 +26,8 @@ export default function (/* { ssrContext } */) {
       Type,
       TypeMetadata,
       Record,
-      Find
+      Find,
+      Filter
     },
 
     // enable strict mode (adds overhead!)
