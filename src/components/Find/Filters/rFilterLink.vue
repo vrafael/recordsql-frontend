@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filterUpdate="filterUpdate"
   >
     <q-field
       class="col-9 q-field--with-bottom"
@@ -9,7 +10,7 @@
       :disable="!filter.Enable"
       outlined
       dense
-      :clearable="filter.Value !== filterOrigin.Value"
+      :clearable="filter.Value !== filterCurrent.Value"
       @clear="reset"
     >
       <template
@@ -64,8 +65,7 @@
 
 <script>
 import rFilter from './rFilter'
-import { mapActions } from 'vuex'
-import rObject from '../../rObject'
+import rObject from 'src/components/rObject'
 
 export default {
   components: {
@@ -81,42 +81,40 @@ export default {
       type: Object,
       required: true
     },
-    filterOrigin: {
+    filterCurrent: {
       type: Object,
+      required: true
+    },
+    filterUpdate: {
+      type: Function,
       required: true
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     reset () {
-      const filter = { ...this.filter }
-      filter.Value = this.filterOrigin.Value
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     },
     insertObject (object) {
-      const filter = { ...this.filter }
-      if (filter.Value) {
-        const index = filter.Value.indexOf(object)
+      let value = this.filter.value
+      if (value) {
+        const index = value.indexOf(object)
         if (index === -1) {
-          filter.Value.push(object)
+          value.push(object)
         }
       } else {
-        filter.Value = [object]
+        value = [object]
       }
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: value })
     },
     removeObject (object) {
-      const filter = { ...this.filter }
-      if (filter.Value) {
-        const index = filter.Value.indexOf(object)
+      const value = this.filter.value
+      if (value) {
+        const index = value.indexOf(object)
         if (index !== -1) {
-          filter.Value.splice(index, 1)
+          value.splice(index, 1)
         }
       }
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: value })
     }
   }
 }

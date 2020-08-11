@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filterUpdate="filterUpdate"
   >
     <q-input
       class="col-4"
@@ -13,7 +14,7 @@
       outlined
       dense
       ref="inputFrom"
-      :clearable="filter.ValueFrom !== filterOrigin.ValueFrom"
+      :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
       @clear="resetFrom"
     />
     <q-space />
@@ -27,14 +28,13 @@
       outlined
       dense
       ref="inputTo"
-      :clearable="filter.ValueTo !== filterOrigin.ValueTo"
+      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="resetTo"
     />
   </r-filter>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rFilter from './rFilter'
 
 const minMoney = -922337203685477,
@@ -60,42 +60,33 @@ export default {
       type: Object,
       required: true
     },
-    filterOrigin: {
+    filterCurrent: {
       type: Object,
+      required: true
+    },
+    filterUpdate: {
+      type: Function,
       required: true
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     resetFrom () {
+      this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
       })
-      const filter = { ...this.filter }
-      filter.ValueFrom = this.filterOrigin.ValueFrom
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     updateValueFrom (eventValue) {
-      const filter = { ...this.filter }
-      filter.ValueFrom = eventValue
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { ValueFrom: eventValue })
     },
     resetTo () {
+      this.filterUpdate(this.field.Tag, { ValueTo: this.filterCurrent.ValueTo })
       setTimeout(() => {
         this.$refs.inputTo.resetValidation()
       })
-      const filter = { ...this.filter }
-      filter.ValueTo = this.filterOrigin.ValueTo
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     updateValueTo (eventValue) {
-      const filter = { ...this.filter }
-      filter.ValueTo = eventValue
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { ValueTo: eventValue })
     }
   }
 }

@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filterUpdate="filterUpdate"
   >
     <q-input
       ref="input"
@@ -13,7 +14,7 @@
       mask="\#XXXXXXXX"
       outlined
       dense
-      :clearable="filter.Value !== filterOrigin.Value"
+      :clearable="filter.Value !== filterCurrent.Value"
       @clear="reset"
     >
       <div
@@ -57,7 +58,6 @@
 
 <script>
 import rFilter from './rFilter'
-import { mapActions } from 'vuex'
 // ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
 
 export default {
@@ -73,8 +73,12 @@ export default {
       type: Object,
       required: true
     },
-    filterOrigin: {
+    filterCurrent: {
       type: Object,
+      required: true
+    },
+    filterUpdate: {
+      type: Function,
       required: true
     }
   },
@@ -105,16 +109,11 @@ export default {
     this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
     reset () {
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
-      const filter = { ...this.filter }
-      filter.Value = this.filterOrigin.Value
-      this.helperColor.style.backgroundColor = `#${filter.Value}`
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     applyProxyToValue () {
       this.updateValue(this.proxyValue)
@@ -123,10 +122,7 @@ export default {
       this.proxyValue = this.filter.Value
     },
     updateValue (eventValue) {
-      const filter = { ...this.filter }
-      filter.Value = eventValue
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     }
   }
 }

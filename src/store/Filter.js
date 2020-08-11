@@ -1,25 +1,25 @@
 export default {
   state: {
     filter: null,
-    filterOrigin: null
+    filterCurrent: null
   },
   getters: {
     FILTER_GET: (state) => {
       return state.filter
     },
     FILTER_ORIGIN_GET: (state) => {
-      return state.filterOrigin
+      return state.filterCurrent
     },
     FILTER_COMPARE_STATE: (state) => {
       const localState = JSON.stringify(state.filter)
-      const originState = JSON.stringify(state.filterOrigin)
+      const originState = JSON.stringify(state.filterCurrent)
       return localState === originState
     }
   },
   mutations: {
     FILTER_UPDATE (state, response) {
       state.filter = { ...response }
-      state.filterOrigin = { ...response }
+      state.filterCurrent = { ...response }
     },
     FILTER_UPDATE_ON_CHANGE (state, response) {
       for (const fieldItem in response) {

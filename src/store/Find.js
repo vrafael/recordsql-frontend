@@ -46,13 +46,12 @@ export default {
   },
   actions: {
     async FIND_FETCH (context, params) {
-      const pageNumber = 1
       context.commit('FIND_PAGENUMBER_RESET')
 
       const paramsWithPaging = {
         ...params,
         PageSize: context.state.pageSize,
-        PageNumber: pageNumber
+        PageNumber: 1
       }
 
       await fetchApiRPC('Dev.RecordFind', paramsWithPaging)

@@ -1,20 +1,28 @@
 <template>
   <q-splitter
     style="max-height: 85vh"
-    v-model="splitter"
+    v-model="splitter.value"
     horizontal
     unit="%"
     :limits="[0, 60]"
   >
-    <q-inner-loading :showing="TYPE_METADATA_LOADING_STATE_GET">
+    <q-inner-loading :showing="type.loading">
       <q-spinner-gears
         size="50px"
         color="primary"
       />
     </q-inner-loading>
 
-    <template #before>
-      <r-filter-list />
+    <template
+      #before
+      v-if="!!type.metadata"
+    >
+      <r-filter-list
+        :fields="typeMetadataFilters"
+        :filters="filters"
+        :filters-current="filtersCurrent"
+        :filter-update="filterUpdate"
+      />
     </template>
     <template #separator>
       <q-btn
@@ -22,15 +30,15 @@
         padding="xs lg"
         size="xs"
         icon="drag_indicator"
-        @click="filtersShow"
+        @click="splitterClick()"
       />
     </template>
     <template #after>
       <q-table
-        :data="find"
-        :columns="TYPE_METADATA_COLUMNS_GET"
-        :row-key="TYPE_METADATA_IDENTIFIER_GET"
-        :loading="FIND_LOADING_STATE_GET"
+        :data="findRecordset()"
+        :columns="typeMetadataColumns"
+        :row-key="typeMetadataIdentifier"
+        :loading="find.loading"
         class="q-pa-sm my-sticky-dynamic"
         dense
         virtual-scroll
@@ -76,7 +84,9 @@
 <script>
 import rFilterList from './rFilterList'
 import rObject from '../rObject'
-import { mapActions, mapGetters } from 'vuex'
+import fetchApiRPC from 'src/common/service.api.rpc'
+import fieldsMapping from 'src/store/helpers/fieldsMapping'
+import showNotify from 'src/common/service.notify'
 
 export default {
   components: {
@@ -91,50 +101,128 @@ export default {
   },
   data () {
     return {
-      splitter: 0,
-      splitterRestore: 40,
+      splitter: {
+        value: 0,
+        restore: 40
+      },
       pagination: {
         rowsPerPage: 0
+      },
+      type: {
+        metadata: null,
+        loading: false
+      },
+      filters: null,
+      filtersCurrent: null,
+      find: {
+        recordset: [],
+        loading: false,
+        pageSize: 50,
+        pageNumber: 1,
+        isEOF: false // достигнут конец списка
       }
     }
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET',
-      'TYPE_METADATA_COLUMNS_GET',
-      'TYPE_METADATA_IDENTIFIER_GET',
-      'FIND_GET',
-      'FIND_EOF_GET',
-      'FIND_LOADING_STATE_GET',
-      'FIND_LENGTH_GET']),
-    find () {
-      return Object.freeze(this.FIND_GET.slice())
+    typeMetadataColumns () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
+    },
+    typeMetadataIdentifier () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _field = this.type.metadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
+        if (_field) {
+          return _field.Tag
+        }
+      }
+      return null
+    },
+    typeMetadataFilters () {
+      return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH',
-      'FIND_FETCH_NEXT',
-      'TYPE_METADATA_FETCH_WITH_FILTER_INIT']),
-    filtersShow () {
-      if (this.splitter > 0) {
-        this.splitterRestore = this.splitter
-        this.splitter = 0
-      } else if (this.splitterRestore > 0) {
-        this.splitter = this.splitterRestore
-        this.splitterRestore = 0
+    splitterClick () {
+      if (this.splitter.value > 0) {
+        this.splitter.restore = this.splitter.value
+        this.splitter.value = 0
+      } else if (this.splitter.restore > 0) {
+        this.splitter.value = this.splitter.restore
+        this.splitter.restore = 0
       } else {
-        this.splitter = 25
+        this.splitter.value = 25
       }
     },
-    async refresh () {
-      await this.TYPE_METADATA_FETCH_WITH_FILTER_INIT({ TypeTag: this.typeTag })
+    findRecordset () {
+      if (this.find.recordset) {
+        return Object.freeze(this.find.recordset.slice())
+      }
+      return []
     },
-    async dataFetch () {
-      await this.FIND_FETCH_NEXT({ TypeTag: this.typeTag })
+    async filterUpdate (field, filter) {
+      for (const property in filter) {
+        this.filters[field][property] = filter[property]
+      }
+    },
+    async typeMetadataFetch () {
+      this.type.loading = true
+      this.find.pageNumber = 1
+      this.find.recordset = []
+      await fetchApiRPC('Dev.TypeMetadata', { TypeTag: this.typeTag })
+        .then(async (response) => {
+          const metadata = response[0]
+          metadata.Fields.map(fieldsMapping)
+          const emptyFilters = {}
+          metadata.Fields
+            .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
+            .forEach(field => {
+              emptyFilters[field.Tag] = field.componentFilter.empty
+            })
+          this.filters = { ...emptyFilters } // редактируемые фильтры
+          this.filtersCurrent = { ...emptyFilters } // фильтры задействованные в фильтрации
+          this.type.metadata = metadata
+          this.type.loading = false
+          await this.findFetch()
+        }).catch(error => {
+          this.filters = null
+          this.type.metadata = null
+          this.type.loading = false
+          showNotify(error)
+        })
+    },
+    async findFetch () {
+      if (this.find.loading) {
+        return
+      }
+
+      this.find.loading = true
+
+      const paramsWithPaging = {
+        TypeTag: this.typeTag,
+        PageSize: this.find.pageSize,
+        PageNumber: this.find.pageNumber
+      }
+
+      await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
+        .then(response => {
+          this.find.pageNumber += 1
+          this.find.recordset = this.find.recordset.concat(response)
+          this.find.isEOF = response.length < this.find.pageSize
+          this.find.loading = false
+        }).catch(error => {
+          this.find.loading = false
+          showNotify(error)
+        })
     },
     onScroll ({ to, ref }) {
-      if (this.FIND_LOADING_STATE_GET !== true && !this.FIND_EOF_GET && to === this.FIND_LENGTH_GET - 1) {
+      if (!this.type.loading && !this.find.loading && !this.find.isEOF && to === this.find.recordset.length - 1) {
         setTimeout(async () => {
-          this.dataFetch()
+          this.findFetch()
 
           await this.$nextTick(() => {
             ref.refresh()
@@ -145,11 +233,11 @@ export default {
   },
   watch: {
     typeTag: async function () {
-      await this.refresh()
+      await this.typeMetadataFetch()
     }
   },
   async mounted () {
-    await this.refresh()
+    await this.typeMetadataFetch()
   }
 }
 </script>
