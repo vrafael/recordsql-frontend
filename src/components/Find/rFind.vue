@@ -14,7 +14,7 @@
     </q-inner-loading>
 
     <template #before>
-      <r-filter-list />
+      <r-filter-list ref="filterList" />
     </template>
     <template #separator>
       <q-btn
@@ -41,7 +41,11 @@
         @virtual-scroll="onScroll"
       >
         <template #top>
-          <q-btn color="primary">
+          <q-btn
+            :disable="GET_VALIDATION_ERRORS_FLAG"
+            color="primary"
+            @click="refreshButton"
+          >
             <q-icon
               left
               name="refresh"
@@ -105,7 +109,9 @@ export default {
       'FIND_GET',
       'FIND_EOF_GET',
       'FIND_LOADING_STATE_GET',
-      'FIND_LENGTH_GET']),
+      'FIND_LENGTH_GET',
+      'GET_VALIDATION_ERRORS_FLAG'
+    ]),
     find () {
       return Object.freeze(this.FIND_GET.slice())
     }
@@ -144,6 +150,12 @@ export default {
           })
         }, 0)
       }
+    },
+    refreshButton () {
+      this.$refs.filterList.checkValidate()
+      // this.GET_VALIDATION_ERRORS_FLAG === false // if form valid
+      //   ?  do some action
+      //   :  throw an error
     }
   },
   watch: {
