@@ -76,13 +76,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
+    ...mapGetters([
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET'
+    ]),
     iconsShow: function () {
       return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
     }
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)

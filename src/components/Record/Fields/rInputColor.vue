@@ -93,10 +93,15 @@ export default {
     this.$data.helperColor.style.backgroundColor = this.value
   },
   computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+    ...mapGetters([
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET'
+    ])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     applyProxyToValue () {
       this.value = this.proxyValue
     },

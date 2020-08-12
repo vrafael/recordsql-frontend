@@ -38,7 +38,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)

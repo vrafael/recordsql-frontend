@@ -78,10 +78,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+    ...mapGetters([
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET'
+    ])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     applyProxyToValue () {
       const proxytime = date.extractDate(this.proxyValue, this.timeMask)
       const value = date.formatDate(proxytime, 'HH:mm:ss.SSS')

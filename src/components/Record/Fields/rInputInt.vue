@@ -43,10 +43,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
+    ...mapGetters([
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET'
+    ])
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     reset () {
       const fieldTag = this.field.Tag.toString()
       setTimeout(() => {
