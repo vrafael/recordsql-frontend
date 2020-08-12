@@ -27,9 +27,16 @@ export default {
   },
   data: () => ({
     intInputRules: [
-      val => (val !== '') || 'Please input integer number',
-      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
-      val => (val >= minInt && val <= maxInt) || `Please use integer value between ${minInt} and ${maxInt}`
+      val => (
+        val !== ''
+      ) || 'Please input integer number',
+      val => (
+        /(^-?\d*$)?/
+          .test(val)
+      ) || 'Please use number format',
+      val => (
+        val >= minInt && val <= maxInt
+      ) || `Please use integer value between ${minInt} and ${maxInt}`
     ]
   }),
   props: {

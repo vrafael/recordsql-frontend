@@ -81,7 +81,13 @@ export default {
       'RECORD_ORIGIN_GET'
     ]),
     iconsShow: function () {
-      return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
+      return (
+        !!this.field && Object.prototype.hasOwnProperty.call(
+          this.field, 'Check'
+        ) && Object.prototype.hasOwnProperty.call(
+          this.field.Check, 'FieldLinkValueType'
+        )
+      )
     }
   },
   methods: {
