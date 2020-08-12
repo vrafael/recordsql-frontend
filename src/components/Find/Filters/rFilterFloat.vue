@@ -2,7 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
-    :filterUpdate="filterUpdate"
+    :filter-update="filterUpdate"
   >
     <q-input
       class="col-4"

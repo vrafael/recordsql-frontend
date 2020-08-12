@@ -2,7 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
-    :filterUpdate="filterUpdate"
+    :filter-update="filterUpdate"
   >
     <q-field
       class="col-9 q-field--with-bottom"
