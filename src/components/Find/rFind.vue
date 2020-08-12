@@ -111,9 +111,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['TYPE_METADATA_FETCH', 'FIND_FETCH',
+    ...mapActions([
+      'TYPE_METADATA_FETCH',
+      'FIND_FETCH',
       'FIND_FETCH_NEXT',
-      'TYPE_METADATA_FETCH_WITH_FILTER_INIT']),
+      'TYPE_METADATA_FETCH_WITH_FILTER_INIT'
+    ]),
     filtersShow () {
       if (this.splitter > 0) {
         this.splitterRestore = this.splitter
