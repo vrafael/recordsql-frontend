@@ -5,7 +5,6 @@
   >
     <q-input
       class="col-4"
-      type="number"
       :value="filter.ValueFrom"
       :disable="!filter.Enable"
       :rules="moneyInputRules"
