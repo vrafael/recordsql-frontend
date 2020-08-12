@@ -18,7 +18,6 @@
     <q-space />
     <q-input
       class="col-4"
-      type="number"
       :value="filter.ValueTo"
       :disable="!filter.Enable"
       :rules="moneyInputRules"
@@ -70,7 +69,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
