@@ -43,13 +43,18 @@ export default {
   components: {
     rFilter
   },
-  data: () => ({
-    moneyInputRules: [
-      val => (/(^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$)?/.test(val)) || 'Please use money format',
-      val => (parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney) ||
-        `Please use money value between ${minMoney} and ${maxMoney}`
-    ]
-  }),
+  computed: {
+    moneyInputRules: {
+      get: function () {
+        return [
+          val => !(/,+/.test(val)) || 'Please use dot\'s instead comma\'s',
+          val => !val || (/(^-?\d*?(\.\d{1,4})?$)/.test(val)) || 'Please use money format',
+          val => !val || (val && val !== '' ? parseFloat(val.replace(',', '')) > minMoney && parseFloat(val.replace(',', '')) < maxMoney : null) ||
+            `Please use money value between ${minMoney} and ${maxMoney}`
+        ]
+      }
+    }
+  },
   props: {
     field: {
       type: Object,
