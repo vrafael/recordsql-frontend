@@ -35,6 +35,19 @@ export default {
   components: {
     rField
   },
+  props: {
+    field: {
+      type: Object,
+      required: true
+    },
+    value: {
+      type: Number,
+      default: null
+    }
+  },
+  directives: {
+    money: VMoney
+  },
   data: () => ({
     moneyInputRules: [
       val => (
@@ -84,19 +97,6 @@ export default {
       const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
       return localState !== originState
     }
-  },
-  props: {
-    field: {
-      type: Object,
-      required: true
-    },
-    value: {
-      type: Number,
-      default: null
-    }
-  },
-  directives: {
-    money: VMoney
   }
 }
 </script>

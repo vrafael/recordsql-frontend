@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -104,18 +104,16 @@ export default {
       required: true
     },
     value: {
-      type: String,
+      type: [String, null],
+      default: null
+    },
+    originValue: {
+      type: [String, null],
       default: null
     }
   },
   mounted () {
     this.$data.helperColor.style.backgroundColor = this.value
-  },
-  computed: {
-    ...mapGetters([
-      'RECORD_GET',
-      'RECORD_ORIGIN_GET'
-    ])
   },
   methods: {
     ...mapActions([
@@ -128,13 +126,9 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
-      const fieldTag = this.field.Tag.toString()
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      this.$data.helperColor.style.backgroundColor = `#${originValue}`
-      const obj = { [`${this.field.Tag}`]: originValue }
+      this.$refs.input.resetValidation()
+      this.$data.helperColor.style.backgroundColor = `#${this.originValue}`
+      const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     updateFieldDataOnChange (eventValue) {
@@ -142,10 +136,7 @@ export default {
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
-      const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
-      return localState !== originState
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }
