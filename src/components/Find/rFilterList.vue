@@ -78,8 +78,7 @@ export default {
     ...mapGetters([
       'TYPE_METADATA_FILTERS_GET',
       'FILTER_GET',
-      'FILTER_ORIGIN_GET',
-      'GET_VALIDATION_ERRORS_FLAG'
+      'FILTER_ORIGIN_GET'
     ])
   },
   updated () {
