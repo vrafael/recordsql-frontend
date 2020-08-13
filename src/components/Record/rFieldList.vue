@@ -102,7 +102,8 @@ export default {
   computed: {
     ...mapGetters([
       'TYPE_METADATA_INPUTS_GET',
-      'RECORD_GET', 'RECORD_ORIGIN_GET',
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET',
       'RECORD_COMPARE_STATE',
       'RECORD_LOADING_GET',
       'TYPE_METADATA_IDENTIFIER_GET'
@@ -115,9 +116,7 @@ export default {
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
     compareState () {
-      const localState = JSON.stringify(this.RECORD_GET)
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
-      return localState === originState
+      return JSON.stringify(this.RECORD_GET) === JSON.stringify(this.RECORD_ORIGIN_GET)
     },
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
