@@ -40,7 +40,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     reset () {
       setTimeout(() => {
         this.$refs.input.resetValidation()

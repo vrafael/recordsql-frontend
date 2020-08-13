@@ -43,7 +43,10 @@ export default {
   },
   data: () => ({
     floatInputRules: [
-      val => (/(^-?\d*(.\d*)?$)?/.test(val)) || 'Please use float number format'
+      val => (
+        /(^-?\d*(.\d*)?$)?/
+          .test(val)
+      ) || 'Please use float number format'
     ]
   }),
   props: {
@@ -61,7 +64,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()

@@ -80,8 +80,17 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => !val || val.length === 7 || val.length === 9 || 'Please use 6-8 characters',
-      val => !val || /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => (
+        !val
+      ) || (
+        val.length === 7
+      ) || (
+        val.length === 9
+      ) || 'Please use 6-8 characters',
+      val => (
+        !val
+      ) || /^#([\da-fA-F]{6,8})$/
+        .test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -105,7 +114,9 @@ export default {
     this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     reset () {
       setTimeout(() => {
         this.$refs.input.resetValidation()

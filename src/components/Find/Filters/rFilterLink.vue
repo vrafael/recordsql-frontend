@@ -87,7 +87,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     reset () {
       const filter = { ...this.filter }
       filter.Value = this.filterOrigin.Value

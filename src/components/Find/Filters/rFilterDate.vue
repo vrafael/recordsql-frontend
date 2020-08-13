@@ -127,14 +127,19 @@ export default {
   data: () => ({
     dateInputMask: '####-##-##',
     dateInputRules: [
-      val => !val || /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/.test(val) || 'Please use format "YYYY-MM-DD"'
+      val => (
+        !val
+      ) || /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/
+        .test(val) || 'Please use format "YYYY-MM-DD"'
     ],
     dateMask: 'YYYY-MM-DD',
     proxyValueFrom: Date.now(),
     proxyValueTo: Date.now()
   }),
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()

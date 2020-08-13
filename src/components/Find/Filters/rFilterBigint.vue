@@ -46,8 +46,13 @@ export default {
   },
   data: () => ({
     bigintInputRules: [
-      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
-      val => (val > minBigint && val < maxBigint) || 'Please use big integer value between -2^63 and 2^63-1'
+      val => (
+        /(^-?\d*$)?/
+          .test(val)
+      ) || 'Please use number format',
+      val => (
+        val > minBigint && val < maxBigint
+      ) || 'Please use big integer value between -2^63 and 2^63-1'
     ]
   }),
   props: {
@@ -65,7 +70,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()
