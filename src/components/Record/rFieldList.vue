@@ -22,6 +22,7 @@
           :field="field"
           :key="field.ID"
           :value="RECORD_GET[field.Tag]"
+          :origin-value="RECORD_ORIGIN_GET[field.Tag]"
         />
       </template>
     </template>
