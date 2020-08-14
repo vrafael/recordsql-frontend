@@ -22,13 +22,13 @@
           </q-avatar>
           RecordSQL
         </q-toolbar-title>
-        <q-btn
-          flat
-          @click="drawerRight = !drawerRight"
-          round
-          dense
-          icon="star"
-        />
+        <!--        <q-btn-->
+        <!--          flat-->
+        <!--          @click="drawerRight = !drawerRight"-->
+        <!--          round-->
+        <!--          dense-->
+        <!--          icon="star"-->
+        <!--        />-->
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -65,16 +65,16 @@
       </q-scroll-area>
     </q-drawer>
 
-    <q-drawer
-      side="right"
-      v-model="drawerRight"
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list class="flex flex-center">
-        Favorite objects
-      </q-list>
-    </q-drawer>
+    <!--    <q-drawer-->
+    <!--      side="right"-->
+    <!--      v-model="drawerRight"-->
+    <!--      bordered-->
+    <!--      content-class="bg-grey-1"-->
+    <!--    >-->
+    <!--      <q-list class="flex flex-center">-->
+    <!--        Favorite objects-->
+    <!--      </q-list>-->
+    <!--    </q-drawer>-->
 
     <q-page-container>
       <router-view />
@@ -88,8 +88,8 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return ({
-      drawerLeft: true,
-      drawerRight: false
+      drawerLeft: true
+      // drawerRight: false
     })
   },
   computed: {
