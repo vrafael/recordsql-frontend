@@ -12,12 +12,6 @@ export default {
       icon: 'mdi-puzzle',
       link: '/type',
       separator: false
-    },
-    {
-      label: 'Records',
-      icon: 'mdi-database',
-      link: '/record/Test',
-      separator: false
     }
     ]
   },
