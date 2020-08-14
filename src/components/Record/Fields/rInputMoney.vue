@@ -43,8 +43,17 @@ export default {
   data: () => ({
     moneyInputRules: [
       val => !(/,+/.test(val)) || 'Please use dot\'s instead comma\'s',
-      val => !val || (/(^-?\d*?(\.\d{1,4})?$)/.test(val)) || 'Please use money format',
-      val => !val || (val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null) ||
+      val => (
+        !val
+      ) || (
+        /(^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$)?/
+          .test(val)
+      ) || 'Please use money format',
+      val => (
+        !val
+      ) || (
+        val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null
+      ) ||
         `Please use money value between ${minMoney} and ${maxMoney}`
     ]
   }),

@@ -30,9 +30,6 @@ export default {
   data: () => ({
     intInputRules: [
       val => (
-        val !== ''
-      ) || 'Please input integer number',
-      val => (
         /(^-?\d*$)?/
           .test(val)
       ) || 'Please use number format',

@@ -60,7 +60,9 @@ export default {
     dateInputMask: '####-##-##',
     dateInputRules: [
       val => (
-        /(^[\d]{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$)?/
+        !val
+      ) || (
+        /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/
           .test(val)
       ) || 'Please use format "YYYY-MM-DD"'
     ],
