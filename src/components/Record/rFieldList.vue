@@ -99,7 +99,14 @@ export default {
     rInputLink
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_INPUTS_GET', 'RECORD_GET', 'RECORD_ORIGIN_GET', 'RECORD_COMPARE_STATE', 'RECORD_LOADING_GET', 'TYPE_METADATA_IDENTIFIER_GET'])
+    ...mapGetters([
+      'TYPE_METADATA_INPUTS_GET',
+      'RECORD_GET',
+      'RECORD_ORIGIN_GET',
+      'RECORD_COMPARE_STATE',
+      'RECORD_LOADING_GET',
+      'TYPE_METADATA_IDENTIFIER_GET'
+    ])
   },
   methods: {
     ...mapActions([

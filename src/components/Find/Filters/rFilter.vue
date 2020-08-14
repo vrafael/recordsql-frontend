@@ -40,12 +40,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     changeEnable: function () {
-      const fieldTag = this.field.Tag
       const filter = { ...this.filter }
       filter.Enable = !filter.Enable
-      const obj = { [`${fieldTag}`]: filter }
+      const obj = { [`${this.field.Tag}`]: filter }
       this.FILTER_STATE_UPDATE_FIELD(obj)
     }
   }

@@ -46,8 +46,13 @@ export default {
   },
   data: () => ({
     intInputRules: [
-      val => (/(^-?\d*$)?/.test(val)) || 'Please use number format',
-      val => (val > minInt && val < maxInt) || 'Please use integer value between -2^31 and 2^31-1'
+      val => (
+        /(^-?\d*$)?/
+          .test(val)
+      ) || 'Please use number format',
+      val => (
+        val > minInt && val < maxInt
+      ) || 'Please use integer value between -2^31 and 2^31-1'
     ]
   }),
   props: {
@@ -65,7 +70,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['FILTER_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'FILTER_STATE_UPDATE_FIELD'
+    ]),
     resetFrom () {
       setTimeout(() => {
         this.$refs.inputFrom.resetValidation()

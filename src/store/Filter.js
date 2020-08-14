@@ -1,7 +1,8 @@
 export default {
   state: {
     filter: null,
-    filterOrigin: null
+    filterOrigin: null,
+    isValidationErrorActive: false
   },
   getters: {
     FILTER_GET: (state) => {
@@ -14,6 +15,9 @@ export default {
       const localState = JSON.stringify(state.filter)
       const originState = JSON.stringify(state.filterOrigin)
       return localState === originState
+    },
+    GET_VALIDATION_ERRORS_FLAG: (state) => {
+      return state.isValidationErrorActive
     }
   },
   mutations: {
@@ -25,6 +29,9 @@ export default {
       for (const fieldItem in response) {
         state.filter[fieldItem] = response[fieldItem]
       }
+    },
+    CHANGE_FILTERS_VALIDATION_ERROR_FLAG (state, response) {
+      state.isValidationErrorActive = response
     }
   },
   actions: {
@@ -35,6 +42,9 @@ export default {
     },
     async FILTER_STATE_INIT (context, payload) {
       context.commit('FILTER_UPDATE', payload)
+    },
+    async FILTERS_VALIDATION_ERROR_FLAG_INIT (context, payload) {
+      context.commit('CHANGE_FILTERS_VALIDATION_ERROR_FLAG', payload)
     }
   }
 }

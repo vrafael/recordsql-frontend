@@ -3,7 +3,10 @@
     <q-banner class="bg-linear text-white">
       <span class="text-h6">Filters</span>
     </q-banner>
-    <q-form class="q-pa-md">
+    <q-form
+      ref="form"
+      class="q-pa-md"
+    >
       <template v-if="!!TYPE_METADATA_FILTERS_GET">
         <component
           v-for="field in TYPE_METADATA_FILTERS_GET"
@@ -55,7 +58,7 @@ import rFilterLink from './Filters/rFilterLink'
 import rFilterMoney from './Filters/rFilterMoney'
 import rFilterString from './Filters/rFilterString'
 import rFilterFloat from './Filters/rFilterFloat'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -72,7 +75,28 @@ export default {
     rFilterFloat
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_FILTERS_GET', 'FILTER_GET', 'FILTER_ORIGIN_GET'])
+    ...mapGetters([
+      'TYPE_METADATA_FILTERS_GET',
+      'FILTER_GET',
+      'FILTER_ORIGIN_GET'
+    ])
+  },
+  updated () {
+    this.checkValidate()
+  },
+  methods: {
+    ...mapActions([
+      'FILTERS_VALIDATION_ERROR_FLAG_INIT'
+    ]),
+    checkValidate () {
+      this.$refs.form.validate().then(success => {
+        if (success) {
+          this.FILTERS_VALIDATION_ERROR_FLAG_INIT(false)
+        } else {
+          this.FILTERS_VALIDATION_ERROR_FLAG_INIT(true)
+        }
+      })
+    }
   }
 }
 </script>
