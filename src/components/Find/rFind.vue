@@ -45,6 +45,7 @@
             :disable="GET_VALIDATION_ERRORS_FLAG"
             color="primary"
             @click="refreshButton"
+            class="q-mx-sm"
           >
             <q-icon
               left
@@ -52,7 +53,20 @@
             />
             Refresh
           </q-btn>
+
+          <q-btn
+            color="primary"
+            @click="createRecordByType"
+            class="q-mx-sm"
+          >
+            <q-icon
+              left
+              name="mdi-plus-box"
+            />
+            Create
+          </q-btn>
         </template>
+
         <template #body="props">
           <q-tr :props="props">
             <q-td
@@ -156,6 +170,9 @@ export default {
       // this.GET_VALIDATION_ERRORS_FLAG === false // if form valid
       //   ?  do some action
       //   :  throw an error
+    },
+    createRecordByType () {
+      this.$router.push(`/record/${this.typeTag}`)
     }
   },
   watch: {
