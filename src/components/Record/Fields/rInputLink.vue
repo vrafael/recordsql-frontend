@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
 
@@ -71,27 +71,35 @@ export default {
       required: true
     },
     value: {
-      type: Object,
+      type: [String, null],
+      default: null
+    },
+    originValue: {
+      type: [String, null],
       default: null
     }
   },
   computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET']),
     iconsShow: function () {
-      return !!this.field && Object.prototype.hasOwnProperty.call(this.field, 'Check') && Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
+      return (
+        !!this.field && Object.prototype.hasOwnProperty.call(
+          this.field, 'Check'
+        ) && Object.prototype.hasOwnProperty.call(
+          this.field.Check, 'FieldLinkValueType'
+        )
+      )
     }
   },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
-      const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
-      return localState !== originState
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

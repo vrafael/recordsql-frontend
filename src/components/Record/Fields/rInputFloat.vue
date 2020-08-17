@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -23,8 +23,10 @@ export default {
   },
   data: () => ({
     floatInputRules: [
-      val => (val !== '') || 'Please input float number',
-      val => (/(^-?\d*(.\d*)?$)?/.test(val)) || 'Please use float number format'
+      val => (
+        /(^-?\d*(.\d*)?$)?/
+          .test(val)
+      ) || 'Please use float number format'
     ]
   }),
   props: {
@@ -33,33 +35,29 @@ export default {
       required: true
     },
     value: {
-      type: Number,
+      type: [String, null],
+      default: null
+    },
+    originValue: {
+      type: [String, null],
       default: null
     }
   },
-  computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
-  },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     reset () {
-      const fieldTag = this.field.Tag.toString()
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      const obj = { [`${this.field.Tag}`]: originValue }
+      this.$refs.input.resetValidation()
+      const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: Number(eventValue) }
+      const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
-      const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
-      return localState !== originState
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

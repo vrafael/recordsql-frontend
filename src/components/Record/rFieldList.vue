@@ -22,6 +22,7 @@
           :field="field"
           :key="field.ID"
           :value="RECORD_GET[field.Tag]"
+          :origin-value="RECORD_ORIGIN_GET[field.Tag]"
         />
       </template>
     </template>
@@ -115,9 +116,7 @@ export default {
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
     compareState () {
-      const localState = JSON.stringify(this.RECORD_GET)
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET)
-      return localState === originState
+      return JSON.stringify(this.RECORD_GET) === JSON.stringify(this.RECORD_ORIGIN_GET)
     },
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()

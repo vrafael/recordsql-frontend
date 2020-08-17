@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -59,7 +59,12 @@ export default {
   data: () => ({
     dateInputMask: '####-##-##',
     dateInputRules: [
-      val => (/(^[\d]{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$)?/.test(val)) || 'Please use format "YYYY-MM-DD"'
+      val => (
+        !val
+      ) || (
+        /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/
+          .test(val)
+      ) || 'Please use format "YYYY-MM-DD"'
     ],
     dateMask: 'YYYY-MM-DD',
     proxyValue: Date.now()
@@ -70,15 +75,18 @@ export default {
       required: true
     },
     value: {
-      type: String,
+      type: [String, null],
+      default: null
+    },
+    originValue: {
+      type: [String, null],
       default: null
     }
   },
-  computed: {
-    ...mapGetters(['RECORD_GET', 'RECORD_ORIGIN_GET'])
-  },
   methods: {
-    ...mapActions(['RECORD_STATE_UPDATE_FIELD']),
+    ...mapActions([
+      'RECORD_STATE_UPDATE_FIELD'
+    ]),
     applyProxyToValue () {
       const value = this.proxyValue
       this.updateFieldDataOnChange(value)
@@ -87,12 +95,8 @@ export default {
       this.proxyValue = this.value
     },
     reset () {
-      const fieldTag = this.field.Tag.toString()
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-      const originValue = this.RECORD_ORIGIN_GET[fieldTag]
-      const obj = { [`${this.field.Tag}`]: originValue }
+      this.$refs.input.resetValidation()
+      const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     updateFieldDataOnChange (eventValue) {
@@ -100,10 +104,7 @@ export default {
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     compareWithOriginValue () {
-      const fieldTag = this.field.Tag.toString()
-      const localState = JSON.stringify(this.RECORD_GET[fieldTag])
-      const originState = JSON.stringify(this.RECORD_ORIGIN_GET[fieldTag])
-      return localState !== originState
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }
