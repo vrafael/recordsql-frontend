@@ -5,6 +5,7 @@
     horizontal
     unit="%"
     :limits="[0, 60]"
+    class="r-splitter"
   >
     <q-inner-loading :showing="type.loading">
       <q-spinner-gears
@@ -19,8 +20,8 @@
     >
       <r-filter-list
         :fields="typeMetadataFilters"
-        :filters="filters"
-        :filters-current="filtersCurrent"
+        :filters="findFilters"
+        :filters-current="findFiltersCurrent"
         :filter-update="filterUpdate"
       />
     </template>
@@ -87,17 +88,29 @@ import rObject from '../rObject'
 import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
+import rColumnIdentifier from './Columns/rColumnIdentifier'
 
 export default {
   components: {
     rFilterList,
-    rObject
+    rObject,
+    rColumnIdentifier
   },
   props: {
     typeTag: {
       type: String,
       required: true
+    },
+    filters: {
+      type: Object,
+      required: false,
+      default: null
     }
+    /* searchConfirm: {
+      type: Function,
+      required: false,
+      default: null
+    } */
   },
   data () {
     return {
@@ -112,8 +125,8 @@ export default {
         metadata: null,
         loading: false
       },
-      filters: null,
-      filtersCurrent: null,
+      findFilters: this.filters,
+      findFiltersCurrent: null,
       find: {
         recordset: [],
         loading: false,
@@ -166,7 +179,7 @@ export default {
     },
     async filterUpdate (field, filter) {
       for (const property in filter) {
-        this.filters[field][property] = filter[property]
+        this.findFilters[field][property] = filter[property]
       }
     },
     async typeMetadataFetch () {
@@ -177,19 +190,19 @@ export default {
         .then(async (response) => {
           const metadata = response[0]
           metadata.Fields.map(fieldsMapping)
-          const emptyFilters = {}
+          const emptyfindFilters = {}
           metadata.Fields
             .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
             .forEach(field => {
-              emptyFilters[field.Tag] = field.componentFilter.empty
+              emptyfindFilters[field.Tag] = field.componentFilter.empty
             })
-          this.filters = { ...emptyFilters } // редактируемые фильтры
-          this.filtersCurrent = { ...emptyFilters } // фильтры задействованные в фильтрации
+          this.findFilters = { ...emptyfindFilters } // редактируемые фильтры
+          this.findFiltersCurrent = { ...emptyfindFilters } // фильтры задействованные в фильтрации
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
         }).catch(error => {
-          this.filters = null
+          this.findFilters = null
           this.type.metadata = null
           this.type.loading = false
           showNotify(error)
@@ -242,7 +255,10 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
+.r-splitter
+  background-color: #fff
+
 .my-sticky-dynamic
   height: 100%
 

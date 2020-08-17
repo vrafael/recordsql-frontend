@@ -21,7 +21,7 @@
           v-for="object in filter.Value"
           :key="object.ID"
           :value="object"
-          :remove="removeObject"
+          :remove="objectRemove"
           style="max-width: 200px;"
         />
       </template>
@@ -35,9 +35,10 @@
             <q-list>
               <q-item
                 v-for="type in field.Check.FieldLinkValueType"
-                :key="type.ID"
+                :key="type.TypeID"
                 clickable
                 v-close-popup
+                @click="showSearch(field, type)"
                 context-menu
               >
                 <div
@@ -45,13 +46,13 @@
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.Icon"
+                    :name="type.TypeIcon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.Name}...` }}
+                    {{ `${type.TypeName}...` }}
                   </div>
                 </div>
               </q-item>
@@ -60,18 +61,31 @@
         </q-icon>
       </template>
     </q-field>
+    <q-dialog
+      v-model="searchDialog"
+      full-height
+    >
+      <r-find :type-tag="typeTag" />
+    </q-dialog>
   </r-filter>
 </template>
 
 <script>
 import rFilter from './rFilter'
 import rObject from 'src/components/rObject'
+import rFind from '../rFind'
 
 export default {
   components: {
     rFilter,
-    rObject
+    rObject,
+    rFind
   },
+  data: () => ({
+    searchDialog: false,
+    typeTag: null,
+    searchField: null
+  }),
   props: {
     field: {
       type: Object,
@@ -94,7 +108,7 @@ export default {
     reset () {
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     },
-    insertObject (object) {
+    objectInsert (object) {
       let value = this.filter.value
       if (value) {
         const index = value.indexOf(object)
@@ -106,7 +120,7 @@ export default {
       }
       this.filterUpdate(this.field.Tag, { Value: value })
     },
-    removeObject (object) {
+    objectRemove (object) {
       const value = this.filter.value
       if (value) {
         const index = value.indexOf(object)
@@ -115,6 +129,10 @@ export default {
         }
       }
       this.filterUpdate(this.field.Tag, { Value: value })
+    },
+    showSearch (field, type) {
+      this.typeTag = type.TypeTag
+      this.searchDialog = true
     }
   }
 }
