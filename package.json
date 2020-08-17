@@ -23,9 +23,9 @@
     }
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.9.4",
     "axios": "^0.18.1",
-    "quasar": "^1.0.0",
+    "quasar": "^1.12.13",
     "v-money": "^0.8.1"
   },
   "devDependencies": {
