@@ -54,7 +54,10 @@
                     <q-item-section>
                       <q-item-label>{{ transition.TransitionName }}</q-item-label>
                     </q-item-section>
-                    <q-tooltip anchor="bottom middle" self="center middle">
+                    <q-tooltip
+                      anchor="bottom middle"
+                      self="center middle"
+                    >
                       {{ transition.Description }}
                     </q-tooltip>
                   </q-item>
