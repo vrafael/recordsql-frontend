@@ -30,27 +30,37 @@
               </template>
             </div>
 
-            <q-fab
-              v-model="transitions"
-              v-if="!RECORD_LOADING_GET"
-              label="Transitions"
-              vertical-actions-align="left"
-              color="accent"
-              icon="keyboard_arrow_down"
-              direction="down"
-              label-position="left"
+            <template
+              v-if="!!RECORD_GET
+                && !!TYPE_METADATA_GET
+                && Object.keys(this.RECORD_GET).length !== 0
+                && !!TYPE_METADATA_HAS_OBJECT_PROPERTY
+                && this.RECORD_GET.ID === Number(this.$route.params.identifier)"
             >
-              <q-fab-action
-                color="primary"
-                icon="thumb_up"
-                label="Согласовать"
-              />
-              <q-fab-action
-                color="secondary"
-                icon="thumb_down"
-                label="Отклонить"
-              />
-            </q-fab>
+              <q-btn-dropdown
+                v-model="transitions"
+                label="Transitions"
+                color="accent"
+                :loading="RECORD_TRANSITION_LOADING_GET"
+              >
+                <q-list>
+                  <q-item
+                    v-for="transition in RECORD_TRANSITION_LIST_GET"
+                    :key="transition.id"
+                    @click="transitionPush(transition)"
+                    clickable
+                    v-close-popup
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ transition.TransitionName }}</q-item-label>
+                    </q-item-section>
+                    <q-tooltip anchor="bottom middle" self="center middle">
+                      {{ transition.Description }}
+                    </q-tooltip>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+            </template>
           </div>
         </q-card-section>
         <q-card-section>
@@ -124,7 +134,9 @@ export default {
       'TYPE_METADATA_FETCH',
       'TYPE_METADATA_FETCH_WITH_RECORD_INIT',
       'RECORD_FETCH',
-      'RECORD_STATE_UPDATE_FIELD'
+      'RECORD_STATE_UPDATE_FIELD',
+      'TRANSITION_LIST_FETCH',
+      'TRANSITION_PUSH'
     ]),
     changeCurrentTabComponent (tabComponent) {
       this.currentTabComponent = tabComponent
@@ -135,12 +147,20 @@ export default {
         this.currentIdentifier = this.identifier
 
         if (this.identifier) {
-          this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag })
+          this.TYPE_METADATA_FETCH({ TypeTag: this.typeTag, Identifier: this.identifier })
           this.RECORD_FETCH({ TypeTag: this.typeTag, Identifier: this.identifier })
         } else {
           this.TYPE_METADATA_FETCH_WITH_RECORD_INIT({ TypeTag: this.typeTag })
         }
       }
+    },
+    transitionPush (transition) {
+      this.TRANSITION_PUSH({
+        TypeTag: this.typeTag,
+        ID: this.identifier,
+        TransitionID: transition.TransitionID,
+        TransitionName: transition.TransitionName
+      })
     }
   },
   watch: {
@@ -152,7 +172,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_GET', 'RECORD_GET', 'RECORD_LOADING_GET'])
+    ...mapGetters([
+      'TYPE_METADATA_GET',
+      'RECORD_GET',
+      'RECORD_LOADING_GET',
+      'TYPE_METADATA_HAS_OBJECT_PROPERTY',
+      'RECORD_TRANSITION_LIST_GET',
+      'RECORD_TRANSITION_LOADING_GET'
+    ])
   },
   mounted () {
     this.refresh()
