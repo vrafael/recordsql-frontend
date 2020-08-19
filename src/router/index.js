@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import fetchApiRPC from 'src/common/service.api.rpc'
+import showNotify from 'src/common/service.notify'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -24,6 +25,34 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  async function recordIsExists (params) {
+    let resp = null
+    await fetchApiRPC('Dev.RecordGet', params)
+      .then((response) => {
+        resp = response
+      })
+    return resp
+  }
+
+  Router.beforeEach((to, from, next) => {
+    if (to.name === 'record' && !to.params.identifier) {
+      next()
+    } else if (to.name === 'record' && to.params.identifier) {
+      recordIsExists({ TypeTag: to.params.typeTag, Identifier: to.params.identifier })
+        .then(response => {
+          if (response.ID === Number(to.params.identifier)) {
+            next()
+          } else {
+            showNotify({ message: 'Запись не найдена!' })
+            next('/404')
+          }
+        }
+        )
+    } else {
+      next()
+    }
   })
 
   return Router
