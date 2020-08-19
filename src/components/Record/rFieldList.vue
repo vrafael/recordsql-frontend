@@ -81,6 +81,7 @@ import rInputMoney from './Fields/rInputMoney'
 import rInputString from './Fields/rInputString'
 import rInputText from './Fields/rInputText'
 import rInputLink from './Fields/rInputLink'
+import { isEqual } from 'src/common/service.compare'
 
 export default {
   components: {
@@ -116,7 +117,7 @@ export default {
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
     compareState () {
-      return JSON.stringify(this.RECORD_GET) === JSON.stringify(this.RECORD_ORIGIN_GET)
+      return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
     },
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
