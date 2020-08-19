@@ -18,7 +18,7 @@ export default {
       console.error(err)
       console.info(info)
       console.groupEnd()
-      const notify = { code: 400, message: err.message }
+      const notify = { message: err.message }
       showNotify(notify)
     }
     return false

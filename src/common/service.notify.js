@@ -1,21 +1,15 @@
 import { Notify } from 'quasar'
 
-export default function showNotify ({ message, code = 200, displayTimeMS = 5000 }) {
+export default function showNotify ({ message, notifyType = 'defaultError', displayTimeMS = 5000 }) {
   try {
-    let notifyType
-
-    if (code >= 100 && code <= 105) {
-      notifyType = 'information'
-    } else if (code >= 200 && code <= 226) {
-      notifyType = 'notification'
-    } else if (code >= 400 && code <= 499) {
-      notifyType = 'clientError'
-    } else if (code >= 500 && code <= 510) {
-      notifyType = 'serverError'
-    } else {
-      notifyType = 'defaultError'
-    }
-
+    /**
+     * Type's of error:
+     * 'information'
+     * 'notification'
+     * 'clientError'
+     * 'serverError'
+     * 'defaultError'
+     */
     Notify.create({
       type: notifyType,
       message: `${message}`,
