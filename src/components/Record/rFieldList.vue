@@ -105,7 +105,6 @@ export default {
       'TYPE_METADATA_INPUTS_GET',
       'RECORD_GET',
       'RECORD_ORIGIN_GET',
-      'RECORD_COMPARE_STATE',
       'RECORD_LOADING_GET',
       'TYPE_METADATA_IDENTIFIER_GET'
     ])
