@@ -47,6 +47,7 @@
                 label="Enter your password"
                 clearable
                 outlined
+                :rules="passwordInputRules"
               >
                 <template #prepend>
                   <q-icon
@@ -89,7 +90,11 @@ export default {
         val => (!val) || (
           /([a-zA-Z\d]+@[a-zA-Z\d]+\.[a-z]{2,})$/
             .test(val)
-        ) || 'Use email format'
+        ) || 'Use email format',
+        val => (val && val.length > 0) || 'Email is required'
+      ],
+      passwordInputRules: [
+        val => (val && val.length > 0) || 'Password is required'
       ]
     }
   }
