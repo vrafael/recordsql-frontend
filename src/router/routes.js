@@ -23,7 +23,13 @@ const routes = [{
       typeTag: route.params.typeTag
     })
   }]
-}]
+},
+{
+  path: '/login',
+  name: 'login',
+  component: () => import('pages/Login.vue')
+}
+]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
