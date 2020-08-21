@@ -37,21 +37,23 @@ export default function (/* { store, ssrContext } */) {
   }
 
   Router.beforeEach((to, from, next) => {
-    if (to.name === 'record' && !to.params.identifier) {
-      next()
-    } else if (to.name === 'record' && to.params.identifier) {
-      recordIsExists({ TypeTag: to.params.typeTag, Identifier: to.params.identifier })
-        .then(response => {
-          if (response.ID === Number(to.params.identifier)) {
-            next()
-          } else {
-            showNotify({ message: 'Запись не найдена!' })
-            next('/404')
+    if (to.name === 'record') {
+      if (!to.params.identifier) {
+        next()
+      } else if (to.params.identifier) {
+        recordIsExists({ TypeTag: to.params.typeTag, Identifier: to.params.identifier })
+          .then(response => {
+            if (response.ID === Number(to.params.identifier)) {
+              next()
+            } else {
+              showNotify({ message: 'Запись не найдена!' })
+              next('/404')
+            }
           }
-        }
-        )
-    } else {
-      next()
+          )
+      } else {
+        next()
+      }
     }
   })
 
