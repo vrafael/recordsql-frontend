@@ -10,7 +10,7 @@ export default async function fetchApiRPC (method, params) {
       console.error(response)
       console.info(response)
       console.groupEnd()
-      throw new ApiRpcError(response.status, response.statusText)
+      throw new ApiRpcError({ message: response.statusText })
     } else if (response.data.error) {
       const { error } = response.data
       const errorMessage = response.data.error.message
@@ -19,7 +19,7 @@ export default async function fetchApiRPC (method, params) {
       console.error(error)
       console.info(response)
       console.groupEnd()
-      throw new ApiRpcError(errorCode, errorMessage)
+      throw new ApiRpcError({ message: errorMessage })
     } else if (response.data) {
       return response.data.result
     }
@@ -28,10 +28,11 @@ export default async function fetchApiRPC (method, params) {
 }
 
 export class ApiRpcError extends Error {
-  constructor (code, message) {
+  constructor ({ message, notifyType = 'defaultError', displayTimeMS = 5000 }) {
     super(message)
     this.name = 'ApiRpcError'
     this.message = message
-    this.code = code
+    this.notifyType = notifyType
+    this.displayTimeMS = displayTimeMS
   }
 }
