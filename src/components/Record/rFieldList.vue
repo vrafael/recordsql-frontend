@@ -81,6 +81,7 @@ import rInputMoney from './Fields/rInputMoney'
 import rInputString from './Fields/rInputString'
 import rInputText from './Fields/rInputText'
 import rInputLink from './Fields/rInputLink'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
@@ -104,7 +105,6 @@ export default {
       'TYPE_METADATA_INPUTS_GET',
       'RECORD_GET',
       'RECORD_ORIGIN_GET',
-      'RECORD_COMPARE_STATE',
       'RECORD_LOADING_GET',
       'TYPE_METADATA_IDENTIFIER_GET'
     ])
@@ -116,7 +116,7 @@ export default {
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
     compareState () {
-      return JSON.stringify(this.RECORD_GET) === JSON.stringify(this.RECORD_ORIGIN_GET)
+      return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
     },
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()

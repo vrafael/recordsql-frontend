@@ -11,11 +11,6 @@ export default {
     FILTER_ORIGIN_GET: (state) => {
       return state.filterOrigin
     },
-    FILTER_COMPARE_STATE: (state) => {
-      const localState = JSON.stringify(state.filter)
-      const originState = JSON.stringify(state.filterOrigin)
-      return localState === originState
-    },
     GET_VALIDATION_ERRORS_FLAG: (state) => {
       return state.isValidationErrorActive
     }
