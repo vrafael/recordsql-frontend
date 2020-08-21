@@ -54,6 +54,8 @@ export default function (/* { store, ssrContext } */) {
       } else {
         next()
       }
+    } else {
+      next()
     }
   })
 
