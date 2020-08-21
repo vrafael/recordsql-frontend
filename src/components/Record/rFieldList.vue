@@ -81,7 +81,7 @@ import rInputMoney from './Fields/rInputMoney'
 import rInputString from './Fields/rInputString'
 import rInputText from './Fields/rInputText'
 import rInputLink from './Fields/rInputLink'
-import { isEqual } from 'src/common/service.compare'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
