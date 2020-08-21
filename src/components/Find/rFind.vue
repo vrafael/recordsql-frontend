@@ -58,7 +58,7 @@
           >
             <q-icon
               left
-              name="refresh"
+              :name="filtersEmpty ? 'refresh' : 'search'"
             />
             Refresh
           </q-btn>
@@ -100,6 +100,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
@@ -186,9 +187,18 @@ export default {
       return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
     },
     filtersChanged () {
-      const filtersNew = JSON.stringify(this.findFilters)
-      const filtersCurrent = JSON.stringify(this.findFiltersCurrent)
-      return filtersNew !== filtersCurrent
+      return !isEqual(this.findFilters, this.findFiltersCurrent)
+    },
+    filtersEmpty () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const fields = this.type.metadata.Fields.filter(field => field.componentFilter)
+        for (const i in fields) {
+          if (this.findFiltersCurrent[fields[i].Tag].Enable) {
+            return false
+          }
+        }
+      }
+      return true
     }
   },
   methods: {

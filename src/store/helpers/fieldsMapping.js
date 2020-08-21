@@ -13,8 +13,8 @@ export default function fieldsMapping (field) {
         label: field.Name,
         field: '_record', // field.Tag,
         // sortable: true,
-        align: 'left'
-        // style: 'max-width: 100px; width: 100px'
+        align: 'left',
+        style: 'max-width: 150px; width: 150px'
       }
       break
     case 'FieldLink':

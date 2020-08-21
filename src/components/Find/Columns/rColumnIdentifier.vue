@@ -25,6 +25,14 @@
       >
         {{ value.Identifier }}
       </span>
+      <q-tooltip>
+        <div class="col q-gutter-xs text-caption">
+          <div class="row">
+            {{ value.TypeName }}
+            <!--span class="text-bold q-ml-xs">{{ value.Identifier }}</span-->
+          </div>
+        </div>
+      </q-tooltip>
     </q-card>
   </router-link>
 </template>
