@@ -71,11 +71,11 @@ export default {
       required: true
     },
     value: {
-      type: [String, null],
+      type: Object,
       default: null
     },
     originValue: {
-      type: [String, null],
+      type: Object,
       default: null
     }
   },

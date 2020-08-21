@@ -32,11 +32,11 @@ export default {
       required: true
     },
     value: {
-      type: [String, null],
+      type: [Number, String],
       default: null
     },
     originValue: {
-      type: [String, null],
+      type: [Number, String],
       default: null
     }
   },
