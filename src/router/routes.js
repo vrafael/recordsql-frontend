@@ -26,8 +26,12 @@ const routes = [{
 },
 {
   path: '/login',
-  name: 'login',
-  component: () => import('pages/Login.vue')
+  component: () => import('layouts/rLoginLayout.vue'),
+  children: [{
+    path: '',
+    name: 'login',
+    component: () => import('pages/Login.vue')
+  }]
 }
 ]
 
