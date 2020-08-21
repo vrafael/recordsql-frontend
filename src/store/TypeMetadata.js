@@ -41,6 +41,9 @@ export default {
     },
     TYPE_METADATA_TYPETAG_GET: (state) => {
       return state.typeTag
+    },
+    TYPE_METADATA_HAS_OBJECT_PROPERTY: (state) => {
+      return Object.prototype.hasOwnProperty.call(state.typeMetadata, 'Object') && state.typeMetadata.Object === true
     }
   },
   mutations: {
@@ -58,12 +61,15 @@ export default {
   actions: {
     async TYPE_METADATA_FETCH (context, params) {
       context.commit('TYPE_METADATA_LOADING_SET', true)
-      await fetchApiRPC('Dev.TypeMetadata', params)
+      await fetchApiRPC('Dev.TypeMetadata', { TypeTag: params.TypeTag })
         .then(response => {
           const metadata = response[0]
           metadata.Fields.map(fieldsMapping)
           context.commit('TYPE_METADATA_UPDATE', metadata)
           context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
+          if (params.Identifier) {
+            context.dispatch('TRANSITION_LIST_FETCH', { ID: params.Identifier }, { root: true })
+          }
         }).catch(error => {
           context.commit('TYPE_METADATA_UPDATE', {})
           context.commit('TYPE_METADATA_TYPETAG_SET', null)
