@@ -1,8 +1,8 @@
 <template>
   <div>
-    <q-banner class="bg-linear text-white">
+    <!--q-banner class="bg-linear text-white">
       <span class="text-h6">Filters</span>
-    </q-banner>
+    </q-banner-->
     <q-form class="q-pa-md">
       <template v-if="!!fields">
         <component

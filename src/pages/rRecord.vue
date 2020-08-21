@@ -147,7 +147,7 @@ export default {
     typeTag: async function () {
       await this.refresh()
     },
-    id: async function () {
+    identifier: async function () {
       await this.refresh()
     }
   },

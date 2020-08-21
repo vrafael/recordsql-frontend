@@ -13,7 +13,7 @@ export default function fieldsMapping (field) {
         label: field.Name,
         field: '_record', // field.Tag,
         // sortable: true,
-        align: 'right'
+        align: 'left'
         // style: 'max-width: 100px; width: 100px'
       }
       break
@@ -22,7 +22,8 @@ export default function fieldsMapping (field) {
       field.componentInput = 'r-input-link'
       field.componentFilter = {
         component: 'r-filter-link',
-        empty: { Enable: false, IsNull: false, Value: null }
+        empty: { Enable: false, IsNull: false, Value: null },
+        format: filter => ({ ...filter, Value: filter.Value ? filter.Value.map(item => item.ID) : [] })
       }
       field.componentColumn = {
         component: 'r-object',

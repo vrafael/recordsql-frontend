@@ -38,7 +38,7 @@
                 :key="type.TypeID"
                 clickable
                 v-close-popup
-                @click="showSearch(field, type)"
+                @click="selectShow(field, type)"
                 context-menu
               >
                 <div
@@ -61,30 +61,35 @@
         </q-icon>
       </template>
     </q-field>
-    <q-dialog
-      v-model="searchDialog"
-      full-height
-    >
-      <r-find :type-tag="typeTag" />
-    </q-dialog>
+    <template v-if="selectDialog">
+      <q-dialog
+        v-model="selectDialog"
+        full-width
+      >
+        <r-find
+          :type-tag="typeTag"
+          :select-multiple="true"
+          :select-confirm="selectConfirm"
+        />
+      </q-dialog>
+    </template>
   </r-filter>
 </template>
 
 <script>
 import rFilter from './rFilter'
 import rObject from 'src/components/rObject'
-import rFind from '../rFind'
 
 export default {
   components: {
     rFilter,
     rObject,
-    rFind
+    rFind: () => import('../rFind') // без этого ошибка
   },
   data: () => ({
-    searchDialog: false,
-    typeTag: null,
-    searchField: null
+    selectField: null,
+    selectDialog: false,
+    typeTag: null
   }),
   props: {
     field: {
@@ -109,8 +114,9 @@ export default {
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     },
     objectInsert (object) {
-      let value = this.filter.value
-      if (value) {
+      let value = null
+      if (this.filter.Value) {
+        value = this.filter.Value.slice()
         const index = value.indexOf(object)
         if (index === -1) {
           value.push(object)
@@ -121,7 +127,7 @@ export default {
       this.filterUpdate(this.field.Tag, { Value: value })
     },
     objectRemove (object) {
-      const value = this.filter.value
+      const value = this.filter.Value
       if (value) {
         const index = value.indexOf(object)
         if (index !== -1) {
@@ -130,9 +136,15 @@ export default {
       }
       this.filterUpdate(this.field.Tag, { Value: value })
     },
-    showSearch (field, type) {
+    selectShow (field, type) {
       this.typeTag = type.TypeTag
-      this.searchDialog = true
+      this.selectDialog = true
+    },
+    selectConfirm (selected) {
+      selected.forEach(object => {
+        this.objectInsert(object)
+      })
+      this.selectDialog = false
     }
   }
 }
