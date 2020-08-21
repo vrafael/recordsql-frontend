@@ -102,15 +102,14 @@ export default {
       context.commit('RECORD_RESET_TO_ORIGIN')
     },
     async TRANSITION_LIST_FETCH (context, payload) {
-      const currentRecordID = payload.ID
-        ? payload.ID
-        : showNotify({ message: 'Не найден идентификатор.' })
-      if (currentRecordID) {
+      if (payload.ID) {
         context.commit('RECORD_TRANSITION_LOADING_SET', true)
-        await fetchApiRPC('Dev.ObjectTransitionList', { ID: currentRecordID })
+        await fetchApiRPC('Dev.ObjectTransitionList', { ID: payload.ID })
           .then((response) => {
             context.commit('RECORD_TRANSITION_LIST_SET', response)
           })
+      } else {
+        showNotify({ message: 'Не найден идентификатор.' })
       }
     },
     async TRANSITION_PUSH (context, params) {
