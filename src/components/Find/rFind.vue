@@ -1,12 +1,11 @@
 <template>
-  <div style="max-height: auto">
+  <div>
     <q-expansion-item
       header-class="bg-linear text-white"
       class="bg-white"
       v-model="expanded"
       :icon="typeMetadataIcon"
       :label="typeTag"
-      caption="Filters"
     >
       <q-inner-loading :showing="type.loading">
         <q-spinner-gears
@@ -27,7 +26,7 @@
       :columns="typeMetadataColumns"
       :row-key="typeMetadataIdentifier"
       :loading="find.loading"
-      class="q-pa-sm my-sticky-dynamic"
+      class="q-pa-sm find-table-sticky-dynamic"
       dense
       virtual-scroll
       :virtual-scroll-item-size="48"
@@ -313,7 +312,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.my-sticky-dynamic
+.find-table-sticky-dynamic ::v-deep
   height: 600px
 
   .q-table__top,
@@ -324,8 +323,6 @@ export default {
   thead tr th
     position: sticky
     z-index: 1
-  thead tr:last-child th
-    top: 48px
   thead tr:first-child th
-    top: 48px
+    top: 0px
 </style>
