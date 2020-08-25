@@ -10,9 +10,9 @@
       :limits="[0, 60]"
     >
       <template #before>
-        <q-banner class="bg-linear text-white">
+        <!--q-banner class="bg-linear text-white">
           <span class="text-h6">Types</span>
-        </q-banner>
+        </q-banner-->
         <q-tree
           v-for="(typeList, index) in [TYPE_LIST_NESTED_GET]"
           :key="typeList.Tag"

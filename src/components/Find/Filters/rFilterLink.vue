@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filter-update="filterUpdate"
   >
     <q-field
       class="col-9 q-field--with-bottom"
@@ -9,7 +10,7 @@
       :disable="!filter.Enable"
       outlined
       dense
-      :clearable="filter.Value !== filterOrigin.Value"
+      :clearable="filter.Value !== filterCurrent.Value"
       @clear="reset"
     >
       <template
@@ -20,7 +21,7 @@
           v-for="object in filter.Value"
           :key="object.ID"
           :value="object"
-          :remove="removeObject"
+          :remove="objectRemove"
           style="max-width: 200px;"
         />
       </template>
@@ -34,9 +35,10 @@
             <q-list>
               <q-item
                 v-for="type in field.Check.FieldLinkValueType"
-                :key="type.ID"
+                :key="type.TypeID"
                 clickable
                 v-close-popup
+                @click="selectShow(field, type)"
                 context-menu
               >
                 <div
@@ -44,13 +46,13 @@
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.Icon"
+                    :name="type.TypeIcon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.Name}...` }}
+                    {{ `${type.TypeName}...` }}
                   </div>
                 </div>
               </q-item>
@@ -59,19 +61,36 @@
         </q-icon>
       </template>
     </q-field>
+    <template v-if="selectDialog">
+      <q-dialog
+        v-model="selectDialog"
+        full-width
+      >
+        <r-find
+          :type-tag="typeTag"
+          :select-multiple="true"
+          :select-confirm="selectConfirm"
+        />
+      </q-dialog>
+    </template>
   </r-filter>
 </template>
 
 <script>
 import rFilter from './rFilter'
-import { mapActions } from 'vuex'
-import rObject from '../../rObject'
+import rObject from 'src/components/rObject'
 
 export default {
   components: {
     rFilter,
-    rObject
+    rObject,
+    rFind: () => import('../rFind') // без этого ошибка
   },
+  data: () => ({
+    selectField: null,
+    selectDialog: false,
+    typeTag: null
+  }),
   props: {
     field: {
       type: Object,
@@ -81,44 +100,51 @@ export default {
       type: Object,
       required: true
     },
-    filterOrigin: {
+    filterCurrent: {
       type: Object,
+      required: true
+    },
+    filterUpdate: {
+      type: Function,
       required: true
     }
   },
   methods: {
-    ...mapActions([
-      'FILTER_STATE_UPDATE_FIELD'
-    ]),
     reset () {
-      const filter = { ...this.filter }
-      filter.Value = this.filterOrigin.Value
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     },
-    insertObject (object) {
-      const filter = { ...this.filter }
-      if (filter.Value) {
-        const index = filter.Value.indexOf(object)
+    objectInsert (object) {
+      let value = null
+      if (this.filter.Value) {
+        value = this.filter.Value.slice()
+        const index = value.indexOf(object)
         if (index === -1) {
-          filter.Value.push(object)
+          value.push(object)
         }
       } else {
-        filter.Value = [object]
+        value = [object]
       }
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: value })
     },
-    removeObject (object) {
-      const filter = { ...this.filter }
-      if (filter.Value) {
-        const index = filter.Value.indexOf(object)
+    objectRemove (object) {
+      const value = this.filter.Value
+      if (value) {
+        const index = value.indexOf(object)
         if (index !== -1) {
-          filter.Value.splice(index, 1)
+          value.splice(index, 1)
         }
       }
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: value })
+    },
+    selectShow (field, type) {
+      this.typeTag = type.TypeTag
+      this.selectDialog = true
+    },
+    selectConfirm (selected) {
+      selected.forEach(object => {
+        this.objectInsert(object)
+      })
+      this.selectDialog = false
     }
   }
 }

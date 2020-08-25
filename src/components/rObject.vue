@@ -39,14 +39,14 @@
           </q-badge>
         </div>
       </q-tooltip>
-      <q-badge
+      <!--q-badge
         v-if="value.StateName"
         :color="value.StateColor"
         class="q-mx-sm"
         style="border-radius: 5px"
       >
         {{ value.StateName ? value.StateName.charAt(0) : '' }}
-      </q-badge>
+      </q-badge-->
       <q-btn
         v-if="remove"
         size="xs"

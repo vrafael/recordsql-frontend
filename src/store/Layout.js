@@ -3,17 +3,22 @@ export default {
   state: {
     links: [{
       label: 'Home',
-      icon: 'mdi-home',
+      icon: 'home',
       link: '/',
       separator: true
     },
     {
       label: 'Types',
-      icon: 'mdi-puzzle',
+      icon: 'border_all',
       link: '/type',
       separator: false
-    }
-    ]
+    },
+    {
+      label: 'Records',
+      icon: 'public',
+      link: '/record/Test',
+      separator: false
+    }]
   },
   getters: {
     MENU_GET (state) {

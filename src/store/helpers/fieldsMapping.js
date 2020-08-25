@@ -1,11 +1,29 @@
 export default function fieldsMapping (field) {
   switch (field.Type.Tag) {
+    case 'FieldIdentifier':
+      field.componentInput = 'r-input-identifier'
+      field.componentFilter = {
+        component: 'r-filter-bigint',
+        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+      }
+      field.componentColumn = {
+        component: 'r-column-identifier',
+        name: field.Tag,
+        required: true,
+        label: field.Name,
+        field: '_record', // field.Tag,
+        // sortable: true,
+        align: 'left',
+        style: 'max-width: 150px; width: 150px'
+      }
+      break
     case 'FieldLink':
     case 'FieldLinkToType':
       field.componentInput = 'r-input-link'
       field.componentFilter = {
         component: 'r-filter-link',
-        empty: { Enable: false, IsNull: false, Value: null }
+        empty: { Enable: false, IsNull: false, Value: null },
+        format: filter => ({ ...filter, Value: filter.Value ? filter.Value.map(item => item.ID) : [] })
       }
       field.componentColumn = {
         component: 'r-object',
@@ -86,22 +104,6 @@ export default function fieldsMapping (field) {
         label: field.Name,
         field: field.Tag,
         align: 'right'
-      }
-      break
-    case 'FieldIdentifier':
-      field.componentInput = 'r-input-identifier'
-      field.componentFilter = {
-        component: 'r-filter-bigint',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
-      }
-      field.componentColumn = {
-        name: field.Tag,
-        required: true,
-        label: field.Name,
-        field: field.Tag,
-        // sortable: true,
-        align: 'right',
-        style: 'max-width: 100px; width: 100px'
       }
       break
     case 'FieldTime':

@@ -1,194 +1,373 @@
 <template>
-  <q-splitter
-    style="max-height: 85vh"
-    v-model="splitter"
-    horizontal
-    unit="%"
-    :limits="[0, 60]"
-  >
-    <q-inner-loading :showing="TYPE_METADATA_LOADING_STATE_GET">
-      <q-spinner-gears
-        size="50px"
-        color="primary"
-      />
-    </q-inner-loading>
-
-    <template #before>
-      <r-filter-list ref="filterList" />
-    </template>
-    <template #separator>
-      <q-btn
-        color="primary"
-        padding="xs lg"
-        size="xs"
-        icon="drag_indicator"
-        @click="filtersShow"
-      />
-    </template>
-    <template #after>
-      <q-table
-        :data="find"
-        :columns="TYPE_METADATA_COLUMNS_GET"
-        :row-key="TYPE_METADATA_IDENTIFIER_GET"
-        :loading="FIND_LOADING_STATE_GET"
-        class="q-pa-sm my-sticky-dynamic"
-        dense
-        virtual-scroll
-        :virtual-scroll-item-size="48"
-        :virtual-scroll-sticky-size-start="48"
-        :pagination="pagination"
-        :rows-per-page-options="[0]"
-        @virtual-scroll="onScroll"
+  <div class="bg-white ">
+    <q-form
+      class="q-ma-sm"
+      ref="filterForm"
+      @submit="refreshClick"
+      @reset="resetClick"
+    >
+      <q-expansion-item
+        header-class="bg-linear text-white"
+        v-model="expanded"
+        :icon="typeMetadataIcon"
+        :label="typeTag"
       >
-        <template #top>
-          <q-btn
-            :disable="GET_VALIDATION_ERRORS_FLAG"
+        <q-inner-loading :showing="type.loading">
+          <q-spinner-gears
+            size="50px"
             color="primary"
-            @click="refreshButton"
-            class="q-mx-sm"
-          >
-            <q-icon
-              left
-              name="refresh"
-            />
-            Refresh
-          </q-btn>
-
-          <q-btn
-            color="primary"
-            @click="createRecordByType"
-            class="q-mx-sm"
-          >
-            <q-icon
-              left
-              name="mdi-plus-box"
-            />
-            Create
-          </q-btn>
+          />
+        </q-inner-loading>
+        <template v-if="!!type.metadata && !!typeMetadataFilters">
+          <component
+            v-for="field in typeMetadataFilters"
+            :is="field.componentFilter.component"
+            :field="field"
+            :key="field.ID"
+            :filter="findFilters[field.Tag]"
+            :filter-current="findFiltersEmpty[field.Tag]"
+            :filter-update="filterUpdate"
+          />
         </template>
-
-        <template #body="props">
-          <q-tr :props="props">
-            <q-td
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
-            >
-              <template v-if="col.value && !!props.colsMap[col.name].component">
-                <component
-                  :is="props.colsMap[col.name].component"
-                  :value="col.value"
-                />
-              </template>
-              <div v-else>
-                {{ col.value }}
-              </div>
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-    </template>
-  </q-splitter>
+      </q-expansion-item>
+      <div class="q-gutter-sm q-pa-sm">
+        <q-btn
+          color="primary"
+          v-if="!!selectConfirm"
+          :disable="selection.selected.length == 0"
+          @click="selectClick"
+        >
+          <q-icon
+            left
+            name="check"
+          />
+          OK
+        </q-btn>
+        <q-btn
+          :color="filtersChanged ? 'accent': 'primary'"
+          type="submit"
+        >
+          <q-icon
+            left
+            :name="filtersEmpty ? 'refresh' : 'search'"
+          />
+          Refresh
+        </q-btn>
+        <q-btn
+          color="primary"
+          type="reset"
+          flat
+          :disable="!!filtersEmpty"
+        >
+          <q-icon
+            left
+            name="clear"
+          />
+          Reset
+        </q-btn>
+        <q-btn
+          color="primary"
+          @click="createRecordByType"
+        >
+          <q-icon
+            left
+            name="add"
+          />
+          Create
+        </q-btn>
+      </div>
+    </q-form>
+    <q-table
+      :data="findRecordset()"
+      :columns="typeMetadataColumns"
+      :row-key="typeMetadataIdentifier"
+      :loading="find.loading"
+      class="q-pa-sm find-table-sticky-dynamic"
+      dense
+      virtual-scroll
+      :virtual-scroll-item-size="48"
+      :virtual-scroll-sticky-size-start="48"
+      @virtual-scroll="onScroll"
+      :pagination="pagination"
+      :rows-per-page-options="[0]"
+      :selection="selection.type"
+      :selected.sync="selection.selected"
+    >
+      <template #body="props">
+        <q-tr :props="props">
+          <q-td v-if="selection.type !== 'none'">
+            <q-checkbox
+              class="q-checkbox--dense"
+              v-model="props.selected"
+            />
+          </q-td>
+          <q-td
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            <template v-if="col.value && !!props.colsMap[col.name].component">
+              <component
+                :is="props.colsMap[col.name].component"
+                :value="col.value"
+              />
+            </template>
+            <div v-else>
+              {{ col.value }}
+            </div>
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+  </div>
 </template>
 
 <script>
-import rFilterList from './rFilterList'
 import rObject from '../rObject'
-import { mapActions, mapGetters } from 'vuex'
+import fetchApiRPC from 'src/common/service.api.rpc'
+import fieldsMapping from 'src/store/helpers/fieldsMapping'
+import showNotify from 'src/common/service.notify'
+import rColumnIdentifier from './Columns/rColumnIdentifier'
+import { isEqual } from 'lodash'
+
+import rFilterBool from './Filters/rFilterBool'
+import rFilterColor from './Filters/rFilterColor'
+import rFilterDate from './Filters/rFilterDate'
+import rFilterTime from './Filters/rFilterTime'
+import rFilterDatetime from './Filters/rFilterDatetime'
+import rFilterInt from './Filters/rFilterInt'
+import rFilterBigint from './Filters/rFilterBigint'
+import rFilterLink from './Filters/rFilterLink'
+import rFilterMoney from './Filters/rFilterMoney'
+import rFilterString from './Filters/rFilterString'
+import rFilterFloat from './Filters/rFilterFloat'
 
 export default {
   components: {
-    rFilterList,
-    rObject
+    rObject,
+    rColumnIdentifier,
+
+    rFilterBool,
+    rFilterColor,
+    rFilterDate,
+    rFilterTime,
+    rFilterDatetime,
+    rFilterInt,
+    rFilterBigint,
+    rFilterLink,
+    rFilterMoney,
+    rFilterString,
+    rFilterFloat
   },
   props: {
     typeTag: {
       type: String,
       required: true
+    },
+    filters: {
+      type: Object,
+      required: false,
+      default: null
+    },
+    selectMultiple: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    selectConfirm: {
+      type: Function,
+      required: false,
+      default: null
     }
   },
   data () {
     return {
-      splitter: 0,
-      splitterRestore: 40,
+      expanded: false,
+      splitter: {
+        value: 0,
+        restore: 40
+      },
       pagination: {
         rowsPerPage: 0
+      },
+      type: {
+        metadata: null,
+        loading: false
+      },
+      findFilters: this.filters, // редактируемые фильтры
+      findFiltersCurrent: null, // текущие фильтры
+      findFiltersValid: true,
+      find: {
+        recordset: [],
+        loading: false,
+        pageSize: 50,
+        pageNumber: 1,
+        isEOF: false // достигнут конец списка
+      },
+      selection: {
+        type: this.selectConfirm ? (this.selectMultiple ? 'multiple' : 'single') : 'none',
+        selected: []
       }
     }
   },
   computed: {
-    ...mapGetters(['TYPE_METADATA_LOADING_STATE_GET',
-      'TYPE_METADATA_COLUMNS_GET',
-      'TYPE_METADATA_IDENTIFIER_GET',
-      'FIND_GET',
-      'FIND_EOF_GET',
-      'FIND_LOADING_STATE_GET',
-      'FIND_LENGTH_GET',
-      'GET_VALIDATION_ERRORS_FLAG'
-    ]),
-    find () {
-      return Object.freeze(this.FIND_GET.slice())
+    typeMetadataIcon () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Icon')) {
+        return this.type.metadata.Icon
+      }
+      return null
+    },
+    typeMetadataColumns () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
+    },
+    typeMetadataIdentifier () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _field = this.type.metadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
+        if (_field) {
+          return _field.Tag
+        }
+      }
+      return null
+    },
+    typeMetadataFilters () {
+      return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
+    },
+    filtersChanged () {
+      return !isEqual(this.findFilters, this.findFiltersCurrent)
+    },
+    filtersEmpty () {
+      return isEqual(this.findFilters, this.findFiltersEmpty)
     }
   },
   methods: {
-    ...mapActions([
-      'TYPE_METADATA_FETCH',
-      'FIND_FETCH',
-      'FIND_FETCH_NEXT',
-      'TYPE_METADATA_FETCH_WITH_FILTER_INIT'
-    ]),
-    filtersShow () {
-      if (this.splitter > 0) {
-        this.splitterRestore = this.splitter
-        this.splitter = 0
-      } else if (this.splitterRestore > 0) {
-        this.splitter = this.splitterRestore
-        this.splitterRestore = 0
-      } else {
-        this.splitter = 25
+    selectClick () {
+      if (this.selectConfirm) {
+        const selected = this.selection.selected.map(item => item._object)
+        this.selectConfirm(selected)
       }
     },
-    async refresh () {
-      await this.TYPE_METADATA_FETCH_WITH_FILTER_INIT({ TypeTag: this.typeTag })
+    findRecordset () {
+      if (this.find.recordset) {
+        return Object.freeze(this.find.recordset.slice())
+      }
+      return []
     },
-    async dataFetch () {
-      await this.FIND_FETCH_NEXT({ TypeTag: this.typeTag })
+    async filterUpdate (field, filter) {
+      for (const property in filter) {
+        this.findFilters[field][property] = filter[property]
+      }
+    },
+    async typeMetadataFetch () {
+      this.type.loading = true
+      this.find.pageNumber = 1
+      this.find.recordset = []
+      await fetchApiRPC('Dev.TypeMetadata', { TypeTag: this.typeTag })
+        .then(async (response) => {
+          const metadata = response[0]
+          metadata.Fields.map(fieldsMapping)
+          const emptyfindFilters = {}
+          metadata.Fields
+            .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
+            .forEach(field => {
+              emptyfindFilters[field.Tag] = field.componentFilter.empty
+            })
+          this.findFiltersEmpty = emptyfindFilters
+          this.findFilters = JSON.parse(JSON.stringify(emptyfindFilters))
+          this.findFiltersCurrent = JSON.parse(JSON.stringify(emptyfindFilters)) // this.findFiltersCurrent = Object.assign({}, emptyfindFilters)
+          this.type.metadata = metadata
+          this.type.loading = false
+          await this.findFetch()
+        }).catch(error => {
+          this.findFilters = null
+          this.type.metadata = null
+          this.type.loading = false
+          showNotify(error)
+        })
+    },
+    refreshClick () {
+      this.find.pageNumber = 1
+      this.find.recordset = []
+      this.findFetch()
+    },
+    resetClick () {
+      if (!isEqual(this.findFilters, this.findFiltersEmpty)) {
+        this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
+      }
+    },
+    createRecordByType () {
+      this.$router.push(`/record/${this.typeTag}`)
+    },
+    async findFetch () {
+      if (this.find.loading) {
+        return
+      }
+
+      const fields = this.type.metadata.Fields,
+        find = {}
+
+      fields.forEach(field => {
+        if (field.componentFilter && this.findFilters[field.Tag].Enable) {
+          if (field.componentFilter.format) {
+            find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
+          } else {
+            find[field.Tag] = this.findFilters[field.Tag]
+          }
+        }
+      })
+
+      const paramsWithPaging = {
+        Find: Object.keys(find).length > 0 ? find : null,
+        TypeTag: this.typeTag,
+        PageSize: this.find.pageSize,
+        PageNumber: this.find.pageNumber
+      }
+
+      this.find.loading = true
+
+      await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
+        .then(response => {
+          this.find.pageNumber += 1
+          this.find.recordset = this.find.recordset.concat(response)
+          this.find.isEOF = response.length < this.find.pageSize
+          this.find.loading = false
+          this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
+        }).catch(error => {
+          this.find.loading = false
+          showNotify(error)
+        })
     },
     onScroll ({ to, ref }) {
-      if (this.FIND_LOADING_STATE_GET !== true && !this.FIND_EOF_GET && to === this.FIND_LENGTH_GET - 1) {
+      if (!this.type.loading && !this.find.loading && !this.find.isEOF && to === this.find.recordset.length - 1) {
         setTimeout(async () => {
-          this.dataFetch()
+          this.findFetch()
 
           await this.$nextTick(() => {
             ref.refresh()
           })
         }, 0)
       }
-    },
-    refreshButton () {
-      this.$refs.filterList.checkValidate()
-      // this.GET_VALIDATION_ERRORS_FLAG === false // if form valid
-      //   ?  do some action
-      //   :  throw an error
-    },
-    createRecordByType () {
-      this.$router.push(`/record/${this.typeTag}`)
     }
   },
   watch: {
     typeTag: async function () {
-      await this.refresh()
+      await this.typeMetadataFetch()
     }
   },
   async mounted () {
-    await this.refresh()
+    await this.typeMetadataFetch()
   }
 }
 </script>
 
-<style lang="sass">
-.my-sticky-dynamic
-  height: 100%
+<style lang="sass" scoped>
+.find-table-sticky-dynamic ::v-deep
+  height: 600px
 
   .q-table__top,
   .q-table__bottom,
@@ -198,8 +377,6 @@ export default {
   thead tr th
     position: sticky
     z-index: 1
-  thead tr:last-child th
-    top: 48px
   thead tr:first-child th
-    top: 0
+    top: 0px
 </style>

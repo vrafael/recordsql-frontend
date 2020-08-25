@@ -1,7 +1,7 @@
 import { Notify } from 'quasar'
 
 Notify.registerType('defaultError', {
-  icon: 'mdi-alert-circle',
+  icon: 'error',
   progress: true,
   color: 'red',
   textColor: 'white',
@@ -11,7 +11,7 @@ Notify.registerType('defaultError', {
 
 // 100-105
 Notify.registerType('information', {
-  icon: 'mdi-information',
+  icon: 'info',
   progress: true,
   color: 'info',
   textColor: 'white',
@@ -21,7 +21,7 @@ Notify.registerType('information', {
 
 // 200-226
 Notify.registerType('notification', {
-  icon: 'mdi-bell',
+  icon: 'notifications',
   progress: true,
   color: 'warning',
   textColor: 'white',
@@ -31,7 +31,7 @@ Notify.registerType('notification', {
 
 // 400-499
 Notify.registerType('clientError', {
-  icon: 'mdi-alert-circle',
+  icon: 'error',
   progress: true,
   color: 'red',
   textColor: 'white',
@@ -41,7 +41,7 @@ Notify.registerType('clientError', {
 
 // 500-510
 Notify.registerType('serverError', {
-  icon: 'mdi-alert-circle',
+  icon: 'error',
   progress: true,
   color: 'red',
   textColor: 'white',

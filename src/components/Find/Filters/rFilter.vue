@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   props: {
     field: {
@@ -37,17 +35,15 @@ export default {
     filter: {
       type: Object,
       required: true
+    },
+    filterUpdate: {
+      type: Function,
+      required: true
     }
   },
   methods: {
-    ...mapActions([
-      'FILTER_STATE_UPDATE_FIELD'
-    ]),
     changeEnable: function () {
-      const filter = { ...this.filter }
-      filter.Enable = !filter.Enable
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Enable: !this.filter.Enable })
     }
   }
 }

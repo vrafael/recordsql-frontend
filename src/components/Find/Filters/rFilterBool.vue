@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filter-update="filterUpdate"
   >
     <q-checkbox
       :value="filter.Value"
@@ -15,7 +16,6 @@
 
 <script>
 import rFilter from './rFilter'
-import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -29,11 +29,15 @@ export default {
     filter: {
       type: Object,
       required: true
-    }
-    /* filterOrigin: {
+    },
+    /* filterCurrent: {
       type: Object,
       required: true
-    } */
+    }, */
+    filterUpdate: {
+      type: Function,
+      required: true
+    }
   },
   computed: {
     label: function () {
@@ -43,23 +47,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'FILTER_STATE_UPDATE_FIELD'
-    ]),
     /* reset () {
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
-      const filter = { ...this.filter }
-      filter.Value = this.filterOrigin.Value
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
     }, */
     updateValue (eventValue) {
-      const filter = { ...this.filter }
-      filter.Value = eventValue
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: eventValue })
     }
   }
 }

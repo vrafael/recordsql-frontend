@@ -1,13 +1,15 @@
 import axios from 'axios'
 
 export default async function fetchApiRPC (method, params) {
-  return axios.post('/api/rpc/', {
+  const request = {
     method,
     params
-  }).then(response => {
+  }
+  return axios.post('/api/rpc/', request).then(response => {
     if (response.status !== 200) {
       console.groupCollapsed('/api/rpc internal service error')
       console.error(response)
+      console.info(request)
       console.info(response)
       console.groupEnd()
       throw new ApiRpcError({ message: response.statusText })
@@ -17,7 +19,8 @@ export default async function fetchApiRPC (method, params) {
       const errorCode = response.data.error.code
       console.groupCollapsed(`/api/rpc request error with code:${errorCode}`)
       console.error(error)
-      console.info(response)
+      console.info(request)
+      console.info(response.data)
       console.groupEnd()
       throw new ApiRpcError({ message: errorMessage })
     } else if (response.data) {

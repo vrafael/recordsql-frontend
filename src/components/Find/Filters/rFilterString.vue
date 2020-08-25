@@ -2,6 +2,7 @@
   <r-filter
     :field="field"
     :filter="filter"
+    :filter-update="filterUpdate"
   >
     <q-input
       ref="input"
@@ -11,14 +12,13 @@
       :disable="!filter.Enable"
       outlined
       dense
-      :clearable="filter.Value !== filterOrigin.Value"
+      :clearable="filter.Value !== filterCurrent.Value"
       @clear="reset"
     />
   </r-filter>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rFilter from './rFilter'
 
 export default {
@@ -34,29 +34,24 @@ export default {
       type: Object,
       required: true
     },
-    filterOrigin: {
+    filterCurrent: {
       type: Object,
+      required: true
+    },
+    filterUpdate: {
+      type: Function,
       required: true
     }
   },
   methods: {
-    ...mapActions([
-      'FILTER_STATE_UPDATE_FIELD'
-    ]),
     reset () {
+      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
       setTimeout(() => {
         this.$refs.input.resetValidation()
       })
-      const filter = { ...this.filter }
-      filter.Value = this.filterOrigin.Value
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
     },
     updateValue (eventValue) {
-      const filter = { ...this.filter }
-      filter.Value = eventValue
-      const obj = { [`${this.field.Tag}`]: filter }
-      this.FILTER_STATE_UPDATE_FIELD(obj)
+      this.filterUpdate(this.field.Tag, { Value: eventValue })
     }
   }
 }
