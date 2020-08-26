@@ -55,13 +55,14 @@ export default {
     async RECORD_FETCH (context, params) {
       context.commit('RECORD_LOADING_SET', true)
       const response = await fetchApiRPC('Dev.RecordGet', params)
-      if (response) {
-        context.commit('RECORD_UPDATE', response)
+      if (response && response.length > 0) {
+        context.commit('RECORD_UPDATE', response[0])
       } else {
         context.commit('RECORD_UPDATE', null)
         showNotify({
           message: 'Запись не найдена!'
         })
+        this.$router.push('/404')
       }
     },
     async RECORD_STATE_UPDATE_FIELD (context, payload) {
