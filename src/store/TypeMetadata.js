@@ -1,6 +1,6 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from './helpers/fieldsMapping'
-import showNotify from 'src/common/service.notify'
+import { Notify } from 'quasar'
 
 export default {
   state: {
@@ -56,12 +56,9 @@ export default {
           typeMetadata.Fields.map(fieldsMapping)
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata, typeTag: params.TypeTag })
           context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
-          if (params.Identifier) {
-            context.dispatch('TRANSITION_LIST_FETCH', { ID: params.Identifier }, { root: true })
-          }
         }).catch(error => {
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata: {}, typeTag: null })
-          showNotify(error)
+          Notify.create(error)
         })
     },
     async TYPE_METADATA_FETCH_WITH_RECORD_INIT (context, params) {
@@ -79,7 +76,7 @@ export default {
         }).catch(error => {
           context.dispatch('RECORD_STATE_INIT', null, { root: true })
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata: {}, typeTag: null })
-          showNotify(error)
+          Notify.create(error)
         })
     }
   }
