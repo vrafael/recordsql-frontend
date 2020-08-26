@@ -8,27 +8,49 @@
     >
       <q-expansion-item
         header-class="bg-linear text-white"
+        class="shadow-1 overflow-hidden"
+        style="border-radius: 5px"
         v-model="expanded"
-        :icon="typeMetadataIcon"
-        :label="typeTag"
+        expand-icon-class="text-white"
       >
+        <template #header>
+          <div class="q-gutter-sm row items-center">
+            <q-avatar
+              :icon="typeMetadataIcon"
+              font-size="20px"
+              color="grey-4"
+              text-color="accent"
+              size="md"
+              rounded
+            />
+            <span>
+              {{ type.metadata ? type.metadata.Name : typeTag }}
+            </span>
+            <q-space />
+          </div>
+        </template>
         <q-inner-loading :showing="type.loading">
           <q-spinner-gears
             size="50px"
             color="primary"
           />
         </q-inner-loading>
-        <template v-if="!!type.metadata && !!typeMetadataFilters">
-          <component
-            v-for="field in typeMetadataFilters"
-            :is="field.componentFilter.component"
-            :field="field"
-            :key="field.ID"
-            :filter="findFilters[field.Tag]"
-            :filter-current="findFiltersEmpty[field.Tag]"
-            :filter-update="filterUpdate"
-          />
-        </template>
+        <div class="q-pa-sm">
+          <template
+            v-if="!!type.metadata && !!typeMetadataFilters"
+            class="q-ma-sm q-pa-sm"
+          >
+            <component
+              v-for="field in typeMetadataFilters"
+              :is="field.componentFilter.component"
+              :field="field"
+              :key="field.ID"
+              :filter="findFilters[field.Tag]"
+              :filter-current="findFiltersEmpty[field.Tag]"
+              :filter-update="filterUpdate"
+            />
+          </template>
+        </div>
       </q-expansion-item>
       <div class="q-gutter-sm q-pa-sm">
         <q-btn
@@ -126,7 +148,7 @@
 import rObject from '../rObject'
 import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
-import showNotify from 'src/common/service.notify'
+import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
 import { isEqual } from 'lodash'
 
@@ -287,7 +309,7 @@ export default {
           this.findFilters = null
           this.type.metadata = null
           this.type.loading = false
-          showNotify(error)
+          Notify.create(error)
         })
     },
     refreshClick () {
@@ -339,7 +361,7 @@ export default {
           this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
         }).catch(error => {
           this.find.loading = false
-          showNotify(error)
+          Notify.create(error)
         })
     },
     onScroll ({ to, ref }) {

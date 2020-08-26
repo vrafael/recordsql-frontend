@@ -6,7 +6,7 @@
     <template v-if="!!TYPE_METADATA_INPUTS_GET">
       <template v-for="field in TYPE_METADATA_INPUTS_GET">
         <r-field
-          v-if="RECORD_LOADING_GET"
+          v-if="!RECORD_GET"
           :key="field.ID"
           :field="field"
         >
@@ -17,7 +17,7 @@
           />
         </r-field>
         <component
-          v-else-if="!!RECORD_GET"
+          v-else
           :is="field.componentInput"
           :field="field"
           :key="field.ID"
