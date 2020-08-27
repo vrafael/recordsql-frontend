@@ -34,11 +34,7 @@
               </template>
             </div>
 
-            <template v-if="!!RECORD_GET
-                && !!TYPE_METADATA_GET
-                && Object.keys(this.RECORD_GET).length !== 0
-                && !!TYPE_METADATA_HAS_OBJECT_PROPERTY
-                && this.RECORD_GET.ID === Number(this.$route.params.identifier)">
+            <template v-if="transitionsShow">
               <q-btn-dropdown
                 v-model="transitions"
                 label="Transitions"
@@ -148,7 +144,14 @@ export default {
       'RECORD_LOADING_GET',
       'TYPE_METADATA_HAS_OBJECT_PROPERTY',
       'RECORD_TRANSITION_LIST_GET'
-    ])
+    ]),
+    transitionsShow () {
+      return !!this.RECORD_GET &&
+        !!this.TYPE_METADATA_GET &&
+        Object.keys(this.RECORD_GET).length !== 0 &&
+        !!this.TYPE_METADATA_HAS_OBJECT_PROPERTY &&
+        this.RECORD_GET.ID === Number(this.$route.params.identifier)
+    }
   },
   methods: {
     ...mapActions([

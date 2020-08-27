@@ -17,7 +17,7 @@
           <div class="q-gutter-sm row items-center">
             <q-avatar
               :icon="typeMetadataIcon"
-              font-size="20px"
+              font-size="23px"
               color="grey-4"
               text-color="accent"
               size="md"
@@ -323,7 +323,7 @@ export default {
       }
     },
     createRecordByType () {
-      this.$router.push(`/record/${this.typeTag}`)
+      this.$router.push({ name: 'record', params: { typeTag: this.typeTag } })
     },
     async findFetch () {
       if (this.find.loading) {

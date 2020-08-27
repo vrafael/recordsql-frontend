@@ -1,7 +1,5 @@
 <template>
-  <r-field
-    :field="field"
-  >
+  <r-field :field="field">
     <q-input
       ref="input"
       :value="value"
@@ -9,8 +7,8 @@
       :rules="moneyInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="recordChanged"
+      @clear="reset"
     />
   </r-field>
 </template>
@@ -42,36 +40,30 @@ export default {
   },
   data: () => ({
     moneyInputRules: [
-      val => !(/,+/.test(val)) || 'Please use dot\'s instead comma\'s',
-      val => (
-        !val
-      ) || (
-        /(^-?\d{1,3}(,\d{3})*?(\.\d{1,4})?$)?/
-          .test(val)
-      ) || 'Please use money format',
-      val => (
-        !val
-      ) || (
-        val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null
-      ) ||
+      val => /^(-?\d+(\.\d{1,4})?)?$/.test(val) || 'Please use money format',
+      val => !val || (parseFloat(val) > minMoney && parseFloat(val) < maxMoney) ||
         `Please use money value between ${minMoney} and ${maxMoney}`
     ]
   }),
+  computed: {
+    recordChanged () {
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    }
+  },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     reset () {
-      this.$refs.input.resetValidation()
       const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
+      setTimeout(() => {
+        this.$refs.input.resetValidation()
+      }, 0)
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

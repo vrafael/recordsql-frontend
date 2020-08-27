@@ -38,7 +38,7 @@
                 :key="type.TypeID"
                 clickable
                 v-close-popup
-                @click="selectShow(field, type)"
+                @click="selectShow(type)"
                 context-menu
               >
                 <div
@@ -87,7 +87,6 @@ export default {
     rFind: () => import('../rFind') // без этого ошибка
   },
   data: () => ({
-    selectField: null,
     selectDialog: false,
     typeTag: null
   }),
@@ -136,7 +135,7 @@ export default {
       }
       this.filterUpdate(this.field.Tag, { Value: value })
     },
-    selectShow (field, type) {
+    selectShow (type) {
       this.typeTag = type.TypeTag
       this.selectDialog = true
     },

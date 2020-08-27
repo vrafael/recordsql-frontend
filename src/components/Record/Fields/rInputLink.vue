@@ -6,7 +6,8 @@
       class="q-field--with-bottom"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
+      :clearable="recordChanged"
+      @clear="reset"
     >
       <template
         #control
@@ -15,6 +16,7 @@
         <r-object
           v-if="value && value.ID"
           :value="value"
+          :remove="objectRemove"
         />
       </template>
       <template #append>
@@ -27,9 +29,10 @@
             <q-list>
               <q-item
                 v-for="type in field.Check.FieldLinkValueType"
-                :key="type.ID"
+                :key="type.TypeID"
                 clickable
                 v-close-popup
+                @click="selectShow(type)"
                 context-menu
               >
                 <div
@@ -37,13 +40,13 @@
                   style="width:200px"
                 >
                   <q-icon
-                    :name="type.Icon"
+                    :name="type.TypeIcon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.Name}...` }}
+                    {{ `${type.TypeName}...` }}
                   </div>
                 </div>
               </q-item>
@@ -52,6 +55,18 @@
         </q-icon>
       </template>
     </q-field>
+    <template v-if="selectDialog">
+      <q-dialog
+        v-model="selectDialog"
+        full-width
+      >
+        <r-find
+          :type-tag="typeTag"
+          :select-multiple="false"
+          :select-confirm="selectConfirm"
+        />
+      </q-dialog>
+    </template>
   </r-field>
 </template>
 
@@ -59,12 +74,18 @@
 import { mapActions } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
     rField,
-    rObject
+    rObject,
+    rFind: () => import('src/components/Find/rFind') // без этого ошибка
   },
+  data: () => ({
+    selectDialog: false,
+    typeTag: null
+  }),
   props: {
     field: {
       type: Object,
@@ -81,13 +102,13 @@ export default {
   },
   computed: {
     iconsShow: function () {
-      return (
-        !!this.field && Object.prototype.hasOwnProperty.call(
-          this.field, 'Check'
-        ) && Object.prototype.hasOwnProperty.call(
-          this.field.Check, 'FieldLinkValueType'
-        )
+      return (!!this.field &&
+        Object.prototype.hasOwnProperty.call(this.field, 'Check') &&
+        Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
       )
+    },
+    recordChanged () {
+      return !isEqual(this.value, this.originValue)
     }
   },
   methods: {
@@ -98,8 +119,23 @@ export default {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    reset () {
+      this.updateFieldDataOnChange(this.originValue)
+    },
+    objectRemove () {
+      this.updateFieldDataOnChange(null)
+    },
+    selectShow (type) {
+      this.typeTag = type.TypeTag
+      this.selectDialog = true
+    },
+    selectConfirm (selected) {
+      let obj = null
+      if (selected && selected.length > 0) {
+        obj = selected[0]
+      }
+      this.updateFieldDataOnChange(obj)
+      this.selectDialog = false
     }
   }
 }

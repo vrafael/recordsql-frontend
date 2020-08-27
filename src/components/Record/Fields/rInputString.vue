@@ -4,11 +4,11 @@
       ref="input"
       class="q-field--with-bottom"
       :value="value"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      :clearable="recordChanged"
+      @clear="reset"
     />
   </r-field>
 </template>
@@ -35,6 +35,11 @@ export default {
       default: null
     }
   },
+  computed: {
+    recordChanged () {
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    }
+  },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
@@ -44,12 +49,11 @@ export default {
       this.RECORD_STATE_UPDATE_FIELD(obj)
     },
     reset () {
-      this.$refs.input.resetValidation()
       const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+      /* setTimeout(() => {
+        this.$refs.input.resetValidation()
+      }, 0) */
     }
   }
 }

@@ -8,8 +8,8 @@
       mask="\#XXXXXXXX"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="recordChanged"
+      @clear="reset"
     >
       <div
         slot="prepend"
@@ -60,19 +60,8 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => (
-        !val
-      ) || (
-        val.length === 7
-      ) || (
-        val.length === 9
-      ) || 'Please use 6-8 characters',
-      val => (
-        !val
-      ) || (
-        /^#([\da-fA-F]{6,8})$/
-          .test(val)
-      ) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => !val || val.length === 7 || val.length === 9 || 'Please use 6-8 characters',
+      val => /(^#(([\da-fA-F]{6})|([\da-fA-F]{8}))$)?/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -85,15 +74,7 @@ export default {
   }),
   watch: {
     value: function (val) {
-      if (val && ((
-        val.length === 4
-      ) || (
-        val.length === 7
-      ) || (
-        val.length === 9
-      )
-      )
-      ) {
+      if (val && (val.length === 4 || val.length === 7 || val.length === 9)) {
         this.$data.helperColor.style.backgroundColor = val
       }
     }
@@ -115,28 +96,32 @@ export default {
   mounted () {
     this.$data.helperColor.style.backgroundColor = this.value
   },
+  computed: {
+    recordChanged () {
+      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    }
+  },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     applyProxyToValue () {
-      this.value = this.proxyValue
+      this.updateFieldDataOnChange(this.proxyValue)
     },
     applyValueToProxy () {
       this.proxyValue = this.value
     },
     reset () {
-      this.$refs.input.resetValidation()
       this.$data.helperColor.style.backgroundColor = `#${this.originValue}`
       const obj = { [`${this.field.Tag}`]: this.originValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
+      setTimeout(() => {
+        this.$refs.input.resetValidation()
+      }, 0)
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

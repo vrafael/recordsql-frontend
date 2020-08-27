@@ -31,7 +31,7 @@
       <q-btn
         color="primary"
         style="width: 140px"
-        :disable="compareState()"
+        :disable="recordNotChanged() && (!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !!RECORD_GET[TYPE_METADATA_IDENTIFIER_GET])"
         @click="RECORD_UPLOAD()"
       >
         <q-icon
@@ -45,7 +45,7 @@
         <q-btn
           color="primary"
           style="width: 140px"
-          :disable="compareState()"
+          :disable="recordNotChanged()"
           @click="reset()"
         >
           <q-icon
@@ -115,7 +115,7 @@ export default {
       'RECORD_DELETE',
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
-    compareState () {
+    recordNotChanged () {
       return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
     },
     reset () {
