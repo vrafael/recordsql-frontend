@@ -31,7 +31,7 @@ export default async function fetchApiRPC (method, params) {
 }
 
 export class ApiRpcError extends Error {
-  constructor({ message, type = 'error', timeout = 5000 }) {
+  constructor({ message, type = 'negative', timeout = 5000 }) {
     super(message)
     this.name = 'ApiRpcError'
     this.message = message
