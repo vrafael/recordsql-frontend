@@ -20,7 +20,6 @@ export default {
       return state.loading
     },
     RECORD_TRANSITION_LIST_GET: (state) => {
-      // return state.recordTransitions
       return state.record._transitions
     }
   },
@@ -51,7 +50,7 @@ export default {
             context.commit('RECORD_UPDATE', response[0])
           } else {
             context.commit('RECORD_UPDATE', null)
-            Notify.create({ type: 'positive', message: 'Запись не найдена!' })
+            Notify.create({ type: 'negative', message: 'Запись не найдена!' })
             this.$router.push('/404')
           }
         }).catch(error => Notify.create(error))
@@ -68,11 +67,22 @@ export default {
       const typeTag = context.rootGetters.TYPE_METADATA_TYPETAG_GET
       const identifier = context.rootGetters.TYPE_METADATA_IDENTIFIER_GET
       const params = { TypeTag: typeTag, Set: context.state.record }
+      context.commit('RECORD_LOADING_SET', true)
       await fetchApiRPC('Dev.RecordSet', params)
         .then(response => {
-          if (response && Object.keys(response).length !== 0 && response.constructor === Object) {
-            context.dispatch('RECORD_FETCH', { TypeTag: typeTag, Identifier: response[identifier] })
+          if (response && response.length > 0) {
+            const record = response[0]
+            if (context.state.recordOrigin && !context.state.recordOrigin[identifier]) {
+              this.$router.replace({ name: 'record', params: { typeTag: record._record.TypeTag, identifier: record._record.Identifier } })
+            }
+            context.commit('RECORD_UPDATE', record)
+          } else {
+            context.commit('RECORD_LOADING_SET', false)
+            Notify.create({ type: 'negative', message: 'Не удалось сохранить запись!' })
           }
+        }).catch(error => {
+          context.commit('RECORD_LOADING_SET', false)
+          Notify.create(error)
         })
     },
     async RECORD_DELETE (context) {
