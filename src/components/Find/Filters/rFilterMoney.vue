@@ -52,14 +52,14 @@ export default {
           val => (
             !val
           ) || (
-              /(^-?\d*?(\.\d{1,4})?$)/
-                .test(val)
-            ) || 'Please use money format',
+            /(^-?\d*?(\.\d{1,4})?$)/
+              .test(val)
+          ) || 'Please use money format',
           val => (
             !val
           ) || (
-              val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null
-            ) ||
+            val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null
+          ) ||
             `Please use money value between ${minMoney} and ${maxMoney}`
         ]
       }
