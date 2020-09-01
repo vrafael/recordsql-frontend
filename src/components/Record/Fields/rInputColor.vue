@@ -76,6 +76,8 @@ export default {
     value: function (val) {
       if (val && (val.length === 3 || val.length === 6 || val.length === 8)) {
         this.$data.helperColor.style.backgroundColor = `#${val}`
+      } else {
+        this.$data.helperColor.style.backgroundColor = null
       }
     }
   },
@@ -109,12 +111,11 @@ export default {
       this.updateFieldDataOnChange(this.proxyValue.replace('#', ''))
     },
     applyValueToProxy () {
-      this.proxyValue = `#${this.value}`
+      this.proxyValue = this.value ? `#${this.value}` : null
     },
     reset () {
-      this.$data.helperColor.style.backgroundColor = `#${this.originValue}`
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+      this.updateFieldDataOnChange(this.originValue)
+      // this.$data.helperColor.style.backgroundColor = this.originValue ? `#${this.originValue}` : null
       setTimeout(() => {
         this.$refs.input.resetValidation()
       }, 0)
