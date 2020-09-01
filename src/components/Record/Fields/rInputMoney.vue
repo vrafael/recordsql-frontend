@@ -40,7 +40,7 @@ export default {
   },
   data: () => ({
     moneyInputRules: [
-      val => /^(-?\d+(\.\d{1,4})?)?$/.test(val) || 'Please use money format',
+      val => !val || /^(-?\d+(\.\d{1,4})?)?$/.test(val) || 'Please use money format',
       val => !val || (parseFloat(val) > minMoney && parseFloat(val) < maxMoney) ||
         `Please use money value between ${minMoney} and ${maxMoney}`
     ]

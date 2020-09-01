@@ -71,7 +71,7 @@ export default {
   data: () => ({
     datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[ T]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
+      val => !val || /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[ T]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
         'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
     ],
     datetimeMask: 'YYYY-MM-DD HH:mm:ss',
@@ -106,7 +106,9 @@ export default {
       this.updateFieldDataOnChange(value)
     },
     applyValueToProxy () {
-      this.proxyValue = this.value
+      const value = this.value.replace('T', ' ').padEnd(23, '1000-01-01 00:00:00.000'.slice(this.value.length, 23))
+      const valuedatetime = date.extractDate(value, this.datetimeMask)
+      this.proxyValue = date.formatDate(valuedatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
     },
     reset () {
       const obj = { [`${this.field.Tag}`]: this.originValue }

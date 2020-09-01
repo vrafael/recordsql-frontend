@@ -23,7 +23,7 @@ export default {
   },
   data: () => ({
     floatInputRules: [
-      val => /^(-?\d+(\.\d+)?)?$/.test(val) || 'Please use float number format'
+      val => !val || /^(-?\d+(\.\d+)?)?$/.test(val) || 'Please use float number format'
     ]
   }),
   props: {

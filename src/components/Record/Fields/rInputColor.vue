@@ -5,7 +5,7 @@
       :value="value"
       @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
-      mask="\#XXXXXXXX"
+      mask="XXXXXXXX"
       outlined
       dense
       :clearable="recordChanged"
@@ -60,8 +60,8 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => !val || val.length === 7 || val.length === 9 || 'Please use 6-8 characters',
-      val => /(^#(([\da-fA-F]{6})|([\da-fA-F]{8}))$)?/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => !val || val.length === 6 || val.length === 8 || 'Please use 6-8 characters',
+      val => /(^(([\da-fA-F]{6})|([\da-fA-F]{8}))$)?/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -74,8 +74,8 @@ export default {
   }),
   watch: {
     value: function (val) {
-      if (val && (val.length === 4 || val.length === 7 || val.length === 9)) {
-        this.$data.helperColor.style.backgroundColor = val
+      if (val && (val.length === 3 || val.length === 6 || val.length === 8)) {
+        this.$data.helperColor.style.backgroundColor = `#${val}`
       }
     }
   },
@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted () {
-    this.$data.helperColor.style.backgroundColor = this.value
+    this.$data.helperColor.style.backgroundColor = `#${this.value}`
   },
   computed: {
     recordChanged () {
@@ -106,10 +106,10 @@ export default {
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     applyProxyToValue () {
-      this.updateFieldDataOnChange(this.proxyValue)
+      this.updateFieldDataOnChange(this.proxyValue.replace('#', ''))
     },
     applyValueToProxy () {
-      this.proxyValue = this.value
+      this.proxyValue = `#${this.value}`
     },
     reset () {
       this.$data.helperColor.style.backgroundColor = `#${this.originValue}`
