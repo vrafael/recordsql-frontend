@@ -16,6 +16,7 @@
 <script>
 import { mapActions } from 'vuex'
 import rField from './rField'
+import { isEqual } from 'lodash'
 
 const minMoney = -922337203685477,
   maxMoney = 922337203685477
@@ -47,7 +48,7 @@ export default {
   }),
   computed: {
     recordChanged () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+      return !isEqual(this.value, this.originValue)
     }
   },
   methods: {

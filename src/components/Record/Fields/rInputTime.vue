@@ -54,6 +54,7 @@
 import { mapActions } from 'vuex'
 import rField from './rField'
 import { date } from 'quasar'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
@@ -84,7 +85,7 @@ export default {
   },
   computed: {
     recordChanged () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+      return isEqual(this.findFilters, this.findFiltersEmpty)
     }
   },
   methods: {

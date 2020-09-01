@@ -17,6 +17,7 @@
 <script>
 import { mapActions } from 'vuex'
 import rField from './rField'
+import { isEqual } from 'lodash'
 
 const maxInt = Math.pow(2, 31) - 1,
   minInt = -Math.pow(2, 31)
@@ -47,7 +48,7 @@ export default {
   },
   computed: {
     recordChanged () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+      return !isEqual(this.value, this.originValue)
     }
   },
   methods: {
