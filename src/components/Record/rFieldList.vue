@@ -2,6 +2,8 @@
   <q-form
     ref="form"
     class="q-pa-md"
+    @submit="RECORD_UPLOAD()"
+    @reset="reset()"
   >
     <template v-if="!!TYPE_METADATA_INPUTS_GET">
       <template v-for="field in TYPE_METADATA_INPUTS_GET">
@@ -12,13 +14,13 @@
         >
           <q-input
             class="q-field--with-bottom"
-            outlined
+            outline
             dense
           />
         </r-field>
         <component
           v-else
-          :is="field.componentInput"
+          :is="field.componentInput.component"
           :field="field"
           :key="field.ID"
           :value="RECORD_GET[field.Tag]"
@@ -30,9 +32,9 @@
     <div class="row q-pt-md">
       <q-btn
         color="primary"
+        type="submit"
         style="width: 140px"
         :disable="recordNotChanged() && (!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !!RECORD_GET[TYPE_METADATA_IDENTIFIER_GET])"
-        @click="RECORD_UPLOAD()"
       >
         <q-icon
           left
@@ -44,9 +46,9 @@
       <q-btn-group>
         <q-btn
           color="primary"
+          type="reset"
           style="width: 140px"
           :disable="recordNotChanged()"
-          @click="reset()"
         >
           <q-icon
             left
@@ -58,7 +60,7 @@
           color="red"
           icon="delete"
           :disable="!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !RECORD_GET[TYPE_METADATA_IDENTIFIER_GET]"
-          @click="RECORD_DELETE()"
+          @click="del()"
         />
       </q-btn-group>
     </div>
@@ -121,6 +123,9 @@ export default {
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
       this.$refs.form.resetValidation()
+    },
+    del () {
+      this.RECORD_DELETE()
     }
   }
 }

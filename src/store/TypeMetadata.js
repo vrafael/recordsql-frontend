@@ -16,7 +16,7 @@ export default {
       return state.loading
     },
     TYPE_METADATA_INPUTS_GET: (state) => {
-      return state.typeMetadata.Fields ? state.typeMetadata.Fields.filter(field => field.componentInput) : null
+      return state.typeMetadata.Fields ? state.typeMetadata.Fields.filter(field => field.componentInput && field.componentInput.component) : null
     },
     TYPE_METADATA_IDENTIFIER_GET: (state) => {
       if (state.typeMetadata.Fields) {

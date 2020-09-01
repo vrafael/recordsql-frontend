@@ -66,7 +66,22 @@ export default {
     async RECORD_UPLOAD (context) {
       const typeTag = context.rootGetters.TYPE_METADATA_TYPETAG_GET
       const identifier = context.rootGetters.TYPE_METADATA_IDENTIFIER_GET
-      const params = { TypeTag: typeTag, Set: context.state.record }
+
+      const inputs = context.rootGetters.TYPE_METADATA_INPUTS_GET,
+        set = {}
+
+      inputs.forEach(input => {
+        if (input.componentInput) {
+          if (input.componentInput.format) {
+            set[input.Tag] = input.componentInput.format(context.state.record[input.Tag])
+          } else {
+            set[input.Tag] = context.state.record[input.Tag]
+          }
+        }
+      })
+
+      const params = { TypeTag: typeTag, Set: set }
+
       context.commit('RECORD_LOADING_SET', true)
       await fetchApiRPC('Dev.RecordSet', params)
         .then(response => {
@@ -82,6 +97,7 @@ export default {
           }
         }).catch(error => {
           context.commit('RECORD_LOADING_SET', false)
+          console.log(error.message)
           Notify.create(error)
         })
     },
