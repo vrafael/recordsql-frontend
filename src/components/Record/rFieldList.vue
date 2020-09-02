@@ -14,7 +14,7 @@
         >
           <q-input
             class="q-field--with-bottom"
-            outline
+            outlined
             dense
           />
         </r-field>
