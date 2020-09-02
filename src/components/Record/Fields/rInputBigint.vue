@@ -8,8 +8,8 @@
       @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
-      :clearable="recordChanged"
-      @clear="reset"
+      :clearable="value != originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     />
   </r-field>
 </template>
@@ -17,7 +17,6 @@
 <script>
 import { mapActions } from 'vuex'
 import rField from './rField'
-import { isEqual } from 'lodash'
 
 const maxBigint = Math.pow(2, 63) - 1,
   minBigint = -Math.pow(2, 63)
@@ -47,22 +46,10 @@ export default {
       default: null
     }
   },
-  computed: {
-    recordChanged () {
-      return !isEqual(this.value, this.originValue)
-    }
-  },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
-    reset () {
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      }, 0)
-    },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)

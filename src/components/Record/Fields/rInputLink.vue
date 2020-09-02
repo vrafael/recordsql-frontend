@@ -7,7 +7,7 @@
       outlined
       dense
       :clearable="recordChanged"
-      @clear="reset"
+      @clear="() => updateFieldDataOnChange(originValue)"
     >
       <template
         #control
@@ -118,9 +118,6 @@ export default {
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    reset () {
-      this.updateFieldDataOnChange(this.originValue)
     },
     objectRemove () {
       this.updateFieldDataOnChange(null)

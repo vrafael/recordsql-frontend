@@ -8,8 +8,8 @@
       mask="XXXXXXXX"
       outlined
       dense
-      :clearable="recordChanged"
-      @clear="reset"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     >
       <div
         slot="prepend"
@@ -53,7 +53,6 @@
 <script>
 import { mapActions } from 'vuex'
 import rField from './rField'
-import { isEqual } from 'lodash'
 
 export default {
   components: {
@@ -61,8 +60,7 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => !val || val.length === 6 || val.length === 8 || 'Please use 6-8 characters',
-      val => /(^(([\da-fA-F]{6})|([\da-fA-F]{8}))$)?/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => !val || /^(([\da-fA-F]{6})|([\da-fA-F]{8}))$/.test(val) || 'Please use hex (6) or hexa (8) values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -75,7 +73,7 @@ export default {
   }),
   watch: {
     value: function (val) {
-      if (val && (val.length === 3 || val.length === 6 || val.length === 8)) {
+      if (val && (val.length === 6 || val.length === 8)) {
         this.$data.helperColor.style.backgroundColor = `#${val}`
       } else {
         this.$data.helperColor.style.backgroundColor = null
@@ -99,27 +97,15 @@ export default {
   mounted () {
     this.$data.helperColor.style.backgroundColor = `#${this.value}`
   },
-  computed: {
-    recordChanged () {
-      return !isEqual(this.value, this.originValue)
-    }
-  },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     applyProxyToValue () {
-      this.updateFieldDataOnChange(this.proxyValue.replace('#', ''))
+      this.updateFieldDataOnChange(this.proxyValue.replace('#', '').toUpperCase())
     },
     applyValueToProxy () {
       this.proxyValue = this.value ? `#${this.value}` : null
-    },
-    reset () {
-      this.updateFieldDataOnChange(this.originValue)
-      // this.$data.helperColor.style.backgroundColor = this.originValue ? `#${this.originValue}` : null
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      }, 0)
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
