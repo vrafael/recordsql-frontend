@@ -1,82 +1,82 @@
 <template>
   <div class="bg-white ">
-    <q-form
-      class="q-ma-sm"
-      ref="filterForm"
-      @submit="refreshClick"
-      @reset="resetClick"
-    >
-      <q-expansion-item
-        header-class="bg-linear text-white"
-        v-model="expanded"
-        :icon="typeMetadataIcon"
-        :label="typeTag"
-      >
-        <q-inner-loading :showing="type.loading">
-          <q-spinner-gears
-            size="50px"
-            color="primary"
-          />
-        </q-inner-loading>
-        <template v-if="!!type.metadata && !!typeMetadataFilters">
-          <component
-            v-for="field in typeMetadataFilters"
-            :is="field.componentFilter.component"
-            :field="field"
-            :key="field.ID"
-            :filter="findFilters[field.Tag]"
-            :filter-current="findFiltersEmpty[field.Tag]"
-            :filter-update="filterUpdate"
-          />
-        </template>
-      </q-expansion-item>
-      <div class="q-gutter-sm q-pa-sm">
-        <q-btn
-          color="primary"
-          v-if="!!selectConfirm"
-          :disable="selection.selected.length == 0"
-          @click="selectClick"
-        >
-          <q-icon
-            left
-            name="check"
-          />
-          OK
-        </q-btn>
-        <q-btn
-          :color="filtersChanged ? 'accent': 'primary'"
-          type="submit"
-        >
-          <q-icon
-            left
-            :name="filtersEmpty ? 'refresh' : 'search'"
-          />
-          Refresh
-        </q-btn>
-        <q-btn
-          color="primary"
-          type="reset"
-          flat
-          :disable="!!filtersEmpty"
-        >
-          <q-icon
-            left
-            name="clear"
-          />
-          Reset
-        </q-btn>
-        <q-btn
-          color="primary"
-          @click="createRecordByType"
-        >
-          <q-icon
-            left
-            name="add"
-          />
-          Create
-        </q-btn>
-      </div>
-    </q-form>
+<!--    <q-form-->
+<!--      class="q-ma-sm"-->
+<!--      ref="filterForm"-->
+<!--      @submit="refreshClick"-->
+<!--      @reset="resetClick"-->
+<!--    >-->
+<!--      <q-expansion-item-->
+<!--        header-class="bg-linear text-white"-->
+<!--        v-model="expanded"-->
+<!--        :icon="typeMetadataIcon"-->
+<!--        :label="typeTag"-->
+<!--      >-->
+<!--        <q-inner-loading :showing="type.loading">-->
+<!--          <q-spinner-gears-->
+<!--            size="50px"-->
+<!--            color="primary"-->
+<!--          />-->
+<!--        </q-inner-loading>-->
+<!--        <template v-if="!!type.metadata && !!typeMetadataFilters">-->
+<!--          <component-->
+<!--            v-for="field in typeMetadataFilters"-->
+<!--            :is="field.componentFilter.component"-->
+<!--            :field="field"-->
+<!--            :key="field.ID"-->
+<!--            :filter="findFilters[field.Tag]"-->
+<!--            :filter-current="findFiltersEmpty[field.Tag]"-->
+<!--            :filter-update="filterUpdate"-->
+<!--          />-->
+<!--        </template>-->
+<!--      </q-expansion-item>-->
+<!--      <div class="q-gutter-sm q-pa-sm">-->
+<!--        <q-btn-->
+<!--          color="primary"-->
+<!--          v-if="!!selectConfirm"-->
+<!--          :disable="selection.selected.length === 0"-->
+<!--          @click="selectClick"-->
+<!--        >-->
+<!--          <q-icon-->
+<!--            left-->
+<!--            name="check"-->
+<!--          />-->
+<!--          OK-->
+<!--        </q-btn>-->
+<!--        <q-btn-->
+<!--          :color="filtersChanged ? 'accent': 'primary'"-->
+<!--          type="submit"-->
+<!--        >-->
+<!--          <q-icon-->
+<!--            left-->
+<!--            :name="filtersEmpty ? 'refresh' : 'search'"-->
+<!--          />-->
+<!--          Refresh-->
+<!--        </q-btn>-->
+<!--        <q-btn-->
+<!--          color="primary"-->
+<!--          type="reset"-->
+<!--          flat-->
+<!--          :disable="!!filtersEmpty"-->
+<!--        >-->
+<!--          <q-icon-->
+<!--            left-->
+<!--            name="clear"-->
+<!--          />-->
+<!--          Reset-->
+<!--        </q-btn>-->
+<!--        <q-btn-->
+<!--          color="primary"-->
+<!--          @click="createRecordByType"-->
+<!--        >-->
+<!--          <q-icon-->
+<!--            left-->
+<!--            name="add"-->
+<!--          />-->
+<!--          Create-->
+<!--        </q-btn>-->
+<!--      </div>-->
+<!--    </q-form>-->
     <q-table
       :data="findRecordset()"
       :columns="typeMetadataColumns"
@@ -93,6 +93,65 @@
       :selection="selection.type"
       :selected.sync="selection.selected"
     >
+      <template #header="props">
+        <q-tr :props="props">
+          <q-th
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            {{ col.label }}
+            <q-btn-dropdown
+              flat
+              stack
+              no-icon-animation
+              padding="0"
+              align="center"
+              size="sm"
+              color="primary"
+              v-if="col.filter"
+              dropdown-icon="filter_list"
+            >
+              <q-list>
+                <q-item>
+                  <component
+                    :is="col.filter"
+                    :field="fieldByTag(col.name)"
+                    :filter="findFilters[col.name]"
+                    :filter-current="findFiltersEmpty[col.name]"
+                    :filter-update="filterUpdate"
+                  />
+                </q-item>
+              </q-list>
+              <!--              <q-list>-->
+              <!--                <q-item>-->
+              <!--                  <q-item-section>-->
+              <!--                    <template v-if="!!type.metadata && !!typeMetadataFilters">-->
+              <!--                                            <component-->
+              <!--                                              v-for="field in _typeMetadataFilters"-->
+              <!--                                              :is="field.componentFilter.component"-->
+              <!--                                              :field="field"-->
+              <!--                                              :key="field.ID"-->
+              <!--                                              :filter="findFilters[field.Tag]"-->
+              <!--                                              :filter-current="findFiltersEmpty[field.Tag]"-->
+              <!--                                              :filter-update="filterUpdate"-->
+              <!--                                            />-->
+              <!--                      <component-->
+              <!--                        v-if="true"-->
+              <!--                        :is="getColumnHeaderFilters2"-->
+              <!--                        :field="getColumnHeaderFilters2"-->
+              <!--                        :filter="findFilters[getColumnHeaderFilters2.Tag]"-->
+              <!--                        :filter-current="findFiltersEmpty[getColumnHeaderFilters2.Tag]"-->
+              <!--                        :filter-update="filterUpdate"-->
+              <!--                      />-->
+              <!--                    </template>-->
+              <!--                  </q-item-section>-->
+              <!--                </q-item>-->
+              <!--              </q-list>-->
+            </q-btn-dropdown>
+          </q-th>
+        </q-tr>
+      </template>
       <template #body="props">
         <q-tr :props="props">
           <q-td v-if="selection.type !== 'none'">
@@ -128,6 +187,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
+import rTableHeaders from './Header/rTableHeaders'
 import { isEqual } from 'lodash'
 
 import rFilterBool from './Filters/rFilterBool'
@@ -142,10 +202,23 @@ import rFilterMoney from './Filters/rFilterMoney'
 import rFilterString from './Filters/rFilterString'
 import rFilterFloat from './Filters/rFilterFloat'
 
+import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
+import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
+import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
+import rHeaderFilterTime from 'components/Find/Header/rHeaderFilterTime'
+import rHeaderFilterDatetime from 'components/Find/Header/rHeaderFilterDatetime'
+import rHeaderFilterInt from 'components/Find/Header/rHeaderFilterInt'
+import rHeaderFilterBigint from 'components/Find/Header/rHeaderFilterBigint'
+import rHeaderFilterLink from 'components/Find/Header/rHeaderFilterLink'
+import rHeaderFilterMoney from 'components/Find/Header/rHeaderFilterMoney'
+import rHeaderFilterString from 'components/Find/Header/rHeaderFilterString'
+import rHeaderFilterFloat from 'components/Find/Header/rHeaderFilterFloat'
+
 export default {
   components: {
     rObject,
     rColumnIdentifier,
+    rTableHeaders,
 
     rFilterBool,
     rFilterColor,
@@ -157,7 +230,19 @@ export default {
     rFilterLink,
     rFilterMoney,
     rFilterString,
-    rFilterFloat
+    rFilterFloat,
+
+    rHeaderFilterBool,
+    rHeaderFilterColor,
+    rHeaderFilterDate,
+    rHeaderFilterTime,
+    rHeaderFilterDatetime,
+    rHeaderFilterInt,
+    rHeaderFilterBigint,
+    rHeaderFilterLink,
+    rHeaderFilterMoney,
+    rHeaderFilterString,
+    rHeaderFilterFloat
   },
   props: {
     typeTag: {
@@ -218,13 +303,7 @@ export default {
       return null
     },
     typeMetadataColumns () {
-      if (this.type.metadata && this.type.metadata.Fields) {
-        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
-        if (_columns.length > 0) {
-          return _columns.map(field => field.componentColumn)
-        }
-      }
-      return []
+      return this.getTypeMetadataColumns()
     },
     typeMetadataIdentifier () {
       if (this.type.metadata && this.type.metadata.Fields) {
@@ -238,6 +317,13 @@ export default {
     typeMetadataFilters () {
       return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
     },
+    _typeMetadataFilters () {
+      console.log(this.getTypeMetadataFilters())
+      return this.getTypeMetadataFilters()
+    },
+    getColumnHeaderFilters2 (colName) {
+      return this.getColumnHeaderFilters()
+    },
     filtersChanged () {
       return !isEqual(this.findFilters, this.findFiltersCurrent)
     },
@@ -246,6 +332,42 @@ export default {
     }
   },
   methods: {
+    fieldByTag (tag) {
+      return this.type.metadata.Fields.find(field => field.Tag === tag)
+    },
+    getColumnHeaderFilters (colName) {
+      // console.log('colName: ', colName)
+      // console.log('getColumnHeaderFilters: ', this.type.metadata.Fields.filter(field => field.Column === colName ? field.componentFilter.component : null))
+      // return this.type.metadata.Fields.filter(field => field.Column === colName ? field.componentFilter.component : null)
+      console.log(this.type.metadata.Fields[0].componentFilter)
+      return this.type.metadata.Fields[0].componentFilter
+    },
+    getTypeMetadataFilters () {
+      // const columns = this.getTypeMetadataColumns()
+      // console.log('колонки: ', columns)
+      if (this.type.metadata.Fields && this.type.metadata.Fields.filter(field => field.componentFilter)) {
+        // console.log('поля с компонент фильтрами: ', this.type.metadata.Fields.filter(field => field.componentFilter))
+        return this.type.metadata.Fields.filter(field => field.componentFilter)
+      }
+      return null
+    },
+    hasColumnHeaderFilters (colName) {
+      this.getTypeMetadataFilters().find((item) => {
+        console.log('column name: ', item.Column)
+        console.log('colName: ', colName)
+        console.log('equal? :', item.Column === colName)
+        return item.Column === colName
+      })
+    },
+    getTypeMetadataColumns () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
+    },
     selectClick () {
       if (this.selectConfirm) {
         const selected = this.selection.selected.map(item => item._object)
@@ -254,6 +376,7 @@ export default {
     },
     findRecordset () {
       if (this.find.recordset) {
+        console.log(this.find.recordset)
         return Object.freeze(this.find.recordset.slice())
       }
       return []
@@ -366,17 +489,17 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.find-table-sticky-dynamic ::v-deep
-  height: 600px
+  .find-table-sticky-dynamic ::v-deep
+    height: 600px
 
-  .q-table__top,
-  .q-table__bottom,
-  thead tr:first-child th
-    background-color: #fff
+    .q-table__top,
+    .q-table__bottom,
+    thead tr:first-child th
+      background-color: #fff
 
-  thead tr th
-    position: sticky
-    z-index: 1
-  thead tr:first-child th
-    top: 0px
+    thead tr th
+      position: sticky
+      z-index: 1
+    thead tr:first-child th
+      top: 0px
 </style>
