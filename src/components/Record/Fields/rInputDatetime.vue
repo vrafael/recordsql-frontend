@@ -8,8 +8,8 @@
       :rules="datetimeInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     >
       <template #append>
         <q-icon
@@ -71,12 +71,8 @@ export default {
   data: () => ({
     datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => (
-        !val
-      ) || (
-        /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[\sT]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?$/
-          .test(val)
-      ) || 'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
+      val => !val || /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[ T]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
+        'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
     ],
     datetimeMask: 'YYYY-MM-DD HH:mm:ss',
     proxyValue: Date.now()
@@ -105,19 +101,13 @@ export default {
       this.updateFieldDataOnChange(value)
     },
     applyValueToProxy () {
-      this.proxyValue = this.value
-    },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+      const value = this.value.replace('T', ' ').padEnd(23, '1000-01-01 00:00:00.000'.slice(this.value.length, 23))
+      const valuedatetime = date.extractDate(value, this.datetimeMask)
+      this.proxyValue = date.formatDate(valuedatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

@@ -2,11 +2,13 @@
   <q-form
     ref="form"
     class="q-pa-md"
+    @submit="RECORD_UPLOAD()"
+    @reset="reset()"
   >
     <template v-if="!!TYPE_METADATA_INPUTS_GET">
       <template v-for="field in TYPE_METADATA_INPUTS_GET">
         <r-field
-          v-if="RECORD_LOADING_GET"
+          v-if="!RECORD_GET"
           :key="field.ID"
           :field="field"
         >
@@ -17,8 +19,8 @@
           />
         </r-field>
         <component
-          v-else-if="!!RECORD_GET"
-          :is="field.componentInput"
+          v-else
+          :is="field.componentInput.component"
           :field="field"
           :key="field.ID"
           :value="RECORD_GET[field.Tag]"
@@ -30,9 +32,9 @@
     <div class="row q-pt-md">
       <q-btn
         color="primary"
+        type="submit"
         style="width: 140px"
-        :disable="compareState()"
-        @click="RECORD_UPLOAD()"
+        :disable="recordNotChanged() && (!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !!RECORD_GET[TYPE_METADATA_IDENTIFIER_GET])"
       >
         <q-icon
           left
@@ -44,9 +46,9 @@
       <q-btn-group>
         <q-btn
           color="primary"
+          type="reset"
           style="width: 140px"
-          :disable="compareState()"
-          @click="reset()"
+          :disable="recordNotChanged()"
         >
           <q-icon
             left
@@ -58,7 +60,7 @@
           color="red"
           icon="delete"
           :disable="!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !RECORD_GET[TYPE_METADATA_IDENTIFIER_GET]"
-          @click="RECORD_DELETE()"
+          @click="del()"
         />
       </q-btn-group>
     </div>
@@ -115,12 +117,15 @@ export default {
       'RECORD_DELETE',
       'RECORD_RESET_STATE_TO_ORIGIN'
     ]),
-    compareState () {
+    recordNotChanged () {
       return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
     },
     reset () {
       this.RECORD_RESET_STATE_TO_ORIGIN()
       this.$refs.form.resetValidation()
+    },
+    del () {
+      this.RECORD_DELETE()
     }
   }
 }

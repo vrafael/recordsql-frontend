@@ -8,8 +8,8 @@
       @change="event => updateFieldDataOnChange(event.target.value)"
       dense
       outlined
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     />
   </r-field>
 </template>
@@ -43,14 +43,6 @@ export default {
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

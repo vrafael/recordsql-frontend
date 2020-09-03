@@ -2,17 +2,21 @@
   <q-page padding>
     <div class="full-width">
       <q-card>
-        <q-card-section class="bg-linear text-white">
+        <q-card-section class="bg-linear text-white q-pa-sm">
           <div class="row items-center">
             <div class="items-start q-mx-sm">
               <q-skeleton
                 v-if="RECORD_LOADING_GET"
                 type="QAvatar"
               />
-              <q-icon
+              <q-avatar
                 v-else
-                :name="RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Icon : this.TYPE_METADATA_GET.Icon"
-                style="font-size:3em;"
+                :icon="RECORD_GET && RECORD_GET._record ? RECORD_GET._record.TypeIcon : this.TYPE_METADATA_GET.Icon"
+                font-size="30px"
+                color="grey-4"
+                text-color="accent"
+                size="lg"
+                rounded
               />
             </div>
             <div class="col">
@@ -22,44 +26,45 @@
               </template>
               <template v-else>
                 <div class="text-h6">
-                  {{ RECORD_GET && RECORD_GET.hasOwnProperty('Name') ? RECORD_GET.Name : '' }}
+                  {{ RECORD_GET ? (RECORD_GET.hasOwnProperty('Name') && RECORD_GET.Name ? RECORD_GET.Name : (RECORD_GET._record ? RECORD_GET._record.Identifier : null )) : null }}
                 </div>
-                <div class="text-subtitle2">
-                  {{ RECORD_GET && RECORD_GET.Type ? RECORD_GET.Type.Name : this.TYPE_METADATA_GET.Name }}
+                <div class="text-caption">
+                  {{ RECORD_GET && RECORD_GET._record? RECORD_GET._record.TypeName : this.TYPE_METADATA_GET.Name }}
                 </div>
               </template>
             </div>
 
-            <template
-              v-if="!!RECORD_GET
-                && !!TYPE_METADATA_GET
-                && Object.keys(this.RECORD_GET).length !== 0
-                && !!TYPE_METADATA_HAS_OBJECT_PROPERTY
-                && this.RECORD_GET.ID === Number(this.$route.params.identifier)"
-            >
+            <template v-if="transitionsShow">
               <q-btn-dropdown
                 v-model="transitions"
                 label="Transitions"
                 color="accent"
-                :loading="RECORD_TRANSITION_LOADING_GET"
+                :loading="RECORD_LOADING_GET"
               >
                 <q-list>
                   <q-item
                     v-for="transition in RECORD_TRANSITION_LIST_GET"
-                    :key="transition.id"
+                    :key="transition.TransitionID"
                     @click="transitionPush(transition)"
                     clickable
                     v-close-popup
+                    :style="`color: ${transition.Color}`"
                   >
                     <q-item-section>
                       <q-item-label>{{ transition.TransitionName }}</q-item-label>
                     </q-item-section>
-                    <q-tooltip
-                      anchor="bottom middle"
-                      self="center middle"
-                    >
-                      {{ transition.Description }}
-                    </q-tooltip>
+                    <q-item-section side>
+                      <q-icon
+                        name="info"
+                        color="primary"
+                      />
+                      <q-tooltip
+                        anchor="bottom middle"
+                        self="center middle"
+                      >
+                        {{ transition.Description }}
+                      </q-tooltip>
+                    </q-item-section>
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
@@ -132,13 +137,28 @@ export default {
       currentTabComponent: 'rFieldList'
     }
   },
+  computed: {
+    ...mapGetters([
+      'TYPE_METADATA_GET',
+      'RECORD_GET',
+      'RECORD_LOADING_GET',
+      'TYPE_METADATA_HAS_OBJECT_PROPERTY',
+      'RECORD_TRANSITION_LIST_GET'
+    ]),
+    transitionsShow () {
+      return !!this.RECORD_GET &&
+        !!this.TYPE_METADATA_GET &&
+        Object.keys(this.RECORD_GET).length !== 0 &&
+        !!this.TYPE_METADATA_HAS_OBJECT_PROPERTY &&
+        this.RECORD_GET.ID === Number(this.$route.params.identifier)
+    }
+  },
   methods: {
     ...mapActions([
       'TYPE_METADATA_FETCH',
       'TYPE_METADATA_FETCH_WITH_RECORD_INIT',
       'RECORD_FETCH',
       'RECORD_STATE_UPDATE_FIELD',
-      'TRANSITION_LIST_FETCH',
       'TRANSITION_PUSH'
     ]),
     changeCurrentTabComponent (tabComponent) {
@@ -173,16 +193,6 @@ export default {
     identifier: async function () {
       await this.refresh()
     }
-  },
-  computed: {
-    ...mapGetters([
-      'TYPE_METADATA_GET',
-      'RECORD_GET',
-      'RECORD_LOADING_GET',
-      'TYPE_METADATA_HAS_OBJECT_PROPERTY',
-      'RECORD_TRANSITION_LIST_GET',
-      'RECORD_TRANSITION_LOADING_GET'
-    ])
   },
   mounted () {
     this.refresh()

@@ -4,11 +4,11 @@
       ref="input"
       class="q-field--with-bottom"
       :value="value"
+      @change="event => updateFieldDataOnChange(event.target.value)"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     />
   </r-field>
 </template>
@@ -42,14 +42,6 @@ export default {
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

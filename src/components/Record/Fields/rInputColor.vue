@@ -5,11 +5,11 @@
       :value="value"
       @change="event => updateFieldDataOnChange(event.target.value)"
       :rules="colorInputRules"
-      mask="\#XXXXXXXX"
+      mask="XXXXXXXX"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     >
       <div
         slot="prepend"
@@ -60,19 +60,7 @@ export default {
   },
   data: () => ({
     colorInputRules: [
-      val => (
-        !val
-      ) || (
-        val.length === 7
-      ) || (
-        val.length === 9
-      ) || 'Please use 6-8 characters',
-      val => (
-        !val
-      ) || (
-        /^#([\da-fA-F]{6,8})$/
-          .test(val)
-      ) || 'Please use hex or hexa values (0-9 and A-F)'
+      val => !val || /^(([\da-fA-F]{6})|([\da-fA-F]{8}))$/.test(val) || 'Please use hex (6) or hexa (8) values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -85,16 +73,10 @@ export default {
   }),
   watch: {
     value: function (val) {
-      if (val && ((
-        val.length === 4
-      ) || (
-        val.length === 7
-      ) || (
-        val.length === 9
-      )
-      )
-      ) {
-        this.$data.helperColor.style.backgroundColor = val
+      if (val && (val.length === 6 || val.length === 8)) {
+        this.$data.helperColor.style.backgroundColor = `#${val}`
+      } else {
+        this.$data.helperColor.style.backgroundColor = null
       }
     }
   },
@@ -113,30 +95,21 @@ export default {
     }
   },
   mounted () {
-    this.$data.helperColor.style.backgroundColor = this.value
+    this.$data.helperColor.style.backgroundColor = `#${this.value}`
   },
   methods: {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
     applyProxyToValue () {
-      this.value = this.proxyValue
+      this.updateFieldDataOnChange(this.proxyValue.replace('#', '').toUpperCase())
     },
     applyValueToProxy () {
-      this.proxyValue = this.value
-    },
-    reset () {
-      this.$refs.input.resetValidation()
-      this.$data.helperColor.style.backgroundColor = `#${this.originValue}`
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+      this.proxyValue = this.value ? `#${this.value}` : null
     },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

@@ -7,8 +7,8 @@
       :rules="floatInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     />
   </r-field>
 </template>
@@ -23,10 +23,7 @@ export default {
   },
   data: () => ({
     floatInputRules: [
-      val => (
-        /(^-?\d*(.\d*)?$)?/
-          .test(val)
-      ) || 'Please use float number format'
+      val => !val || /^(-?\d+(\.\d+)?)?$/.test(val) || 'Please use float number format'
     ]
   }),
   props: {
@@ -47,17 +44,9 @@ export default {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }

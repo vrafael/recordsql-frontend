@@ -1,7 +1,5 @@
 <template>
-  <r-field
-    :field="field"
-  >
+  <r-field :field="field">
     <q-input
       type="number"
       ref="input"
@@ -10,8 +8,8 @@
       :rules="intInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="() => updateFieldDataOnChange(originValue)"
     />
   </r-field>
 </template>
@@ -29,13 +27,8 @@ export default {
   },
   data: () => ({
     intInputRules: [
-      val => (
-        /(^-?\d*$)?/
-          .test(val)
-      ) || 'Please use number format',
-      val => (
-        val >= minInt && val <= maxInt
-      ) || `Please use integer value between ${minInt} and ${maxInt}`
+      val => !val || /^(-?\d+)?$/.test(val) || 'Please use number format',
+      val => (val >= minInt && val <= maxInt) || `Please use integer value between ${minInt} and ${maxInt}`
     ]
   }),
   props: {
@@ -56,17 +49,9 @@ export default {
     ...mapActions([
       'RECORD_STATE_UPDATE_FIELD'
     ]),
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
     updateFieldDataOnChange (eventValue) {
       const obj = { [`${this.field.Tag}`]: eventValue }
       this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
     }
   }
 }
