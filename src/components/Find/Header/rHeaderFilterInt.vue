@@ -13,6 +13,7 @@
       :rules="intInputRules"
       @change="event => updateValueFrom(event.target.value)"
       dense
+      outlined
       borderless
       ref="inputFrom"
       :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
