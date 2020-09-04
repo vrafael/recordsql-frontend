@@ -43,11 +43,6 @@ export default {
       type: Function,
       required: true
     }
-  },
-  methods: {
-    changeEnable: function () {
-      this.filterUpdate(this.field.Tag, { Enable: !this.filter.Enable })
-    }
   }
 }
 </script>
