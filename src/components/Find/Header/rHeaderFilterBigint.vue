@@ -9,7 +9,7 @@
       type="number"
       :value="filter.ValueFrom"
       :rules="bigintInputRules"
-      @change="event => updateValueFrom(event.target.value)"
+      @input="event => updateValueFrom(event)"
       outlined
       dense
       ref="inputFrom"
@@ -22,7 +22,7 @@
       type="number"
       :value="filter.ValueTo"
       :rules="bigintInputRules"
-      @change="event => updateValueTo(event.target.value)"
+      @input="event => updateValueTo(event)"
       outlined
       dense
       ref="inputTo"
