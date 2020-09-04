@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white ">
+  <div class="bg-white">
 <!--    <q-form-->
 <!--      class="q-ma-sm"-->
 <!--      ref="filterForm"-->
@@ -30,53 +30,43 @@
 <!--          />-->
 <!--        </template>-->
 <!--      </q-expansion-item>-->
-<!--      <div class="q-gutter-sm q-pa-sm">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          v-if="!!selectConfirm"-->
-<!--          :disable="selection.selected.length === 0"-->
-<!--          @click="selectClick"-->
-<!--        >-->
-<!--          <q-icon-->
-<!--            left-->
-<!--            name="check"-->
-<!--          />-->
-<!--          OK-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          :color="filtersChanged ? 'accent': 'primary'"-->
-<!--          type="submit"-->
-<!--        >-->
-<!--          <q-icon-->
-<!--            left-->
-<!--            :name="filtersEmpty ? 'refresh' : 'search'"-->
-<!--          />-->
-<!--          Refresh-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          type="reset"-->
-<!--          flat-->
-<!--          :disable="!!filtersEmpty"-->
-<!--        >-->
-<!--          <q-icon-->
-<!--            left-->
-<!--            name="clear"-->
-<!--          />-->
-<!--          Reset-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          @click="createRecordByType"-->
-<!--        >-->
-<!--          <q-icon-->
-<!--            left-->
-<!--            name="add"-->
-<!--          />-->
-<!--          Create-->
-<!--        </q-btn>-->
-<!--      </div>-->
 <!--    </q-form>-->
+    <div class="q-gutter-sm q-pa-sm">
+      <q-btn
+        color="primary"
+        v-if="!!selectConfirm"
+        :disable="selection.selected.length === 0"
+        @click="selectClick"
+      >
+        <q-icon
+          left
+          name="check"
+        />
+        OK
+      </q-btn>
+      <q-btn
+        color="primary"
+        type="reset"
+        flat
+        :disable="!!filtersEmpty"
+      >
+        <q-icon
+          left
+          name="clear"
+        />
+        Reset
+      </q-btn>
+      <q-btn
+        color="primary"
+        @click="createRecordByType"
+      >
+        <q-icon
+          left
+          name="add"
+        />
+        Create
+      </q-btn>
+    </div>
     <q-table
       :data="findRecordset()"
       :columns="typeMetadataColumns"
@@ -125,31 +115,6 @@
                   />
                 </q-item>
               </q-list>
-              <!--              <q-list>-->
-              <!--                <q-item>-->
-              <!--                  <q-item-section>-->
-              <!--                    <template v-if="!!type.metadata && !!typeMetadataFilters">-->
-              <!--                                            <component-->
-              <!--                                              v-for="field in _typeMetadataFilters"-->
-              <!--                                              :is="field.componentFilter.component"-->
-              <!--                                              :field="field"-->
-              <!--                                              :key="field.ID"-->
-              <!--                                              :filter="findFilters[field.Tag]"-->
-              <!--                                              :filter-current="findFiltersEmpty[field.Tag]"-->
-              <!--                                              :filter-update="filterUpdate"-->
-              <!--                                            />-->
-              <!--                      <component-->
-              <!--                        v-if="true"-->
-              <!--                        :is="getColumnHeaderFilters2"-->
-              <!--                        :field="getColumnHeaderFilters2"-->
-              <!--                        :filter="findFilters[getColumnHeaderFilters2.Tag]"-->
-              <!--                        :filter-current="findFiltersEmpty[getColumnHeaderFilters2.Tag]"-->
-              <!--                        :filter-update="filterUpdate"-->
-              <!--                      />-->
-              <!--                    </template>-->
-              <!--                  </q-item-section>-->
-              <!--                </q-item>-->
-              <!--              </q-list>-->
             </q-btn-dropdown>
           </q-th>
         </q-tr>
@@ -189,21 +154,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import rTableHeaders from './Header/rTableHeaders'
 import { isEqual } from 'lodash'
-
-import rFilterBool from './Filters/rFilterBool'
-import rFilterColor from './Filters/rFilterColor'
-import rFilterDate from './Filters/rFilterDate'
-import rFilterTime from './Filters/rFilterTime'
-import rFilterDatetime from './Filters/rFilterDatetime'
-import rFilterInt from './Filters/rFilterInt'
-import rFilterBigint from './Filters/rFilterBigint'
-import rFilterLink from './Filters/rFilterLink'
-import rFilterMoney from './Filters/rFilterMoney'
-import rFilterString from './Filters/rFilterString'
-import rFilterFloat from './Filters/rFilterFloat'
-
 import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
 import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
 import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
