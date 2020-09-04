@@ -9,7 +9,7 @@
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
+      label="From"
       @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
@@ -70,7 +70,7 @@
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
+      label="To"
       @change="event => updateValueTo(event.target.value)"
       outlined
       dense

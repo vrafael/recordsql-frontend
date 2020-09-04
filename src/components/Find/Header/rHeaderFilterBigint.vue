@@ -8,12 +8,12 @@
       class="col-12"
       type="number"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
       :rules="bigintInputRules"
       @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
       ref="inputFrom"
+      label="From"
       :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
       @clear="resetFrom"
     />
@@ -27,6 +27,7 @@
       outlined
       dense
       ref="inputTo"
+      label="To"
       :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="resetTo"
     />

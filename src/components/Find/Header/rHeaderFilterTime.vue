@@ -9,7 +9,7 @@
       :mask="timeInputMask"
       :rules="timeInputRules"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
+      label="From"
       @change="event => updateValueFrom(event.target.value)"
       outlined
       dense
@@ -61,7 +61,7 @@
       :mask="timeInputMask"
       :rules="timeInputRules"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
+      label="To"
       @change="event => updateValueTo(event.target.value)"
       outlined
       dense

@@ -7,7 +7,7 @@
     <q-field
       class="col-12"
       :value="filter.Value"
-      :disable="!filter.Enable"
+      label="Object"
       outlined
       dense
       style="min-width: 200px"

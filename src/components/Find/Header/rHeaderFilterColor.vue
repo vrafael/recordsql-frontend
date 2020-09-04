@@ -11,6 +11,7 @@
       @change="event => updateValue(event.target.value)"
       :rules="colorInputRules"
       mask="\#XXXXXXXX"
+      label="HEX or RGBa"
       outlined
       dense
       :clearable="filter.Value !== filterCurrent.Value"

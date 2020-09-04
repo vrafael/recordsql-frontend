@@ -9,7 +9,7 @@
       class="col-12"
       type="number"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
+      label="From"
       :rules="intInputRules"
       @change="event => updateValueFrom(event.target.value)"
       dense
@@ -23,7 +23,7 @@
       class="col-12"
       type="number"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
+      label="To"
       :rules="intInputRules"
       @change="event => updateValueTo(event.target.value)"
       outlined

@@ -8,6 +8,7 @@
       ref="input"
       class="col-12"
       :value="filter.Value"
+      label="String"
       @change="event => updateValue(event.target.value)"
       :disable="!filter.Enable"
       outlined

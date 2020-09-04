@@ -8,7 +8,7 @@
       class="col-12"
       type="number"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
+      label="From"
       :rules="floatInputRules"
       @change="event => updateValueFrom(event.target.value)"
       outlined
@@ -22,7 +22,7 @@
       class="col-12"
       type="number"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
+      label="To"
       :rules="floatInputRules"
       @change="event => updateValueTo(event.target.value)"
       outlined

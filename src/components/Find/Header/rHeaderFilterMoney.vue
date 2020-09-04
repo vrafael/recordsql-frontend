@@ -7,7 +7,7 @@
     <q-input
       class="col-12"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
+      label="From"
       :rules="moneyInputRules"
       @change="event => updateValueFrom(event.target.value)"
       outlined
@@ -20,7 +20,7 @@
     <q-input
       class="col-12"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
+      label="To"
       :rules="moneyInputRules"
       @change="event => updateValueTo(event.target.value)"
       outlined
