@@ -58,7 +58,6 @@
 
 <script>
 import rHeaderFilter from './rHeaderFilter'
-// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
 
 export default {
   components: {
