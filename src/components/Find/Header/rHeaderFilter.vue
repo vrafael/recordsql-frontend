@@ -5,23 +5,17 @@
   >
     <div class="col-12">
       <div
-        class="row items-center no-wrap"
-        @click="changeEnable"
+        class="row items-center no-wrap q-my-sm"
       >
-        <!--        <q-icon-->
-        <!--          :name="field.Type.Icon"-->
-        <!--          color="accent"-->
-        <!--          size="20px"-->
-        <!--          class="q-mr-sm"-->
-        <!--        />-->
-        <!--        <span class="ellipsis">-->
-        <!--          {{ field.Name }}-->
-        <!--        </span>-->
-        <!--        <q-space />-->
-        <!--        <q-toggle-->
-        <!--          :value="filter.Enable"-->
-        <!--          @input="changeEnable"-->
-        <!--        />-->
+        <q-icon
+          :name="field.Type.Icon"
+          color="accent"
+          size="20px"
+          class="q-mr-sm"
+        />
+        <span class="ellipsis">
+          {{ field.Name }}
+        </span>
       </div>
     </div>
     <slot />
