@@ -1,5 +1,8 @@
 <template>
-  <div class="row" style="max-width: 200px">
+  <div
+    class="row"
+    style="max-width: 300px"
+  >
     <div class="col-12">
       <div
         class="row items-center no-wrap"
