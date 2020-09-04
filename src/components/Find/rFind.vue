@@ -120,6 +120,8 @@
                     :filter="findFilters[col.name]"
                     :filter-current="findFiltersEmpty[col.name]"
                     :filter-update="filterUpdate"
+                    @apply-filter="refreshClick"
+                    @reset-field="resetClick"
                   />
                 </q-item>
               </q-list>

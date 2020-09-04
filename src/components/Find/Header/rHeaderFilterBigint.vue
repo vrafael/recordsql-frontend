@@ -30,6 +30,23 @@
       :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="resetTo"
     />
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="resetFieldInputs"
+      >
+        Cancel
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -73,6 +90,14 @@ export default {
     }
   },
   methods: {
+    isEmpty () {
+      return (this.filter.ValueFrom || this.filter.ValueTo) === null
+    },
+    resetFieldInputs () {
+      this.$emit('reset-field')
+      this.resetFrom()
+      this.resetTo()
+    },
     resetFrom () {
       this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
       setTimeout(() => {
