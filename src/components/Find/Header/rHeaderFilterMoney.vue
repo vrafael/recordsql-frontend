@@ -5,7 +5,7 @@
     :filter-update="filterUpdate"
   >
     <q-input
-      class="col-12"
+      class="r-header-filter-money-input col-12"
       :value="filter.ValueFrom"
       label="From"
       :rules="moneyInputRules"
@@ -18,7 +18,7 @@
     />
     <q-space />
     <q-input
-      class="col-12"
+      class="r-header-filter-money-input col-12"
       :value="filter.ValueTo"
       label="To"
       :rules="moneyInputRules"
@@ -105,3 +105,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .r-header-filter-int-input {
+    /* Chrome, Safari, Edge, Opera */
+    & input::-webkit-outer-spin-button,
+    & input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    & input[type=number] {
+      -moz-appearance: textfield;
+    }
+  }
+
+</style>

@@ -5,7 +5,7 @@
     :filter-update="filterUpdate"
   >
     <q-input
-      class="col-12"
+      class="r-header-filter-float-input col-12"
       type="number"
       :value="filter.ValueFrom"
       label="From"
@@ -19,7 +19,7 @@
     />
     <q-space />
     <q-input
-      class="col-12"
+      class="r-header-filter-float-input col-12"
       type="number"
       :value="filter.ValueTo"
       label="To"
@@ -89,3 +89,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .r-header-filter-float-input {
+    /* Chrome, Safari, Edge, Opera */
+    & input::-webkit-outer-spin-button,
+    & input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    & input[type=number] {
+      -moz-appearance: textfield;
+    }
+  }
+
+</style>

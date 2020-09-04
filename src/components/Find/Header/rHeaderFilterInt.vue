@@ -6,7 +6,7 @@
     style="max-width: 200px"
   >
     <q-input
-      class="col-12"
+      class="r-header-filter-int-input col-12"
       type="number"
       :value="filter.ValueFrom"
       label="From"
@@ -20,7 +20,7 @@
       @clear="resetFrom"
     />
     <q-input
-      class="col-12"
+      class="r-header-filter-int-input col-12"
       type="number"
       :value="filter.ValueTo"
       label="To"
@@ -97,3 +97,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .r-header-filter-int-input {
+    /* Chrome, Safari, Edge, Opera */
+    & input::-webkit-outer-spin-button,
+    & input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    & input[type=number] {
+      -moz-appearance: textfield;
+    }
+  }
+
+</style>
