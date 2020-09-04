@@ -6,7 +6,6 @@
   >
     <q-checkbox
       :value="filter.Value"
-      :disable="!filter.Enable"
       @input="event => updateValue(event)"
       :label="label"
       dense

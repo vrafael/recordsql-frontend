@@ -10,7 +10,6 @@
       :value="filter.Value"
       @change="event => updateValue(event.target.value)"
       :rules="colorInputRules"
-      :disable="!filter.Enable"
       mask="\#XXXXXXXX"
       outlined
       dense
