@@ -171,20 +171,6 @@ export default {
   components: {
     rObject,
     rColumnIdentifier,
-    rTableHeaders,
-
-    rFilterBool,
-    rFilterColor,
-    rFilterDate,
-    rFilterTime,
-    rFilterDatetime,
-    rFilterInt,
-    rFilterBigint,
-    rFilterLink,
-    rFilterMoney,
-    rFilterString,
-    rFilterFloat,
-
     rHeaderFilterBool,
     rHeaderFilterColor,
     rHeaderFilterDate,
@@ -249,12 +235,6 @@ export default {
     }
   },
   computed: {
-    typeMetadataIcon () {
-      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Icon')) {
-        return this.type.metadata.Icon
-      }
-      return null
-    },
     typeMetadataColumns () {
       return this.getTypeMetadataColumns()
     },
@@ -267,16 +247,6 @@ export default {
       }
       return null
     },
-    typeMetadataFilters () {
-      return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
-    },
-    _typeMetadataFilters () {
-      console.log(this.getTypeMetadataFilters())
-      return this.getTypeMetadataFilters()
-    },
-    getColumnHeaderFilters2 (colName) {
-      return this.getColumnHeaderFilters()
-    },
     filtersChanged () {
       return !isEqual(this.findFilters, this.findFiltersCurrent)
     },
@@ -287,30 +257,6 @@ export default {
   methods: {
     fieldByTag (tag) {
       return this.type.metadata.Fields.find(field => field.Tag === tag)
-    },
-    getColumnHeaderFilters (colName) {
-      // console.log('colName: ', colName)
-      // console.log('getColumnHeaderFilters: ', this.type.metadata.Fields.filter(field => field.Column === colName ? field.componentFilter.component : null))
-      // return this.type.metadata.Fields.filter(field => field.Column === colName ? field.componentFilter.component : null)
-      console.log(this.type.metadata.Fields[0].componentFilter)
-      return this.type.metadata.Fields[0].componentFilter
-    },
-    getTypeMetadataFilters () {
-      // const columns = this.getTypeMetadataColumns()
-      // console.log('колонки: ', columns)
-      if (this.type.metadata.Fields && this.type.metadata.Fields.filter(field => field.componentFilter)) {
-        // console.log('поля с компонент фильтрами: ', this.type.metadata.Fields.filter(field => field.componentFilter))
-        return this.type.metadata.Fields.filter(field => field.componentFilter)
-      }
-      return null
-    },
-    hasColumnHeaderFilters (colName) {
-      this.getTypeMetadataFilters().find((item) => {
-        console.log('column name: ', item.Column)
-        console.log('colName: ', colName)
-        console.log('equal? :', item.Column === colName)
-        return item.Column === colName
-      })
     },
     getTypeMetadataColumns () {
       if (this.type.metadata && this.type.metadata.Fields) {
@@ -329,7 +275,6 @@ export default {
     },
     findRecordset () {
       if (this.find.recordset) {
-        console.log(this.find.recordset)
         return Object.freeze(this.find.recordset.slice())
       }
       return []
