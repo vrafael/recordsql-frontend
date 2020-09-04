@@ -1,36 +1,5 @@
 <template>
   <div class="bg-white">
-<!--    <q-form-->
-<!--      class="q-ma-sm"-->
-<!--      ref="filterForm"-->
-<!--      @submit="refreshClick"-->
-<!--      @reset="resetClick"-->
-<!--    >-->
-<!--      <q-expansion-item-->
-<!--        header-class="bg-linear text-white"-->
-<!--        v-model="expanded"-->
-<!--        :icon="typeMetadataIcon"-->
-<!--        :label="typeTag"-->
-<!--      >-->
-<!--        <q-inner-loading :showing="type.loading">-->
-<!--          <q-spinner-gears-->
-<!--            size="50px"-->
-<!--            color="primary"-->
-<!--          />-->
-<!--        </q-inner-loading>-->
-<!--        <template v-if="!!type.metadata && !!typeMetadataFilters">-->
-<!--          <component-->
-<!--            v-for="field in typeMetadataFilters"-->
-<!--            :is="field.componentFilter.component"-->
-<!--            :field="field"-->
-<!--            :key="field.ID"-->
-<!--            :filter="findFilters[field.Tag]"-->
-<!--            :filter-current="findFiltersEmpty[field.Tag]"-->
-<!--            :filter-update="filterUpdate"-->
-<!--          />-->
-<!--        </template>-->
-<!--      </q-expansion-item>-->
-<!--    </q-form>-->
     <div class="q-gutter-sm q-pa-sm">
       <q-btn
         color="primary"
