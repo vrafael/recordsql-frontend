@@ -21,7 +21,6 @@
       class="r-header-filter-bigint-input col-12"
       type="number"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
       :rules="bigintInputRules"
       @change="event => updateValueTo(event.target.value)"
       outlined

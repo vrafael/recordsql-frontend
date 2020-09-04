@@ -10,7 +10,6 @@
       :value="filter.Value"
       label="String"
       @change="event => updateValue(event.target.value)"
-      :disable="!filter.Enable"
       outlined
       dense
       :clearable="filter.Value !== filterCurrent.Value"
