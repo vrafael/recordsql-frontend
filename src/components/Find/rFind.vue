@@ -290,11 +290,13 @@ export default {
         find = {}
 
       fields.forEach(field => {
-        if (field.componentFilter && this.findFilters[field.Tag].Enable) {
+        if (field.componentFilter) {
           if (field.componentFilter.format) {
             find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
           } else {
-            find[field.Tag] = this.findFilters[field.Tag]
+            if (this.findFilters[field.Tag].Value || this.findFilters[field.Tag].ValueTo || this.findFilters[field.Tag].ValueFrom) {
+              find[field.Tag] = this.findFilters[field.Tag]
+            }
           }
         }
       })
