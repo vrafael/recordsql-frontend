@@ -116,6 +116,18 @@ export default {
     updateValueTo (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueTo: eventValue })
     }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.ValueFrom || filter.ValueTo) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
+    }
   }
 }
 </script>
