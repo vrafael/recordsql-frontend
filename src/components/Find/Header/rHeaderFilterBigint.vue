@@ -44,7 +44,7 @@
         size="md"
         @click="resetFieldInputs"
       >
-        Cancel
+        Clear
       </q-btn>
     </div>
   </r-header-filter>
