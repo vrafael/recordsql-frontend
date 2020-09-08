@@ -274,37 +274,37 @@ export default {
       this.findFetch()
     },
     resetClick () {
-      this.emptyFindFetch()
+      // this.typeMetadataFetch()
     },
     createRecordByType () {
       this.$router.push(`/record/${this.typeTag}`)
     },
-    async emptyFindFetch () {
-      if (this.find.loading) {
-        return
-      }
-
-      const paramsWithPaging = {
-        Find: null,
-        TypeTag: this.typeTag,
-        PageSize: this.find.pageSize,
-        PageNumber: this.find.pageNumber
-      }
-
-      this.find.loading = true
-
-      await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
-        .then(response => {
-          this.find.pageNumber += 1
-          this.find.recordset = this.find.recordset.concat(response)
-          this.find.isEOF = response.length < this.find.pageSize
-          this.find.loading = false
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
-        }).catch(error => {
-          this.find.loading = false
-          showNotify(error)
-        })
-    },
+    // async emptyFindFetch () {
+    //   if (this.find.loading) {
+    //     return
+    //   }
+    //
+    //   const paramsWithPaging = {
+    //     Find: null,
+    //     TypeTag: this.typeTag,
+    //     PageSize: this.find.pageSize,
+    //     PageNumber: this.find.pageNumber
+    //   }
+    //
+    //   this.find.loading = true
+    //
+    //   await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
+    //     .then(response => {
+    //       this.find.pageNumber += 1
+    //       this.find.recordset = this.find.recordset.concat(response)
+    //       this.find.isEOF = response.length < this.find.pageSize
+    //       this.find.loading = false
+    //       this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
+    //     }).catch(error => {
+    //       this.find.loading = false
+    //       showNotify(error)
+    //     })
+    // },
     async findFetch () {
       if (this.find.loading) {
         return
@@ -318,7 +318,9 @@ export default {
           if (field.componentFilter.format) {
             find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
           } else {
-            if (this.findFilters[field.Tag].Value || this.findFilters[field.Tag].ValueTo || this.findFilters[field.Tag].ValueFrom) {
+            console.log('fieldName: ', field.Name)
+            console.log('isNull: ', field.componentFilter.empty.IsNull)
+            if (field.componentFilter.isChanged) {
               find[field.Tag] = this.findFilters[field.Tag]
             }
           }
