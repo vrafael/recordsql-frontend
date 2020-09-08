@@ -55,7 +55,7 @@
               padding="0"
               align="center"
               size="sm"
-              color="primary"
+              :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
               v-if="col.filter"
               dropdown-icon="filter_list"
             >
