@@ -15,18 +15,6 @@
       </q-btn>
       <q-btn
         color="primary"
-        type="reset"
-        flat
-        :disable="!!filtersEmpty"
-      >
-        <q-icon
-          left
-          name="clear"
-        />
-        Reset
-      </q-btn>
-      <q-btn
-        color="primary"
         @click="createRecordByType"
       >
         <q-icon
