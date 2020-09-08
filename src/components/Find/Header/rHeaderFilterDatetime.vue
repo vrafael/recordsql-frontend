@@ -11,6 +11,7 @@
       :value="filter.ValueFrom"
       @input="event => updateValueFrom(event)"
       outlined
+      label="From"
       dense
       ref="inputFrom"
       :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
