@@ -15,7 +15,7 @@ export default function fieldsMapping (field) {
         field: '_record', // field.Tag,
         sortable: false,
         align: 'left',
-        style: 'max-width: 150px; width: 150px; overflow: hidden;'
+        style: 'max-width: 150px; width: 150px;'
       }
       break
     case 'FieldLink':
@@ -34,7 +34,7 @@ export default function fieldsMapping (field) {
         field: field.Tag, // row => row.Type.Name,
         sortable: false,
         align: 'left',
-        style: 'max-width: 200px; width: 200px; overflow: hidden;'
+        style: 'max-width: 200px; width: 200px;'
       }
       break
     case 'FieldText':
@@ -54,7 +54,7 @@ export default function fieldsMapping (field) {
         sortable: false,
         align: 'left',
         classes: 'ellipsis no-wrap',
-        style: 'max-width:200px; width:200px; overflow: hidden;'
+        style: 'max-width:200px; width:200px;'
       }
       break
     case 'FieldMoney':
@@ -70,7 +70,7 @@ export default function fieldsMapping (field) {
         field: field.Tag,
         sortable: false,
         align: 'right',
-        style: 'max-width: 100px; width: 100px; overflow: hidden;'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldBigint':
@@ -132,7 +132,7 @@ export default function fieldsMapping (field) {
         field: field.Tag,
         sortable: false,
         align: 'left',
-        style: 'max-width: 100px; width: 100px; overflow: hidden;'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldDatetime':
@@ -149,7 +149,7 @@ export default function fieldsMapping (field) {
         sortable: false,
         format: (val) => val ? val.replace('T', ' ') : null,
         align: 'left',
-        style: 'max-width: 160px; width: 150px; overflow: hidden;'
+        style: 'max-width: 160px; width: 150px;'
       }
       break
     case 'FieldDate':
@@ -165,7 +165,7 @@ export default function fieldsMapping (field) {
         field: field.Tag,
         sortable: false,
         align: 'left',
-        style: 'max-width: 100px; width: 100px; overflow: hidden;'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldColor':
@@ -181,7 +181,7 @@ export default function fieldsMapping (field) {
         field: field.Tag,
         sortable: false,
         align: 'right',
-        style: 'max-width: 100px; width: 100px; overflow: hidden;'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldBool':
@@ -198,7 +198,7 @@ export default function fieldsMapping (field) {
         sortable: false,
         align: 'left',
         classes: 'text-uppercase',
-        style: 'max-width: 100px; width: 100px; overflow: hidden;'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
   }
