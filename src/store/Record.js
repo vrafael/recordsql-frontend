@@ -1,13 +1,11 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
-import { Notify } from 'quasar'
+import { Notify, colors } from 'quasar'
 
 export default {
   state: {
     record: null,
     recordOrigin: null,
-    loading: true,
-    recordTransitions: null,
-    recordTransitionsLoading: false
+    loading: true
   },
   getters: {
     RECORD_GET: (state) => {
@@ -20,7 +18,14 @@ export default {
       return state.loading
     },
     RECORD_TRANSITION_LIST_GET: (state) => {
-      return state.record._transitions
+      if (state.record && state.record._transitions) {
+        state.record._transitions.map(transition => {
+          // contrast text color
+          transition.textColor = !transition.Color || colors.brightness(transition.Color) < 128 ? 'black' : 'white'
+        })
+        return state.record._transitions
+      }
+      return null
     }
   },
   mutations: {
