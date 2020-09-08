@@ -5,16 +5,33 @@
     :filter-update="filterUpdate"
   >
     <q-input
-      ref="input"
       class="col-12"
       :value="filter.Value"
-      label="String"
-      @change="event => updateValue(event.target.value)"
+      @input="event => updateValue(event)"
       outlined
       dense
-      :clearable="filter.Value !== filterCurrent.Value"
+      ref="input"
+      label="String"
+      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="reset"
     />
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="reset"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -44,7 +61,11 @@ export default {
     }
   },
   methods: {
+    isEmpty () {
+      return this.filter.Value === null
+    },
     reset () {
+      this.$emit('reset-field')
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
       setTimeout(() => {
         this.$refs.input.resetValidation()
@@ -52,6 +73,18 @@ export default {
     },
     updateValue (eventValue) {
       this.filterUpdate(this.field.Tag, { Value: eventValue })
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.Value) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
     }
   }
 }

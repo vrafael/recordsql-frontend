@@ -10,6 +10,23 @@
       :label="label"
       dense
     />
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="reset"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -29,10 +46,10 @@ export default {
       type: Object,
       required: true
     },
-    /* filterCurrent: {
+    filterCurrent: {
       type: Object,
       required: true
-    }, */
+    },
     filterUpdate: {
       type: Function,
       required: true
@@ -46,14 +63,29 @@ export default {
     }
   },
   methods: {
-    /* reset () {
+    isEmpty () {
+      return this.filter.Value === null
+    },
+    reset () {
+      this.$emit('reset-field')
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-    }, */
+    },
     updateValue (eventValue) {
       this.filterUpdate(this.field.Tag, { Value: eventValue })
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.Value === true) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else if (filter.Value === false) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
     }
   }
 }

@@ -9,8 +9,7 @@
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       :value="filter.ValueFrom"
-      label="From"
-      @change="event => updateValueFrom(event.target.value)"
+      @input="event => updateValueFrom(event)"
       outlined
       dense
       ref="inputFrom"
@@ -70,11 +69,11 @@
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       :value="filter.ValueTo"
-      label="To"
-      @change="event => updateValueTo(event.target.value)"
+      @input="event => updateValueTo(event)"
       outlined
       dense
       ref="inputTo"
+      label="To"
       :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="resetTo"
     >
@@ -123,6 +122,23 @@
         </q-icon>
       </template>
     </q-input>
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="resetFieldInputs"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -165,6 +181,14 @@ export default {
     proxyValueTo: Date.now()
   }),
   methods: {
+    isEmpty () {
+      return (this.filter.ValueFrom || this.filter.ValueTo) === null
+    },
+    resetFieldInputs () {
+      this.$emit('reset-field')
+      this.resetFrom()
+      this.resetTo()
+    },
     resetFrom () {
       this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
       setTimeout(() => {
@@ -198,6 +222,18 @@ export default {
     },
     applyValueToToProxyTo () {
       this.proxyValueTo = this.filter.ValueTo
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.ValueFrom || filter.ValueTo) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
     }
   }
 }

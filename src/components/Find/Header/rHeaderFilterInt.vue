@@ -9,13 +9,12 @@
       class="r-header-filter-int-input col-12"
       type="number"
       :value="filter.ValueFrom"
-      label="From"
       :rules="intInputRules"
-      @change="event => updateValueFrom(event.target.value)"
-      dense
+      @input="event => updateValueFrom(event)"
       outlined
-      borderless
+      dense
       ref="inputFrom"
+      label="From"
       :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
       @clear="resetFrom"
     />
@@ -23,16 +22,32 @@
       class="r-header-filter-int-input col-12"
       type="number"
       :value="filter.ValueTo"
-      label="To"
       :rules="intInputRules"
-      @change="event => updateValueTo(event.target.value)"
+      @input="event => updateValueTo(event)"
       outlined
       dense
-      borderless
       ref="inputTo"
+      label="To"
       :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="resetTo"
     />
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="resetFieldInputs"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -76,6 +91,14 @@ export default {
     }
   },
   methods: {
+    isEmpty () {
+      return (this.filter.ValueFrom || this.filter.ValueTo) === null
+    },
+    resetFieldInputs () {
+      this.$emit('reset-field')
+      this.resetFrom()
+      this.resetTo()
+    },
     resetFrom () {
       this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
       setTimeout(() => {
@@ -93,6 +116,18 @@ export default {
     },
     updateValueTo (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueTo: eventValue })
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.ValueFrom || filter.ValueTo) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
     }
   }
 }
@@ -112,5 +147,4 @@ export default {
       -moz-appearance: textfield;
     }
   }
-
 </style>

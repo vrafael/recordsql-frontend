@@ -5,16 +5,16 @@
     :filter-update="filterUpdate"
   >
     <q-input
-      ref="input"
       class="col-12"
       :value="filter.Value"
-      @change="event => updateValue(event.target.value)"
+      @input="event => updateValue(event)"
       :rules="colorInputRules"
-      mask="\#XXXXXXXX"
-      label="HEX or RGBa"
+      mask="XXXXXXXX"
       outlined
       dense
-      :clearable="filter.Value !== filterCurrent.Value"
+      ref="input"
+      label="HEX or RGBa"
+      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
       @clear="reset"
     >
       <div
@@ -53,6 +53,23 @@
         </q-popup-proxy>
       </q-icon>
     </q-input>
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="reset"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -84,11 +101,11 @@ export default {
   data: () => ({
     colorInputRules: [
       val => (!val) ||
-        (val.length === 7) ||
-        (val.length === 9) ||
+        (val.length === 6) ||
+        (val.length === 8) ||
         'Please use 6-8 characters',
       val => (!val) ||
-        /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+        /^([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -107,6 +124,12 @@ export default {
         } else {
           this.helperColor.style.backgroundColor = null
         }
+
+        if (filter.Value) {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
       },
       deep: true
     }
@@ -115,7 +138,11 @@ export default {
     this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
+    isEmpty () {
+      return this.filter.Value === null
+    },
     reset () {
+      this.$emit('reset-field')
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
       setTimeout(() => {
         this.$refs.input.resetValidation()

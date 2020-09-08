@@ -23,7 +23,7 @@
           :key="object.ID"
           :value="object"
           :remove="objectRemove"
-          style="max-width: 200px;"
+          style="max-width: 200px; margin-top: 4px; margin-bottom: 4px"
         />
       </template>
       <template #append>
@@ -74,6 +74,23 @@
         />
       </q-dialog>
     </template>
+    <div class="col-12 q-my-sm flex justify-between">
+      <q-btn
+        color="primary"
+        size="md"
+        @click="$emit('apply-filter')"
+        :disable="isEmpty()"
+      >
+        Apply
+      </q-btn>
+      <q-btn
+        color="primary"
+        size="md"
+        @click="reset"
+      >
+        Clear
+      </q-btn>
+    </div>
   </r-header-filter>
 </template>
 
@@ -111,7 +128,11 @@ export default {
     }
   },
   methods: {
+    isEmpty () {
+      return this.filter.Value === null
+    },
     reset () {
+      this.$emit('reset-field')
       this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
     },
     objectInsert (object) {
@@ -146,6 +167,19 @@ export default {
         this.objectInsert(object)
       })
       this.selectDialog = false
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.Value !== null) {
+          console.log('LINK: ', filter)
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+        }
+      },
+      deep: true
     }
   }
 }
