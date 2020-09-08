@@ -274,9 +274,7 @@ export default {
       this.findFetch()
     },
     resetClick () {
-      if (!isEqual(this.findFilters, this.findFiltersEmpty)) {
-        this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
-      }
+      this.emptyFindFetch()
     },
     createRecordByType () {
       this.$router.push(`/record/${this.typeTag}`)
