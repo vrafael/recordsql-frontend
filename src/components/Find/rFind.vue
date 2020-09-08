@@ -318,8 +318,6 @@ export default {
           if (field.componentFilter.format) {
             find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
           } else {
-            console.log('fieldName: ', field.Name)
-            console.log('isNull: ', field.componentFilter.empty.IsNull)
             if (field.componentFilter.isChanged) {
               find[field.Tag] = this.findFilters[field.Tag]
             }
