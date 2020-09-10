@@ -23,8 +23,8 @@
       v-model="tab"
       animated
       swipeable
-      transition-prev="jump-left"
-      transition-next="jump-right"
+      transition-prev="jump-right"
+      transition-next="jump-left"
     >
       <q-tab-panel
         v-for="relation in TYPE_METADATA_RELATION_LIST_GET"
