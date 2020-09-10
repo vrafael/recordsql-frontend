@@ -84,13 +84,12 @@
             narrow-indicator
           >
             <q-tab
-              exact
               name="fields"
               label="Fields"
               @click="changeCurrentTabComponent('rFieldList')"
             />
             <q-tab
-              exact
+              v-if="TYPE_METADATA_GET.Object && RECORD_ORIGIN_GET && RECORD_ORIGIN_GET._record"
               name="relations"
               label="Relations"
               @click="changeCurrentTabComponent('rRelationList')"
@@ -120,6 +119,7 @@ export default {
     rFieldList,
     rRelationList
   },
+
   props: {
     identifier: {
       type: Number,
@@ -144,6 +144,7 @@ export default {
     ...mapGetters([
       'TYPE_METADATA_GET',
       'RECORD_GET',
+      'RECORD_ORIGIN_GET',
       'RECORD_LOADING_GET',
       'TYPE_METADATA_HAS_OBJECT_PROPERTY',
       'RECORD_TRANSITION_LIST_GET'

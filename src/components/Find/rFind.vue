@@ -293,15 +293,15 @@ export default {
         .then(async (response) => {
           const metadata = response[0]
           metadata.Fields.map(fieldsMapping)
-          const emptyfindFilters = {}
+          const emptyFindFilters = Object.assign({}, this.filters)
           metadata.Fields
             .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
             .forEach(field => {
-              emptyfindFilters[field.Tag] = field.componentFilter.empty
+              emptyFindFilters[field.Tag] = Object.assign(field.componentFilter.empty, emptyFindFilters[field.Tag])
             })
-          this.findFiltersEmpty = emptyfindFilters
-          this.findFilters = JSON.parse(JSON.stringify(emptyfindFilters))
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(emptyfindFilters)) // this.findFiltersCurrent = Object.assign({}, emptyfindFilters)
+          this.findFiltersEmpty = emptyFindFilters
+          this.findFilters = JSON.parse(JSON.stringify(emptyFindFilters))
+          this.findFiltersCurrent = JSON.parse(JSON.stringify(emptyFindFilters)) // this.findFiltersCurrent = Object.assign({}, emptyfindFilters)
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
