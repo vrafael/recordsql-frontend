@@ -314,13 +314,11 @@ export default {
         find = {}
 
       fields.forEach(field => {
-        if (field.componentFilter) {
+        if (field.componentFilter && this.findFilters[field.Tag].isChanged) {
           if (field.componentFilter.format) {
             find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
           } else {
-            if (field.componentFilter.isChanged) {
-              find[field.Tag] = this.findFilters[field.Tag]
-            }
+            find[field.Tag] = this.findFilters[field.Tag]
           }
         }
       })
