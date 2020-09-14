@@ -337,7 +337,9 @@ export default {
       await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
         .then(response => {
           this.find.pageNumber += 1
-          this.find.recordset = this.find.recordset.concat(response)
+          this.find.recordset = Array.isArray(response)
+            ? this.find.recordset.concat(response)
+            : []
           this.find.isEOF = response.length < this.find.pageSize
           this.find.loading = false
           this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
