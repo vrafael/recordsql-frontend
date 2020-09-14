@@ -56,9 +56,9 @@ export default {
           typeMetadata.Fields.map(fieldsMapping)
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata, typeTag: params.TypeTag })
           context.commit('TYPE_METADATA_TYPETAG_SET', params.TypeTag)
-        }).catch(error => {
+        }).catch(err => {
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata: {}, typeTag: null })
-          Notify.create(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     async TYPE_METADATA_FETCH_WITH_RECORD_INIT (context, params) {
@@ -73,10 +73,10 @@ export default {
           })
           context.dispatch('RECORD_STATE_INIT', emptyRecord, { root: true })
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata, typeTag: params.TypeTag })
-        }).catch(error => {
+        }).catch(err => {
           context.dispatch('RECORD_STATE_INIT', null, { root: true })
           context.commit('TYPE_METADATA_UPDATE', { typeMetadata: {}, typeTag: null })
-          Notify.create(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     }
   }

@@ -305,11 +305,11 @@ export default {
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
-        }).catch(error => {
+        }).catch(err => {
           this.findFilters = null
           this.type.metadata = null
           this.type.loading = false
-          Notify.create(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     refreshClick () {
@@ -359,9 +359,9 @@ export default {
           this.find.isEOF = response.length < this.find.pageSize
           this.find.loading = false
           this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
-        }).catch(error => {
+        }).catch(err => {
           this.find.loading = false
-          Notify.create(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     onScroll ({ to, ref }) {

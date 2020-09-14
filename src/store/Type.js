@@ -1,4 +1,5 @@
 import fetchApiRPC from 'src/common/service.api.rpc'
+import { Notify } from 'quasar'
 
 export default {
   state: {
@@ -47,7 +48,7 @@ export default {
       await fetchApiRPC('Dev.TypeList')
         .then(response => {
           commit('TYPE_LIST_UPDATE', response)
-        })
+        }).catch(err => Notify.create({ type: err.type, message: err.message, timeout: err.timeout }))
     }
   }
 }

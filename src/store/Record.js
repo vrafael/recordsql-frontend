@@ -53,7 +53,7 @@ export default {
             Notify.create({ type: 'negative', message: 'Запись не найдена!' })
             this.$router.push('/404')
           }
-        }).catch(error => Notify.create(error))
+        }).catch(err => Notify.create({ type: err.type, message: err.message, timeout: err.timeout }))
     },
     async RECORD_STATE_UPDATE_FIELD (context, payload) {
       if (payload) {
@@ -95,10 +95,9 @@ export default {
             context.commit('RECORD_LOADING_SET', false)
             Notify.create({ type: 'negative', message: 'Не удалось сохранить запись!' })
           }
-        }).catch(error => {
+        }).catch(err => {
           context.commit('RECORD_LOADING_SET', false)
-          console.log(error.message)
-          Notify.create(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     async RECORD_DELETE (context) {
@@ -120,9 +119,7 @@ export default {
           context.dispatch('RECORD_FETCH', { TypeTag: params.TypeTag, Identifier: params.ID })
           Notify.create({ type: 'positive', message: `Переход "${params.TransitionName}" выполнен успешно.` })
         })
-        .catch(error => {
-          Notify.create(error)
-        })
+        .catch(err => Notify.create({ type: err.type, message: err.message, timeout: err.timeout }))
     }
   }
 }
