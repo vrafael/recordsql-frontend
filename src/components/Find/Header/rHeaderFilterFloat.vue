@@ -6,7 +6,6 @@
   >
     <q-input
       class="r-header-filter-float-input col-12"
-      type="number"
       :value="filter.ValueFrom"
       :rules="floatInputRules"
       @input="event => updateValueFrom(event)"
@@ -19,7 +18,6 @@
     />
     <q-input
       class="r-header-filter-float-input col-12"
-      type="number"
       :value="filter.ValueTo"
       :rules="floatInputRules"
       @input="event => updateValueTo(event)"
@@ -60,7 +58,7 @@ export default {
   data: () => ({
     floatInputRules: [
       val => (
-        /(^-?\d*(.\d*)?$)?/
+        /^(-?\d+(\.\d+)?)?$/
           .test(val)
       ) || 'Please use float number format'
     ]
