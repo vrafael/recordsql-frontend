@@ -4,142 +4,147 @@
     :filter="filter"
     :filter-update="filterUpdate"
   >
-    <q-input
-      class="col-12"
-      :mask="datetimeInputMask"
-      :rules="datetimeInputRules"
-      :value="filter.ValueFrom"
-      @input="event => updateValueFrom(event)"
-      outlined
-      label="From"
-      dense
-      ref="inputFrom"
-      :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-      @clear="resetFrom"
+    <q-form
+      @submit="$emit('apply-filter')"
+      @reset="resetFieldInputs"
     >
-      <template #append>
-        <q-icon
-          @click="applyValueFromToProxyFrom"
-          name="today"
-          class="cursor-pointer"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <div class="col">
-              <div class="row no-wrap">
-                <q-date
-                  v-model="proxyValueFrom"
-                  :mask="datetimeMask"
-                  class="no-shadow"
-                />
-                <q-time
-                  v-model="proxyValueFrom"
-                  with-seconds
-                  format24h
-                  :mask="datetimeMask"
-                  class="no-shadow"
-                />
-              </div>
-              <div class="row justify-between q-pa-md">
-                <q-btn
-                  @click="applyProxyFromToValueFrom"
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-                <q-btn
-                  label="Cancel"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-              </div>
-            </div>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-
-    <q-space />
-
-    <q-input
-      class="col-12"
-      :mask="datetimeInputMask"
-      :rules="datetimeInputRules"
-      :value="filter.ValueTo"
-      @input="event => updateValueTo(event)"
-      outlined
-      dense
-      ref="inputTo"
-      label="To"
-      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-      @clear="resetTo"
-    >
-      <template #append>
-        <q-icon
-          @click="applyValueToToProxyTo"
-          name="today"
-          class="cursor-pointer"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <div class="col">
-              <div class="row">
-                <q-date
-                  v-model="proxyValueTo"
-                  :mask="datetimeMask"
-                  class="no-shadow"
-                />
-                <q-time
-                  v-model="proxyValueTo"
-                  with-seconds
-                  format24h
-                  :mask="datetimeMask"
-                  class="no-shadow"
-                />
-              </div>
-              <div class="row justify-between q-pa-md">
-                <q-btn
-                  @click="applyProxyToToValueTo"
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-                <q-btn
-                  label="Cancel"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-              </div>
-            </div>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-    <div class="col-12 q-my-sm flex justify-between">
-      <q-btn
-        color="primary"
-        size="md"
-        @click="$emit('apply-filter')"
-        :disable="isEmpty()"
+      <q-input
+        class="col-12"
+        :mask="datetimeInputMask"
+        :rules="datetimeInputRules"
+        :value="filter.ValueFrom"
+        @input="event => updateValueFrom(event)"
+        outlined
+        label="From"
+        dense
+        ref="inputFrom"
+        :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
+        @clear="resetFrom"
       >
-        Apply
-      </q-btn>
-      <q-btn
-        color="primary"
-        size="md"
-        @click="resetFieldInputs"
+        <template #append>
+          <q-icon
+            @click="applyValueFromToProxyFrom"
+            name="today"
+            class="cursor-pointer"
+          >
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <div class="col">
+                <div class="row no-wrap">
+                  <q-date
+                    v-model="proxyValueFrom"
+                    :mask="datetimeMask"
+                    class="no-shadow"
+                  />
+                  <q-time
+                    v-model="proxyValueFrom"
+                    with-seconds
+                    format24h
+                    :mask="datetimeMask"
+                    class="no-shadow"
+                  />
+                </div>
+                <div class="row justify-between q-pa-md">
+                  <q-btn
+                    @click="applyProxyFromToValueFrom"
+                    label="OK"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                  <q-btn
+                    label="Cancel"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <q-space />
+
+      <q-input
+        class="col-12"
+        :mask="datetimeInputMask"
+        :rules="datetimeInputRules"
+        :value="filter.ValueTo"
+        @input="event => updateValueTo(event)"
+        outlined
+        dense
+        ref="inputTo"
+        label="To"
+        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
+        @clear="resetTo"
       >
-        Clear
-      </q-btn>
-    </div>
+        <template #append>
+          <q-icon
+            @click="applyValueToToProxyTo"
+            name="today"
+            class="cursor-pointer"
+          >
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <div class="col">
+                <div class="row">
+                  <q-date
+                    v-model="proxyValueTo"
+                    :mask="datetimeMask"
+                    class="no-shadow"
+                  />
+                  <q-time
+                    v-model="proxyValueTo"
+                    with-seconds
+                    format24h
+                    :mask="datetimeMask"
+                    class="no-shadow"
+                  />
+                </div>
+                <div class="row justify-between q-pa-md">
+                  <q-btn
+                    @click="applyProxyToToValueTo"
+                    label="OK"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                  <q-btn
+                    label="Cancel"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <div class="col-12 q-my-sm flex justify-between">
+        <q-btn
+          color="primary"
+          size="md"
+          type="submit"
+          :disable="isEmpty()"
+        >
+          Apply
+        </q-btn>
+        <q-btn
+          color="primary"
+          size="md"
+          type="reset"
+        >
+          Clear
+        </q-btn>
+      </div>
+    </q-form>
   </r-header-filter>
 </template>
 

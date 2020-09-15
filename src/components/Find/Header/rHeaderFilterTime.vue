@@ -4,124 +4,129 @@
     :filter="filter"
     :filter-update="filterUpdate"
   >
-    <q-input
-      class="col-12"
-      :mask="timeInputMask"
-      :rules="timeInputRules"
-      :value="filter.ValueFrom"
-      @input="event => updateValueFrom(event)"
-      outlined
-      dense
-      ref="inputFrom"
-      label="From"
-      :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-      @clear="resetFrom"
+    <q-form
+      @submit="$emit('apply-filter')"
+      @reset="resetFieldInputs"
     >
-      <template #append>
-        <q-icon
-          @click="applyValueFromToProxyFrom"
-          name="access_time"
-          class="cursor-pointer"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <q-time
-              v-model="proxyValueFrom"
-              with-seconds
-              format24h
-              :mask="timeMask"
-            >
-              <div class="row items-center justify-between">
-                <q-btn
-                  @click="applyProxyFromToValueFrom"
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-                <q-btn
-                  label="Cancel"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-              </div>
-            </q-time>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-
-    <q-space />
-
-    <q-input
-      class="col-12"
-      :mask="timeInputMask"
-      :rules="timeInputRules"
-      :value="filter.ValueTo"
-      @input="event => updateValueTo(event)"
-      outlined
-      dense
-      ref="inputTo"
-      label="To"
-      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-      @clear="resetTo"
-    >
-      <template #append>
-        <q-icon
-          @click="applyValueToToProxyTo"
-          name="access_time"
-          class="cursor-pointer"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <q-time
-              v-model="proxyValueTo"
-              with-seconds
-              format24h
-              :mask="timeMask"
-            >
-              <div class="row items-center justify-between">
-                <q-btn
-                  @click="applyProxyToToValueTo"
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-                <q-btn
-                  label="Cancel"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-              </div>
-            </q-time>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-    <div class="col-12 q-my-sm flex justify-between">
-      <q-btn
-        color="primary"
-        size="md"
-        @click="$emit('apply-filter')"
-        :disable="isEmpty()"
+      <q-input
+        class="col-12"
+        :mask="timeInputMask"
+        :rules="timeInputRules"
+        :value="filter.ValueFrom"
+        @input="event => updateValueFrom(event)"
+        outlined
+        dense
+        ref="inputFrom"
+        label="From"
+        :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
+        @clear="resetFrom"
       >
-        Apply
-      </q-btn>
-      <q-btn
-        color="primary"
-        size="md"
-        @click="resetFieldInputs"
+        <template #append>
+          <q-icon
+            @click="applyValueFromToProxyFrom"
+            name="access_time"
+            class="cursor-pointer"
+          >
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <q-time
+                v-model="proxyValueFrom"
+                with-seconds
+                format24h
+                :mask="timeMask"
+              >
+                <div class="row items-center justify-between">
+                  <q-btn
+                    @click="applyProxyFromToValueFrom"
+                    label="OK"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                  <q-btn
+                    label="Cancel"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+
+      <q-space />
+
+      <q-input
+        class="col-12"
+        :mask="timeInputMask"
+        :rules="timeInputRules"
+        :value="filter.ValueTo"
+        @input="event => updateValueTo(event)"
+        outlined
+        dense
+        ref="inputTo"
+        label="To"
+        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
+        @clear="resetTo"
       >
-        Clear
-      </q-btn>
-    </div>
+        <template #append>
+          <q-icon
+            @click="applyValueToToProxyTo"
+            name="access_time"
+            class="cursor-pointer"
+          >
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <q-time
+                v-model="proxyValueTo"
+                with-seconds
+                format24h
+                :mask="timeMask"
+              >
+                <div class="row items-center justify-between">
+                  <q-btn
+                    @click="applyProxyToToValueTo"
+                    label="OK"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                  <q-btn
+                    label="Cancel"
+                    color="primary"
+                    flat
+                    v-close-popup
+                  />
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <div class="col-12 q-my-sm flex justify-between">
+        <q-btn
+          color="primary"
+          size="md"
+          type="submit"
+          :disable="isEmpty()"
+        >
+          Apply
+        </q-btn>
+        <q-btn
+          color="primary"
+          size="md"
+          type="reset"
+        >
+          Clear
+        </q-btn>
+      </div>
+    </q-form>
   </r-header-filter>
 </template>
 

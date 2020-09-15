@@ -4,47 +4,52 @@
     :filter="filter"
     :filter-update="filterUpdate"
   >
-    <q-input
-      class="r-header-filter-float-input col-12"
-      :value="filter.ValueFrom"
-      :rules="floatInputRules"
-      @input="event => updateValueFrom(event)"
-      outlined
-      dense
-      ref="inputFrom"
-      label="From"
-      :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-      @clear="resetFrom"
-    />
-    <q-input
-      class="r-header-filter-float-input col-12"
-      :value="filter.ValueTo"
-      :rules="floatInputRules"
-      @input="event => updateValueTo(event)"
-      outlined
-      dense
-      ref="inputTo"
-      label="To"
-      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-      @clear="resetTo"
-    />
-    <div class="col-12 q-my-sm flex justify-between">
-      <q-btn
-        color="primary"
-        size="md"
-        @click="$emit('apply-filter')"
-        :disable="isEmpty()"
-      >
-        Apply
-      </q-btn>
-      <q-btn
-        color="primary"
-        size="md"
-        @click="resetFieldInputs"
-      >
-        Clear
-      </q-btn>
-    </div>
+    <q-form
+      @submit="$emit('apply-filter')"
+      @reset="resetFieldInputs"
+    >
+      <q-input
+        class="r-header-filter-float-input col-12"
+        :value="filter.ValueFrom"
+        :rules="floatInputRules"
+        @input="event => updateValueFrom(event)"
+        outlined
+        dense
+        ref="inputFrom"
+        label="From"
+        :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
+        @clear="resetFrom"
+      />
+      <q-input
+        class="r-header-filter-float-input col-12"
+        :value="filter.ValueTo"
+        :rules="floatInputRules"
+        @input="event => updateValueTo(event)"
+        outlined
+        dense
+        ref="inputTo"
+        label="To"
+        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
+        @clear="resetTo"
+      />
+      <div class="col-12 q-my-sm flex justify-between">
+        <q-btn
+          color="primary"
+          size="md"
+          type="submit"
+          :disable="isEmpty()"
+        >
+          Apply
+        </q-btn>
+        <q-btn
+          color="primary"
+          size="md"
+          type="reset"
+        >
+          Clear
+        </q-btn>
+      </div>
+    </q-form>
   </r-header-filter>
 </template>
 

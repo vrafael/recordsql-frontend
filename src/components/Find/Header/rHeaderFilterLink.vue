@@ -4,93 +4,98 @@
     :filter="filter"
     :filter-update="filterUpdate"
   >
-    <q-field
-      class="col-12"
-      :value="filter.Value"
-      label="Object"
-      outlined
-      dense
-      style="min-width: 200px"
-      :clearable="filter.Value !== filterCurrent.Value"
-      @clear="reset"
+    <q-form
+      @submit="$emit('apply-filter')"
+      @reset="reset"
     >
-      <template
-        #control
-        class="items-center"
+      <q-field
+        class="col-12"
+        :value="filter.Value"
+        label="Object"
+        outlined
+        dense
+        style="min-width: 200px"
+        :clearable="filter.Value !== filterCurrent.Value"
+        @clear="reset"
       >
-        <r-object
-          v-for="object in filter.Value"
-          :key="object.ID"
-          :value="object"
-          :remove="objectRemove"
-          style="max-width: 200px; margin-top: 4px; margin-bottom: 4px"
-        />
-      </template>
-      <template #append>
-        <q-icon
-          name="search"
-          class="cursor-pointer"
-          v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('FieldLinkValueType')"
+        <template
+          #control
+          class="items-center"
         >
-          <q-popup-proxy>
-            <q-list>
-              <q-item
-                v-for="type in field.Check.FieldLinkValueType"
-                :key="type.TypeID"
-                clickable
-                v-close-popup
-                @click="selectShow(field, type)"
-                context-menu
-              >
-                <div
-                  class="row items-center"
-                  style="min-width: 200px;"
+          <r-object
+            v-for="object in filter.Value"
+            :key="object.ID"
+            :value="object"
+            :remove="objectRemove"
+            style="max-width: 200px; margin-top: 4px; margin-bottom: 4px"
+          />
+        </template>
+        <template #append>
+          <q-icon
+            name="search"
+            class="cursor-pointer"
+            v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('FieldLinkValueType')"
+          >
+            <q-popup-proxy>
+              <q-list>
+                <q-item
+                  v-for="type in field.Check.FieldLinkValueType"
+                  :key="type.TypeID"
+                  clickable
+                  v-close-popup
+                  @click="selectShow(field, type)"
+                  context-menu
                 >
-                  <q-icon
-                    :name="type.TypeIcon"
-                    color="accent"
-                    size="28px"
-                    class="q-mr-sm"
-                  />
-                  <div class="text-weight-bold text-primary">
-                    {{ `${type.TypeName}...` }}
+                  <div
+                    class="row items-center"
+                    style="min-width: 200px;"
+                  >
+                    <q-icon
+                      :name="type.TypeIcon"
+                      color="accent"
+                      size="28px"
+                      class="q-mr-sm"
+                    />
+                    <div class="text-weight-bold text-primary">
+                      {{ `${type.TypeName}...` }}
+                    </div>
                   </div>
-                </div>
-              </q-item>
-            </q-list>
-          </q-popup-proxy>
-        </q-icon>
+                </q-item>
+              </q-list>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-field>
+      <template v-if="selectDialog">
+        <q-dialog
+          v-model="selectDialog"
+          full-width
+        >
+          <r-find
+            :type-tag="typeTag"
+            :select-multiple="true"
+            :select-confirm="selectConfirm"
+          />
+        </q-dialog>
       </template>
-    </q-field>
-    <template v-if="selectDialog">
-      <q-dialog
-        v-model="selectDialog"
-        full-width
-      >
-        <r-find
-          :type-tag="typeTag"
-          :select-multiple="true"
-          :select-confirm="selectConfirm"
-        />
-      </q-dialog>
-    </template>
-    <div class="col-12 q-my-sm flex justify-between">
-      <q-btn
-        color="primary"
-        size="md"
-        @click="$emit('apply-filter')"
-        :disable="isEmpty()"
-      >
-        Apply
-      </q-btn>
-      <q-btn
-        color="primary"
-        size="md"
-        @click="reset"
-      >
-        Clear
-      </q-btn>
-    </div>
+      <div class="col-12 q-my-sm flex justify-between">
+        <q-btn
+          color="primary"
+          size="md"
+          type="submit"
+          :disable="isEmpty()"
+        >
+          Apply
+        </q-btn>
+        <q-btn
+          color="primary"
+          size="md"
+          type="reset"
+        >
+          Clear
+        </q-btn>
+      </div>
+    </q-form>
   </r-header-filter>
 </template>
 

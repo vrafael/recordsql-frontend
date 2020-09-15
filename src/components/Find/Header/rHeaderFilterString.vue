@@ -4,34 +4,39 @@
     :filter="filter"
     :filter-update="filterUpdate"
   >
-    <q-input
-      class="col-12"
-      :value="filter.Value"
-      @input="event => updateValue(event)"
-      outlined
-      dense
-      ref="input"
-      label="String"
-      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-      @clear="reset"
-    />
-    <div class="col-12 q-my-sm flex justify-between">
-      <q-btn
-        color="primary"
-        size="md"
-        @click="$emit('apply-filter')"
-        :disable="isEmpty()"
-      >
-        Apply
-      </q-btn>
-      <q-btn
-        color="primary"
-        size="md"
-        @click="reset"
-      >
-        Clear
-      </q-btn>
-    </div>
+    <q-form
+      @submit="$emit('apply-filter')"
+      @reset="reset"
+    >
+      <q-input
+        class="col-12"
+        :value="filter.Value"
+        @input="event => updateValue(event)"
+        outlined
+        dense
+        ref="input"
+        label="String"
+        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
+        @clear="reset"
+      />
+      <div class="col-12 q-my-sm flex justify-between">
+        <q-btn
+          color="primary"
+          size="md"
+          type="submit"
+          :disable="isEmpty()"
+        >
+          Apply
+        </q-btn>
+        <q-btn
+          color="primary"
+          size="md"
+          type="reset"
+        >
+          Clear
+        </q-btn>
+      </div>
+    </q-form>
   </r-header-filter>
 </template>
 
