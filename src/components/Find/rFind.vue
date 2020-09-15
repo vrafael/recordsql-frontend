@@ -284,6 +284,10 @@ export default {
         return
       }
 
+      const options = {
+        isFindEmpty: isFindEmpty
+      }
+
       const fields = this.type.metadata.Fields,
         find = {}
 
@@ -297,11 +301,22 @@ export default {
         }
       })
 
-      const paramsWithPaging = {
-        Find: Object.keys(find).length > 0 ? find : null,
-        TypeTag: this.typeTag,
-        PageSize: this.find.pageSize,
-        PageNumber: this.find.pageNumber
+      let paramsWithPaging = {}
+
+      if (options.isFindEmpty) {
+        paramsWithPaging = {
+          Find: null,
+          TypeTag: this.typeTag,
+          PageSize: this.find.pageSize,
+          PageNumber: this.find.pageNumber
+        }
+      } else {
+        paramsWithPaging = {
+          Find: find,
+          TypeTag: this.typeTag,
+          PageSize: this.find.pageSize,
+          PageNumber: this.find.pageNumber
+        }
       }
 
       this.find.loading = true
