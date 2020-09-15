@@ -68,20 +68,8 @@ export default {
     moneyInputRules: {
       get: function () {
         return [
-          val => (
-            !(/,+/.test(val))
-          ) || 'Please use dot\'s instead comma\'s',
-          val => (
-            !val
-          ) || (
-            /(^-?\d*?(\.\d{1,4})?$)/
-              .test(val)
-          ) || 'Please use money format',
-          val => (
-            !val
-          ) || (
-            val && val !== '' ? parseFloat(val) > minMoney && parseFloat(val) < maxMoney : null
-          ) ||
+          val => !val || /^(-?\d+(\.\d{1,4})?)?$/.test(val) || 'Please use money format',
+          val => !val || (parseFloat(val) > minMoney && parseFloat(val) < maxMoney) ||
             `Please use money value between ${minMoney} and ${maxMoney}`
         ]
       }

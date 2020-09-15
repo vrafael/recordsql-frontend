@@ -178,10 +178,9 @@ export default {
   data: () => ({
     datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => (
-        !val
-      ) || /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[\sT]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?$/
-        .test(val) || 'Please use format "YYYY.MM.DD HH:mm:ss.nnn"'
+      val => !val || /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[ T]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/
+        .test(val) ||
+        'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
     ],
     datetimeMask: 'YYYY-MM-DD HH:mm:ss',
     proxyValueFrom: Date.now(),

@@ -160,10 +160,8 @@ export default {
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [
-      val => (
-        !val
-      ) || /^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{0,3})?)?$/
-        .test(val) || 'Please use format "HH:mm:ss.nnn"'
+      val => !val || /^(([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
+        'Please use format "HH:mm:ss.nnn"'
     ],
     timeMask: 'HH:mm:ss',
     proxyValueFrom: Date.now(),
