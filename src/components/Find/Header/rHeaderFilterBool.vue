@@ -7,6 +7,7 @@
     <q-form
       @submit="$emit('apply-filter')"
       @reset="reset"
+      class="full-width"
     >
       <q-checkbox
         :value="filter.Value"

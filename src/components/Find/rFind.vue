@@ -60,7 +60,9 @@
               dropdown-icon="filter_list"
             >
               <q-list>
-                <q-item>
+                <q-item
+                  style="max-width: 300px"
+                >
                   <component
                     :is="col.filter"
                     :field="fieldByTag(col.name)"

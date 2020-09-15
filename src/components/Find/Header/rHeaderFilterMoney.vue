@@ -7,6 +7,7 @@
     <q-form
       @submit="$emit('apply-filter')"
       @reset="resetFieldInputs"
+      class="full-width"
     >
       <q-input
         class="r-header-filter-money-input col-12"

@@ -3,11 +3,11 @@
     :field="field"
     :filter="filter"
     :filter-update="filterUpdate"
-    style="max-width: 200px"
   >
     <q-form
       @submit="$emit('apply-filter')"
       @reset="resetFieldInputs"
+      class="full-width"
     >
       <q-input
         class="r-header-filter-int-input col-12"
