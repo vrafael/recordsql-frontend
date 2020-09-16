@@ -179,7 +179,6 @@ export default {
     filter: {
       handler: function (filter) {
         if (filter.Value !== null) {
-          console.log('LINK: ', filter)
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })

@@ -6,7 +6,7 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="resetFieldInputs"
+      @reset="reset"
       class="full-width"
     >
       <q-input
@@ -19,8 +19,8 @@
         dense
         ref="inputFrom"
         label="From"
-        :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-        @clear="resetFrom"
+        clearable
+        @clear="updateValueFrom(null)"
       >
         <template #append>
           <q-icon
@@ -71,8 +71,8 @@
         dense
         ref="inputTo"
         label="To"
-        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-        @clear="resetTo"
+        clearable
+        @clear="updateValueTo(null)"
       >
         <template #append>
           <q-icon
@@ -171,17 +171,6 @@ export default {
     isEmpty () {
       return (this.filter.ValueFrom || this.filter.ValueTo) === null
     },
-    resetFieldInputs () {
-      this.$emit('reset-field')
-      this.resetFrom()
-      this.resetTo()
-    },
-    resetFrom () {
-      this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
-      setTimeout(() => {
-        this.$refs.inputFrom.resetValidation()
-      })
-    },
     updateValueFrom (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueFrom: eventValue })
     },
@@ -193,10 +182,13 @@ export default {
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
     },
-    resetTo () {
-      this.filterUpdate(this.field.Tag, { ValueTo: this.filterCurrent.ValueTo })
+    reset () {
+      this.$emit('reset-field')
+      this.filterUpdate(this.field.Tag, { ValueTo: null })
+      this.filterUpdate(this.field.Tag, { ValueFrom: null })
       setTimeout(() => {
         this.$refs.inputTo.resetValidation()
+        this.$refs.inputFrom.resetValidation()
       })
     },
     updateValueTo (eventValue) {

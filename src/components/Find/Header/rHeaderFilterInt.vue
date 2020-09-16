@@ -19,8 +19,8 @@
         dense
         ref="inputFrom"
         label="From"
-        :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-        @clear="resetFrom"
+        clearable
+        @clear="updateValueFrom(null)"
       />
       <q-input
         class="r-header-filter-int-input col-12"
@@ -32,8 +32,8 @@
         dense
         ref="inputTo"
         label="To"
-        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-        @clear="resetTo"
+        clearable
+        @clear="updateValueTo(null)"
       />
       <div class="col-12 q-my-sm flex justify-between">
         <q-btn
@@ -94,25 +94,17 @@ export default {
     isEmpty () {
       return (this.filter.ValueFrom || this.filter.ValueTo) === null
     },
-    resetFieldInputs () {
+    reset () {
       this.$emit('reset-field')
-      this.resetFrom()
-      this.resetTo()
-    },
-    resetFrom () {
-      this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
+      this.filterUpdate(this.field.Tag, { ValueFrom: null })
+      this.filterUpdate(this.field.Tag, { ValueTo: null })
       setTimeout(() => {
+        this.$refs.inputTo.resetValidation()
         this.$refs.inputFrom.resetValidation()
       })
     },
     updateValueFrom (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueFrom: eventValue })
-    },
-    resetTo () {
-      this.filterUpdate(this.field.Tag, { ValueTo: this.filterCurrent.ValueTo })
-      setTimeout(() => {
-        this.$refs.inputTo.resetValidation()
-      })
     },
     updateValueTo (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueTo: eventValue })

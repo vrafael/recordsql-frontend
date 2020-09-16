@@ -17,8 +17,8 @@
         dense
         ref="input"
         label="String"
-        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-        @clear="reset"
+        clearable
+        @clear="updateValue(null)"
       />
       <div class="col-12 q-my-sm flex justify-between">
         <q-btn
