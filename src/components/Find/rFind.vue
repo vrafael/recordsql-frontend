@@ -90,7 +90,9 @@
         <q-btn
           color="primary"
           @click="createRecordByType(typeTag)"
+          v-if="!typeMetadataAbstract"
         >
+          <!--ToDo q-btn-dropdown with ChildrenTypes -->
           <q-icon
             left
             name="add"
@@ -236,6 +238,12 @@ export default {
     typeMetadataIcon () {
       if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Icon')) {
         return this.type.metadata.Icon
+      }
+      return null
+    },
+    typeMetadataAbstract () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Abstract')) {
+        return this.type.metadata.Abstract
       }
       return null
     },
