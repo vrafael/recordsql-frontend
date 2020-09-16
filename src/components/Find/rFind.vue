@@ -89,7 +89,7 @@
         </q-btn>
         <q-btn
           color="primary"
-          @click="createRecordByType"
+          @click="createRecordByType(typeTag)"
         >
           <q-icon
             left
@@ -322,8 +322,8 @@ export default {
         this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
       }
     },
-    createRecordByType () {
-      this.$router.push({ name: 'record', params: { typeTag: this.typeTag } })
+    createRecordByType (typeTag) {
+      this.$router.push({ name: 'record', params: { typeTag } })
     },
     async findFetch () {
       if (this.find.loading) {
