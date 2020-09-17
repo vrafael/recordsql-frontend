@@ -94,9 +94,6 @@ export default {
     }
   },
   methods: {
-    isEmpty () {
-      return (this.filter.ValueFrom || this.filter.ValueTo) === null
-    },
     reset () {
       this.$emit('reset-field')
       this.filterUpdate(this.field.Tag, { ValueFrom: null })
