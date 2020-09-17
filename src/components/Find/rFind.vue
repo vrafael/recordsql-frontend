@@ -58,6 +58,7 @@
               :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
               v-if="col.filter"
               dropdown-icon="filter_list"
+              @hide="refreshClick()"
             >
               <q-list>
                 <q-item
