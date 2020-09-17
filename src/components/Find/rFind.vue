@@ -281,13 +281,9 @@ export default {
     createRecordByType () {
       this.$router.push(`/record/${this.typeTag}`)
     },
-    async findFetch (isFindEmpty = false) {
+    async findFetch () {
       if (this.find.loading) {
         return
-      }
-
-      const options = {
-        isFindEmpty: isFindEmpty
       }
 
       const fields = this.type.metadata.Fields,
@@ -303,22 +299,11 @@ export default {
         }
       })
 
-      let paramsWithPaging = {}
-
-      if (options.isFindEmpty) {
-        paramsWithPaging = {
-          Find: null,
-          TypeTag: this.typeTag,
-          PageSize: this.find.pageSize,
-          PageNumber: this.find.pageNumber
-        }
-      } else {
-        paramsWithPaging = {
-          Find: find,
-          TypeTag: this.typeTag,
-          PageSize: this.find.pageSize,
-          PageNumber: this.find.pageNumber
-        }
+      const paramsWithPaging = {
+        Find: Object.keys(find).length > 0 ? find : null,
+        TypeTag: this.typeTag,
+        PageSize: this.find.pageSize,
+        PageNumber: this.find.pageNumber
       }
 
       this.find.loading = true
