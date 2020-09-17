@@ -6,7 +6,7 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="resetFieldInputs"
+      @reset="reset"
       class="full-width"
     >
       <q-input
