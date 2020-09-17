@@ -79,23 +79,23 @@
           />
         </q-dialog>
       </template>
-      <div class="col-12 q-my-sm flex justify-between">
-        <q-btn
-          color="primary"
-          size="md"
-          type="submit"
-          :disable="isEmpty()"
-        >
-          Apply
-        </q-btn>
-        <q-btn
-          color="primary"
-          size="md"
-          type="reset"
-        >
-          Clear
-        </q-btn>
-      </div>
+<!--      <div class="col-12 q-my-sm flex justify-between">-->
+<!--        <q-btn-->
+<!--          color="primary"-->
+<!--          size="md"-->
+<!--          type="submit"-->
+<!--          :disable="isEmpty()"-->
+<!--        >-->
+<!--          Apply-->
+<!--        </q-btn>-->
+<!--        <q-btn-->
+<!--          color="primary"-->
+<!--          size="md"-->
+<!--          type="reset"-->
+<!--        >-->
+<!--          Clear-->
+<!--        </q-btn>-->
+<!--      </div>-->
     </q-form>
   </r-header-filter>
 </template>
