@@ -131,7 +131,7 @@ export default {
           this.helperColor.style.backgroundColor = null
         }
 
-        if (filter.Value) {
+        if (filter.Value && this.$refs.input.validate()) {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })

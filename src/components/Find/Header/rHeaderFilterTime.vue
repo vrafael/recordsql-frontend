@@ -206,7 +206,7 @@ export default {
   watch: {
     filter: {
       handler: function (filter) {
-        if (filter.ValueFrom || filter.ValueTo) {
+        if ((filter.ValueFrom || filter.ValueTo) && (this.$refs.inputFrom.validate() && this.$refs.inputTo.validate())) {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
