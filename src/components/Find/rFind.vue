@@ -276,7 +276,7 @@ export default {
       this.findFetch()
     },
     resetClick () {
-      // this.typeMetadataFetch()
+      this.findFetch()
     },
     createRecordByType () {
       this.$router.push(`/record/${this.typeTag}`)
