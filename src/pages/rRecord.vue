@@ -36,7 +36,7 @@
 
             <template v-if="transitionsShow">
               <q-btn-dropdown
-                v-model="transitions"
+                v-model="transitionsDropdown"
                 label="Transitions"
                 color="accent"
                 :loading="RECORD_LOADING_GET"
@@ -48,15 +48,18 @@
                     @click="transitionPush(transition)"
                     clickable
                     v-close-popup
-                    :style="`color: ${transition.Color}`"
+                    :style="`background-color: ${transition.Color ? '#' + transition.Color : null}; color: ${transition.textColor}`"
                   >
                     <q-item-section>
-                      <q-item-label>{{ transition.TransitionName }}</q-item-label>
+                      <q-item-label>
+                        {{ transition.TransitionName }}
+                      </q-item-label>
                     </q-item-section>
                     <q-item-section side>
                       <q-icon
+                        style
                         name="info"
-                        color="primary"
+                        :color="transition.textColor"
                       />
                       <q-tooltip
                         anchor="bottom middle"
@@ -81,13 +84,12 @@
             narrow-indicator
           >
             <q-tab
-              exact
               name="fields"
               label="Fields"
               @click="changeCurrentTabComponent('rFieldList')"
             />
             <q-tab
-              exact
+              v-if="TYPE_METADATA_GET.Object && RECORD_ORIGIN_GET && RECORD_ORIGIN_GET._record"
               name="relations"
               label="Relations"
               @click="changeCurrentTabComponent('rRelationList')"
@@ -117,6 +119,7 @@ export default {
     rFieldList,
     rRelationList
   },
+
   props: {
     identifier: {
       type: Number,
@@ -133,7 +136,7 @@ export default {
       currentTypeTag: null,
       currentIdentifier: null,
       tab: 'fields',
-      transitions: false,
+      transitionsDropdown: false,
       currentTabComponent: 'rFieldList'
     }
   },
@@ -141,16 +144,13 @@ export default {
     ...mapGetters([
       'TYPE_METADATA_GET',
       'RECORD_GET',
+      'RECORD_ORIGIN_GET',
       'RECORD_LOADING_GET',
       'TYPE_METADATA_HAS_OBJECT_PROPERTY',
       'RECORD_TRANSITION_LIST_GET'
     ]),
     transitionsShow () {
-      return !!this.RECORD_GET &&
-        !!this.TYPE_METADATA_GET &&
-        Object.keys(this.RECORD_GET).length !== 0 &&
-        !!this.TYPE_METADATA_HAS_OBJECT_PROPERTY &&
-        this.RECORD_GET.ID === Number(this.$route.params.identifier)
+      return !!this.RECORD_TRANSITION_LIST_GET
     }
   },
   methods: {

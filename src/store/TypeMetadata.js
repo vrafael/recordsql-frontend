@@ -32,6 +32,12 @@ export default {
     },
     TYPE_METADATA_HAS_OBJECT_PROPERTY: (state) => {
       return Object.prototype.hasOwnProperty.call(state.typeMetadata, 'Object') && state.typeMetadata.Object === true
+    },
+    TYPE_METADATA_RELATION_LIST_GET: (state) => {
+      if (state.typeMetadata.Object && state.typeMetadata.Relations) {
+        return state.typeMetadata.Relations
+      }
+      return null
     }
   },
   mutations: {
