@@ -48,10 +48,13 @@
                     @click="transitionPush(transition)"
                     clickable
                     v-close-popup
-                    :style="`color: ${transition.Color}`"
+                    class="q-pa-sm text-bold "
+                    :style="(transition.Color ? `border-radius: 3px; color: ${contrastColor(transition.Color)}; background-color: #${transition.Color}` : '')"
                   >
                     <q-item-section>
-                      <q-item-label>{{ transition.TransitionName }}</q-item-label>
+                      <q-item-label>
+                        {{ transition.TransitionName }}
+                      </q-item-label>
                     </q-item-section>
                     <q-item-section side>
                       <q-icon
@@ -61,6 +64,7 @@
                       <q-tooltip
                         anchor="bottom middle"
                         self="center middle"
+                        content-class="bg-secondary"
                       >
                         {{ transition.Description }}
                       </q-tooltip>
@@ -111,11 +115,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import rFieldList from 'components/Record/rFieldList'
 import rRelationList from 'components/Record/rRelationList'
+import { colors } from 'quasar'
+import rObject from 'src/components/rObject'
 
 export default {
   components: {
     rFieldList,
-    rRelationList
+    rRelationList,
+    rObject
   },
   props: {
     identifier: {
@@ -184,6 +191,12 @@ export default {
         TransitionID: transition.TransitionID,
         TransitionName: transition.TransitionName
       })
+    },
+    contrastColor (color) {
+      if (color && colors.brightness(`#${color}`) > 128) {
+        return 'black'
+      }
+      return 'white'
     }
   },
   watch: {

@@ -89,7 +89,7 @@
         </q-btn>
         <q-btn
           color="primary"
-          @click="createRecordByType(typeTag)"
+          :to="{ name: 'record', params: { typeTag }}"
           v-if="!typeMetadataAbstract"
         >
           <!--ToDo q-btn-dropdown with ChildrenTypes -->
@@ -329,9 +329,6 @@ export default {
       if (!isEqual(this.findFilters, this.findFiltersEmpty)) {
         this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
       }
-    },
-    createRecordByType (typeTag) {
-      this.$router.push({ name: 'record', params: { typeTag } })
     },
     async findFetch () {
       if (this.find.loading) {

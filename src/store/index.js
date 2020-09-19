@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import Layout from './Layout'
-import Type from './Type'
 import TypeMetadata from './TypeMetadata'
 import Record from './Record'
 
@@ -21,7 +20,6 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       Layout,
-      Type,
       TypeMetadata,
       Record
     },
