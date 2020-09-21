@@ -49,7 +49,7 @@
           color="primary"
           type="reset"
           style="width: 140px"
-          :disable="recordNotChanged"
+          :disable="!recordChanged"
         >
           <q-icon
             left
@@ -134,8 +134,8 @@ export default {
     }
   },
   computed: {
-    recordNotChanged () {
-      return isEqual(this.record, this.recordOrigin)
+    recordChanged () {
+      return !isEqual(this.record, this.recordOrigin)
     }
   }
 }

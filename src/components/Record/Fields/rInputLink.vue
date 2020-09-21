@@ -7,7 +7,7 @@
       outlined
       dense
       :clearable="recordChanged"
-      @clear="() => updateFieldOnChange(originValue)"
+      @clear="updateFieldOnChange(originValue)"
     >
       <template
         #control

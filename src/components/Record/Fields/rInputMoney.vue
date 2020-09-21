@@ -8,7 +8,7 @@
       outlined
       dense
       :clearable="value !== originValue"
-      @clear="() => updateFieldOnChange(originValue)"
+      @clear="updateFieldOnChange(originValue)"
     />
   </r-field>
 </template>

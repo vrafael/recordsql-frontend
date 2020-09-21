@@ -189,6 +189,7 @@ export default {
   methods: {
     async refresh () {
       if (this.currentTypeTag !== this.typeTag || this.currentIdentifier !== this.identifier) {
+        this.currentTab = 'fields'
         this.currentTypeTag = this.typeTag
         this.currentIdentifier = this.identifier
 
