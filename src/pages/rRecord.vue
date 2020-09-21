@@ -222,11 +222,11 @@ export default {
           if (recordInit) {
             const emptyRecord = {}
             typeMetadata.Fields.forEach((field) => {
-              emptyRecord[field.Tag] = null
-              this.loading = false
-              this.record = JSON.parse(JSON.stringify(emptyRecord))
-              this.recordOrigin = JSON.parse(JSON.stringify(emptyRecord))
+              emptyRecord[field.Tag] = this.$route.query[field.Tag] ? JSON.parse(this.$route.query[field.Tag]) : null
             })
+            this.loading = false
+            this.record = JSON.parse(JSON.stringify(emptyRecord))
+            this.recordOrigin = JSON.parse(JSON.stringify(emptyRecord))
           }
         }).catch(err => {
           this.type = {
