@@ -84,12 +84,11 @@
             narrow-indicator
           >
             <q-tab
-              exact
               name="fields"
               label="Fields"
             />
             <q-tab
-              exact
+              v-if="type.metadata && type.metadata.Object && recordOrigin"
               name="relations"
               label="Relations"
             />
@@ -111,8 +110,14 @@
                 :record-change="recordChange"
               />
             </q-tab-panel>
-            <q-tab-panel name="relations">
-              <r-relation-list />
+            <q-tab-panel
+              name="relations"
+              v-if="type.metadata && type.metadata.Object && recordOrigin"
+            >
+              <r-relation-list
+                :relations="metadataRelations"
+                :object="recordOrigin._object"
+              />
             </q-tab-panel>
           </q-tab-panels>
         </q-card-section>
@@ -140,6 +145,7 @@ export default {
     rFieldList,
     rRelationList
   },
+
   props: {
     identifier: {
       type: Number,
@@ -175,6 +181,9 @@ export default {
     },
     metadataInputs () {
       return this.type.metadata && this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentInput && field.componentInput.component) : null
+    },
+    metadataRelations () {
+      return this.type.metadata ? this.type.metadata.Relations : null
     }
   },
   methods: {
