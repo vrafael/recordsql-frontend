@@ -33,10 +33,10 @@
     </q-header>
     <q-drawer
       v-model="drawerLeft"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
+      <!--show-if-above-->
       <q-scroll-area class="fit">
         <q-list
           v-for="(menu_item, index) in menu"
@@ -86,7 +86,7 @@
 export default {
   data () {
     return ({
-      drawerLeft: true,
+      drawerLeft: false,
       // drawerRight: false,
       menu: [{
         label: 'Home',

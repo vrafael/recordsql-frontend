@@ -33,6 +33,10 @@
             <span class="text-bold q-ml-xs">{{ value.TypeName }}</span>
           </div>
           <div class="row">
+            Name
+            <span class="text-bold q-ml-xs">{{ value.Name }}</span>
+          </div>
+          <div class="row">
             State
             <div
               class="q-mx-xs text-bold "
