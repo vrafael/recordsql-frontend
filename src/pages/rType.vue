@@ -193,8 +193,7 @@ export default {
             ...type,
             type: 'type',
             children: typesParser(type.ID)
-          })
-          )
+          }))
       }
       const res = typesParser(null, [])
       return res

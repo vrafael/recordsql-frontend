@@ -3,13 +3,13 @@
     <q-input
       ref="input"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       :mask="timeInputMask"
       :rules="timeInputRules"
       outlined
       dense
       :clearable="value !== originValue"
-      @clear="() => updateFieldDataOnChange(originValue)"
+      @clear="() => updateFieldOnChange(originValue)"
     >
       <template #append>
         <q-icon
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 import { date } from 'quasar'
 
@@ -80,23 +79,23 @@ export default {
     originValue: {
       type: String,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
     applyProxyToValue () {
       const proxytime = date.extractDate(this.proxyValue, this.timeMask)
       const value = date.formatDate(proxytime, 'HH:mm:ss.SSS')
-      this.updateFieldDataOnChange(value)
+      this.updateFieldOnChange(value)
     },
     applyValueToProxy () {
       this.proxyValue = this.value
     },
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

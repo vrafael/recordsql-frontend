@@ -2,13 +2,13 @@
   <q-form
     ref="form"
     class="q-pa-md"
-    @submit="RECORD_UPLOAD()"
-    @reset="reset()"
+    @submit="recordSave"
+    @reset="recordReset"
   >
-    <template v-if="!!TYPE_METADATA_INPUTS_GET">
-      <template v-for="field in TYPE_METADATA_INPUTS_GET">
+    <template v-if="!!metadataInputs">
+      <template v-for="field in metadataInputs">
         <r-field
-          v-if="!RECORD_GET"
+          v-if="!record"
           :key="field.ID"
           :field="field"
         >
@@ -23,8 +23,9 @@
           :is="field.componentInput.component"
           :field="field"
           :key="field.ID"
-          :value="RECORD_GET[field.Tag]"
-          :origin-value="RECORD_ORIGIN_GET[field.Tag]"
+          :value="record[field.Tag]"
+          :origin-value="recordOrigin[field.Tag]"
+          :change="recordChange"
         />
       </template>
     </template>
@@ -34,8 +35,8 @@
         color="primary"
         type="submit"
         style="width: 140px"
-        :disable="recordNotChanged() && (!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !!RECORD_GET[TYPE_METADATA_IDENTIFIER_GET])"
       >
+        <!--:disable="recordNotChanged && !!recordOrigin && !!recordOrigin._record"-->
         <q-icon
           left
           name="save"
@@ -48,7 +49,7 @@
           color="primary"
           type="reset"
           style="width: 140px"
-          :disable="recordNotChanged()"
+          :disable="recordNotChanged"
         >
           <q-icon
             left
@@ -59,8 +60,8 @@
         <q-btn
           color="red"
           icon="delete"
-          :disable="!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !RECORD_GET[TYPE_METADATA_IDENTIFIER_GET]"
-          @click="del()"
+          :disable="!recordOrigin || !recordOrigin._record"
+          @click="recordDelete"
         />
       </q-btn-group>
     </div>
@@ -68,7 +69,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import rField from './Fields/rField'
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
@@ -102,30 +102,40 @@ export default {
     rInputText,
     rInputLink
   },
-  computed: {
-    ...mapGetters([
-      'TYPE_METADATA_INPUTS_GET',
-      'RECORD_GET',
-      'RECORD_ORIGIN_GET',
-      'RECORD_LOADING_GET',
-      'TYPE_METADATA_IDENTIFIER_GET'
-    ])
+  props: {
+    metadataInputs: {
+      type: Array,
+      required: false,
+      default: null
+    },
+    record: {
+      type: Object,
+      required: true
+    },
+    recordOrigin: {
+      type: Object,
+      required: true
+    },
+    recordSave: {
+      type: Function,
+      required: true
+    },
+    recordDelete: {
+      type: Function,
+      required: true
+    },
+    recordReset: {
+      type: Function,
+      required: true
+    },
+    recordChange: {
+      type: Function,
+      required: true
+    }
   },
-  methods: {
-    ...mapActions([
-      'RECORD_UPLOAD',
-      'RECORD_DELETE',
-      'RECORD_RESET_STATE_TO_ORIGIN'
-    ]),
+  computed: {
     recordNotChanged () {
-      return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
-    },
-    reset () {
-      this.RECORD_RESET_STATE_TO_ORIGIN()
-      this.$refs.form.resetValidation()
-    },
-    del () {
-      this.RECORD_DELETE()
+      return isEqual(this.record, this.recordOrigin)
     }
   }
 }

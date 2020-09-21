@@ -149,7 +149,7 @@
 <script>
 import rObject from '../rObject'
 import fetchApiRPC from 'src/common/service.api.rpc'
-import fieldsMapping from 'src/store/helpers/fieldsMapping'
+import fieldsMapping from 'src/common/fieldsMapping'
 import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
 import { isEqual } from 'lodash'

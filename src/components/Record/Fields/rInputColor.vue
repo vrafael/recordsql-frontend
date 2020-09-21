@@ -3,13 +3,13 @@
     <q-input
       ref="input"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       :rules="colorInputRules"
       mask="XXXXXXXX"
       outlined
       dense
       :clearable="value !== originValue"
-      @clear="() => updateFieldDataOnChange(originValue)"
+      @clear="() => updateFieldOnChange(originValue)"
     >
       <div
         slot="prepend"
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -92,24 +91,24 @@ export default {
     originValue: {
       type: String,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   mounted () {
     this.$data.helperColor.style.backgroundColor = `#${this.value}`
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
     applyProxyToValue () {
-      this.updateFieldDataOnChange(this.proxyValue.replace('#', '').toUpperCase())
+      this.updateFieldOnChange(this.proxyValue.replace('#', '').toUpperCase())
     },
     applyValueToProxy () {
       this.proxyValue = this.value ? `#${this.value}` : null
     },
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

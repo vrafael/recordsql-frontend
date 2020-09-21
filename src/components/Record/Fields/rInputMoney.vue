@@ -3,18 +3,17 @@
     <q-input
       ref="input"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       :rules="moneyInputRules"
       outlined
       dense
       :clearable="value !== originValue"
-      @clear="() => updateFieldDataOnChange(originValue)"
+      @clear="() => updateFieldOnChange(originValue)"
     />
   </r-field>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 
 const minMoney = -922337203685477,
@@ -36,6 +35,10 @@ export default {
     originValue: {
       type: [Number, String],
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   data: () => ({
@@ -46,12 +49,8 @@ export default {
     ]
   }),
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

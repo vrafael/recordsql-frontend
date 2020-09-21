@@ -83,18 +83,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data () {
     return ({
-      drawerLeft: true
-      // drawerRight: false
-    })
-  },
-  computed: {
-    ...mapGetters('Layout', {
-      menu: 'MENU_GET'
+      drawerLeft: true,
+      // drawerRight: false,
+      menu: [{
+        label: 'Home',
+        icon: 'home',
+        link: '/type',
+        separator: true
+      }]
     })
   }
 }
