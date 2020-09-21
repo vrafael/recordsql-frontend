@@ -6,7 +6,6 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="reset"
       class="full-width"
     >
       <q-input
@@ -20,7 +19,7 @@
         ref="input"
         label="HEX or RGBa"
         :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-        @clear="reset"
+        @clear="updateValue(null)"
       >
         <div
           slot="prepend"
@@ -58,23 +57,16 @@
           </q-popup-proxy>
         </q-icon>
       </q-input>
-<!--      <div class="col-12 q-my-sm flex justify-between">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="submit"-->
-<!--          :disable="isEmpty()"-->
-<!--        >-->
-<!--          Apply-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="reset"-->
-<!--        >-->
-<!--          Clear-->
-<!--        </q-btn>-->
-<!--      </div>-->
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
     </q-form>
   </r-header-filter>
 </template>
@@ -131,7 +123,7 @@ export default {
           this.helperColor.style.backgroundColor = null
         }
 
-        if (filter.Value && this.$refs.input.validate()) {
+        if (filter.Value) {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
@@ -144,16 +136,6 @@ export default {
     this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
-    isEmpty () {
-      return this.filter.Value === null
-    },
-    reset () {
-      this.$emit('reset-field')
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-    },
     applyProxyToValue () {
       this.updateValue(this.proxyValue)
     },

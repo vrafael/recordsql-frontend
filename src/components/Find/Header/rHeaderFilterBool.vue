@@ -6,7 +6,6 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="reset"
       class="full-width"
     >
       <q-checkbox
@@ -15,23 +14,16 @@
         :label="label"
         dense
       />
-<!--      <div class="col-12 q-my-sm flex justify-between">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="submit"-->
-<!--          :disable="isEmpty()"-->
-<!--        >-->
-<!--          Apply-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="reset"-->
-<!--        >-->
-<!--          Clear-->
-<!--        </q-btn>-->
-<!--      </div>-->
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
     </q-form>
   </r-header-filter>
 </template>
@@ -69,13 +61,6 @@ export default {
     }
   },
   methods: {
-    isEmpty () {
-      return this.filter.Value === null
-    },
-    reset () {
-      this.$emit('reset-field')
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-    },
     updateValue (eventValue) {
       this.filterUpdate(this.field.Tag, { Value: eventValue })
     }

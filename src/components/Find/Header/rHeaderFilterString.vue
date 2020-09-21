@@ -6,7 +6,6 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="reset"
       class="full-width"
     >
       <q-input
@@ -20,23 +19,16 @@
         clearable
         @clear="updateValue(null)"
       />
-<!--      <div class="col-12 q-my-sm flex justify-between">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="submit"-->
-<!--          :disable="isEmpty()"-->
-<!--        >-->
-<!--          Apply-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="reset"-->
-<!--        >-->
-<!--          Clear-->
-<!--        </q-btn>-->
-<!--      </div>-->
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
     </q-form>
   </r-header-filter>
 </template>
@@ -67,16 +59,6 @@ export default {
     }
   },
   methods: {
-    isEmpty () {
-      return this.filter.Value === null
-    },
-    reset () {
-      this.$emit('reset-field')
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-    },
     updateValue (eventValue) {
       this.filterUpdate(this.field.Tag, { Value: eventValue })
     }
@@ -84,7 +66,7 @@ export default {
   watch: {
     filter: {
       handler: function (filter) {
-        if (filter.Value && this.$refs.input.validate()) {
+        if (filter.Value) {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })

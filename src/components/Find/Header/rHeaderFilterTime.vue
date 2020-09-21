@@ -6,8 +6,8 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="reset"
       class="full-width"
+      ref="form"
     >
       <q-input
         class="col-12"
@@ -110,23 +110,16 @@
           </q-icon>
         </template>
       </q-input>
-<!--      <div class="col-12 q-my-sm flex justify-between">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="submit"-->
-<!--          :disable="isEmpty()"-->
-<!--        >-->
-<!--          Apply-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="reset"-->
-<!--        >-->
-<!--          Clear-->
-<!--        </q-btn>-->
-<!--      </div>-->
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
     </q-form>
   </r-header-filter>
 </template>
@@ -168,9 +161,6 @@ export default {
     proxyValueTo: Date.now()
   }),
   methods: {
-    isEmpty () {
-      return (this.filter.ValueFrom || this.filter.ValueTo) === null
-    },
     updateValueFrom (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueFrom: eventValue })
     },
@@ -181,15 +171,6 @@ export default {
     },
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
-    },
-    reset () {
-      this.$emit('reset-field')
-      this.filterUpdate(this.field.Tag, { ValueTo: null })
-      this.filterUpdate(this.field.Tag, { ValueFrom: null })
-      setTimeout(() => {
-        this.$refs.inputTo.resetValidation()
-        this.$refs.inputFrom.resetValidation()
-      })
     },
     updateValueTo (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueTo: eventValue })
@@ -206,7 +187,7 @@ export default {
   watch: {
     filter: {
       handler: function (filter) {
-        if ((filter.ValueFrom || filter.ValueTo) && (this.$refs.inputFrom.validate() && this.$refs.inputTo.validate())) {
+        if (filter.ValueFrom || filter.ValueTo) {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
         } else {
           this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })

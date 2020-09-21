@@ -6,7 +6,6 @@
   >
     <q-form
       @submit="$emit('apply-filter')"
-      @reset="reset"
       class="full-width"
     >
       <q-field
@@ -17,7 +16,7 @@
         dense
         style="min-width: 200px"
         :clearable="filter.Value !== filterCurrent.Value"
-        @clear="reset"
+        @clear="filterUpdate(this.field.Tag, { Value: null })"
       >
         <template
           #control
@@ -35,12 +34,12 @@
           <q-icon
             name="search"
             class="cursor-pointer"
-            v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('FieldLinkValueType')"
+            v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('LinkValueTypes')"
           >
             <q-popup-proxy>
               <q-list>
                 <q-item
-                  v-for="type in field.Check.FieldLinkValueType"
+                  v-for="type in field.Check.LinkValueTypes"
                   :key="type.TypeID"
                   clickable
                   v-close-popup
@@ -79,23 +78,16 @@
           />
         </q-dialog>
       </template>
-<!--      <div class="col-12 q-my-sm flex justify-between">-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="submit"-->
-<!--          :disable="isEmpty()"-->
-<!--        >-->
-<!--          Apply-->
-<!--        </q-btn>-->
-<!--        <q-btn-->
-<!--          color="primary"-->
-<!--          size="md"-->
-<!--          type="reset"-->
-<!--        >-->
-<!--          Clear-->
-<!--        </q-btn>-->
-<!--      </div>-->
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
     </q-form>
   </r-header-filter>
 </template>
@@ -134,13 +126,6 @@ export default {
     }
   },
   methods: {
-    isEmpty () {
-      return this.filter.Value === null
-    },
-    reset () {
-      this.$emit('reset-field')
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-    },
     objectInsert (object) {
       let value = null
       if (this.filter.Value) {
