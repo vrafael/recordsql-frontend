@@ -89,8 +89,10 @@
         </q-btn>
         <q-btn
           color="primary"
-          @click="createRecordByType"
+          :to="{ name: 'record', params: { typeTag }}"
+          v-if="!typeMetadataAbstract"
         >
+          <!--ToDo q-btn-dropdown with ChildrenTypes -->
           <q-icon
             left
             name="add"
@@ -147,7 +149,7 @@
 <script>
 import rObject from '../rObject'
 import fetchApiRPC from 'src/common/service.api.rpc'
-import fieldsMapping from 'src/store/helpers/fieldsMapping'
+import fieldsMapping from 'src/common/fieldsMapping'
 import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
 import { isEqual } from 'lodash'
@@ -239,6 +241,12 @@ export default {
       }
       return null
     },
+    typeMetadataAbstract () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Abstract')) {
+        return this.type.metadata.Abstract
+      }
+      return null
+    },
     typeMetadataColumns () {
       if (this.type.metadata && this.type.metadata.Fields) {
         const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
@@ -321,9 +329,6 @@ export default {
       if (!isEqual(this.findFilters, this.findFiltersEmpty)) {
         this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
       }
-    },
-    createRecordByType () {
-      this.$router.push({ name: 'record', params: { typeTag: this.typeTag } })
     },
     async findFetch () {
       if (this.find.loading) {

@@ -2,12 +2,12 @@
   <r-field :field="field">
     <q-field
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       class="q-field--with-bottom"
       outlined
       dense
       :clearable="recordChanged"
-      @clear="() => updateFieldDataOnChange(originValue)"
+      @clear="updateFieldOnChange(originValue)"
     >
       <template
         #control
@@ -28,9 +28,8 @@
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in field.Check.FieldLinkValueType"
+                v-for="type in field.Check.LinkValueTypes"
                 :key="type.TypeID"
-                clickable
                 v-close-popup
                 @click="selectShow(type)"
                 context-menu
@@ -71,7 +70,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
 import { isEqual } from 'lodash'
@@ -98,13 +96,17 @@ export default {
     originValue: {
       type: Object,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   computed: {
     iconsShow: function () {
       return (!!this.field &&
         Object.prototype.hasOwnProperty.call(this.field, 'Check') &&
-        Object.prototype.hasOwnProperty.call(this.field.Check, 'FieldLinkValueType')
+        Object.prototype.hasOwnProperty.call(this.field.Check, 'LinkValueTypes')
       )
     },
     recordChanged () {
@@ -112,15 +114,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     },
     objectRemove () {
-      this.updateFieldDataOnChange(null)
+      this.updateFieldOnChange(null)
     },
     selectShow (type) {
       this.typeTag = type.TypeTag
@@ -131,7 +129,7 @@ export default {
       if (selected && selected.length > 0) {
         obj = selected[0]
       }
-      this.updateFieldDataOnChange(obj)
+      this.updateFieldOnChange(obj)
       this.selectDialog = false
     }
   }

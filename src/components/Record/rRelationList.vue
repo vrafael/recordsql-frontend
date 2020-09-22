@@ -11,7 +11,7 @@
       no-caps
     >
       <q-tab
-        v-for="relation in TYPE_METADATA_RELATION_LIST_GET"
+        v-for="relation in relations"
         :key="relation.RelationID"
         :label="relation.RelationName"
         :icon="relation.TypeIcon"
@@ -19,7 +19,6 @@
       />
     </q-tabs>
     <q-tab-panels
-      v-if="RECORD_ORIGIN_GET && RECORD_ORIGIN_GET._object"
       v-model="tab"
       animated
       swipeable
@@ -27,13 +26,13 @@
       transition-next="jump-left"
     >
       <q-tab-panel
-        v-for="relation in TYPE_METADATA_RELATION_LIST_GET"
+        v-for="relation in relations"
         :key="relation.RelationID"
         :name="`${relation.TypeTag}.${relation.FieldLinkTag}`"
       >
         <r-find
           :type-tag="relation.TypeTag"
-          :filters="{[relation.FieldLinkTag]: {Value: [RECORD_ORIGIN_GET._object], Enable:true}}"
+          :filters="{[relation.FieldLinkTag]: {Value: [object], Enable:true}}"
         />
       </q-tab-panel>
     </q-tab-panels>
@@ -41,21 +40,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import rFind from 'src/components/Find/rFind'
 
 export default {
   components: {
     rFind
   },
+  props: {
+    relations: {
+      type: Array,
+      required: true
+    },
+    object: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return ({
       tab: null,
       splitter: 30
     })
-  },
-  computed: {
-    ...mapGetters(['TYPE_METADATA_RELATION_LIST_GET', 'RECORD_ORIGIN_GET'])
   }
 }
 </script>
