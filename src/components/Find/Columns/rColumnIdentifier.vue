@@ -20,6 +20,7 @@
         @click="navigate"
       />
       <a
+        style="text-decoration: none"
         :href="href"
         class="ellipsis text-primary text-bold q-mx-xs cursor-pointer"
         @click="navigate"

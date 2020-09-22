@@ -174,10 +174,10 @@ export default {
   },
   computed: {
     transitionsShow () {
-      return !!this.record &&
+      return (!!this.record &&
         !!this.type.metadata &&
         Object.keys(this.record).length !== 0 &&
-        !!this.type.metadata.Object
+        !!this.type.metadata.Object)
     },
     metadataInputs () {
       return this.type.metadata && this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentInput && field.componentInput.component) : null

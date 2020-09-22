@@ -21,6 +21,7 @@
       />
       <a
         :href="href"
+        style="text-decoration: none"
         class="ellipsis text-primary text-bold q-mx-xs cursor-pointer"
         @click="navigate"
       >
