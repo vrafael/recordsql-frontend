@@ -26,7 +26,7 @@
     </div>
     <q-table
       :data="findRecordset()"
-      :columns="typeMetadataColumns"
+      :columns="getTypeMetadataColumns()"
       :row-key="typeMetadataIdentifier"
       :loading="find.loading"
       class="q-pa-sm find-table-sticky-dynamic"
@@ -194,9 +194,6 @@ export default {
     }
   },
   computed: {
-    typeMetadataColumns () {
-      return this.getTypeMetadataColumns()
-    },
     typeMetadataIdentifier () {
       if (this.type.metadata && this.type.metadata.Fields) {
         const _field = this.type.metadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
