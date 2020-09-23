@@ -58,14 +58,6 @@ export default {
     field: {
       type: Object,
       required: true
-    },
-    filter: {
-      type: Object,
-      required: true
-    },
-    filterUpdate: {
-      type: Function,
-      required: true
     }
   },
   data () {

@@ -58,6 +58,7 @@
               :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
               v-if="col.filter"
               dropdown-icon="filter_list"
+              @hide="resetFieldToOrigin(col.name)"
             >
               <q-list>
                 <q-item
@@ -69,8 +70,7 @@
                     :filter="findFilters[col.name]"
                     :filter-current="findFiltersEmpty[col.name]"
                     :filter-update="filterUpdate"
-                    @apply-filter="refreshClick"
-                    @reset-field="resetClick"
+                    :apply-filter="refreshClick"
                   />
                 </q-item>
               </q-list>
@@ -113,7 +113,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import { isEqual } from 'lodash'
+import { cloneDeep } from 'lodash'
 import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
 import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
 import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
@@ -202,15 +202,12 @@ export default {
         }
       }
       return null
-    },
-    filtersChanged () {
-      return !isEqual(this.findFilters, this.findFiltersCurrent)
-    },
-    filtersEmpty () {
-      return isEqual(this.findFilters, this.findFiltersEmpty)
     }
   },
   methods: {
+    resetFieldToOrigin (tag) {
+      this.findFilters[tag] = cloneDeep(this.findFiltersCurrent[tag])
+    },
     fieldByTag (tag) {
       return this.type.metadata.Fields.find(field => field.Tag === tag)
     },
@@ -270,9 +267,6 @@ export default {
     refreshClick () {
       this.find.pageNumber = 1
       this.find.recordset = []
-      this.findFetch()
-    },
-    resetClick () {
       this.findFetch()
     },
     createRecordByType () {
