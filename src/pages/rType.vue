@@ -10,7 +10,10 @@
       :limits="[0, 60]"
     >
       <template #before>
-        <div v-if="!!typeListNestedGet">
+        <q-scroll-area
+          v-if="!!typeListNestedGet"
+          style="height: 100%"
+        >
           <q-tree
             :nodes="typeListNestedGet"
             label-key="Name"
@@ -39,7 +42,9 @@
                   />
                   <div
                     style="text-size: 10px"
-                    :class="'ellipsis' + (prop.node.Fields && prop.node.Fields.length > 0 ? ' text-weight-bold' : '')"
+                    :class="'ellipsis' +
+                      (prop.node.Fields && prop.node.Fields.length > 0 ? ' text-weight-bold' : '') +
+                      (!prop.node._object.StateName ? ' text-italic' : '')"
                   >
                     {{ prop.node.Name }}
                   </div>
@@ -136,7 +141,7 @@
               <!--/div-->
             </template>
           </q-tree>
-        </div>
+        </q-scroll-area>
       </template>
       <template #separator>
         <q-btn
@@ -148,10 +153,12 @@
         />
       </template>
       <template #after>
-        <r-find
-          v-if="!!typeTag"
-          :type-tag="typeTag"
-        />
+        <q-scroll-area style="height: 100%">
+          <r-find
+            v-if="!!typeTag"
+            :type-tag="typeTag"
+          />
+        </q-scroll-area>
       </template>
     </q-splitter>
   </q-page>
@@ -201,12 +208,11 @@ export default {
   },
   methods: {
     async typeListFetch () {
-      await fetchApiRPC('Dev.TypeList')
+      await fetchApiRPC('Dev.TypeTree')
         .then(response => {
-          response.map(item => {
-            item.OwnerID = Object.prototype.hasOwnProperty.call(item, 'OwnerID') ? item.OwnerID : null
-          })
-          this.typeList = response
+          // response.map(item => {item.OwnerID = Object.prototype.hasOwnProperty.call(item, 'OwnerID') ? item.OwnerID : null})
+          this.typeList = response[0].Types
+          this.modules = response[0].Modules
         })
     },
     typetreeShow () {
