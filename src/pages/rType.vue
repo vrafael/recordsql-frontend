@@ -11,14 +11,21 @@
     >
       <template #before>
         <q-scroll-area
-          v-if="!!typeListNestedGet"
+          v-if="!!types"
           style="height: 100%"
         >
+          <q-option-group
+            v-model="treeType"
+            :options="[{label: 'By Modules', value: 'modules'},
+                       {label: 'By Inheritance', value: 'inheritance'}]"
+            color="primary"
+            inline
+          />
           <q-tree
-            :nodes="typeListNestedGet"
+            :nodes="treeType === 'modules' ? typesByModulesGet : typesByInheritanceGet"
             label-key="Name"
             children-key="children"
-            node-key="Tag"
+            node-key="ID"
             :expanded.sync="expanded"
             selectable
             :selected.sync="selected"
@@ -110,13 +117,13 @@
                   </q-popup-proxy>
                 </div>
               </router-link>
-              <!--div
-                v-else-if="prop.node.type === 'folder'"
+              <div
+                v-else-if="prop.node.type === 'module'"
                 class="row items-center no-wrap"
               >
                 <q-icon
-                  name="folder"
-                  color="grey"
+                  name="layers"
+                  color="primary"
                   size="20px"
                   class="q-mr-sm"
                 />
@@ -124,21 +131,6 @@
                   {{ prop.node.Name }}
                 </div>
               </div>
-              <div
-                v-else-if="prop.node.type === 'field'"
-                class="row items-center no-wrap"
-              -->
-              <!--q-icon
-                  :name="prop.node._object.TypeIcon"
-                  color="accent"
-                  size="18px"
-                  class="q-mr-sm"
-                />
-                <div class="ellipsis">
-                  {{ prop.node._object.Name }}
-                </div-->
-              <!--r-object :value="prop.node._object" /-->
-              <!--/div-->
             </template>
           </q-tree>
         </q-scroll-area>
@@ -169,6 +161,16 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import rFind from '../components/Find/rFind'
 import rObject from '../components/rObject'
 
+const typesParser = (ownerID, types) => {
+  return types
+    .filter(type => type.OwnerID === ownerID)
+    .map(type => ({
+      ...type,
+      type: 'type',
+      children: typesParser(type.ID, types)
+    }))
+}
+
 export default {
   components: {
     rFind,
@@ -185,33 +187,57 @@ export default {
     return {
       splitter: 25,
       splitterRestore: null,
-      expanded: ['Object', 'Directory'],
+      expanded: [1, 2],
       selected: this.typeTag,
-      typeList: [],
-      loading: false
+      types: null,
+      modules: null,
+      loading: false,
+      treeType: 'modules' // 'inheritance'
     }
   },
   computed: {
-    typeListNestedGet () {
-      const typesParser = (ownerID, fields) => {
-        return this.typeList
-          .filter(type => type.OwnerID === ownerID)
-          .map(type => ({
-            ...type,
-            type: 'type',
-            children: typesParser(type.ID)
-          }))
+    typesByInheritanceGet () {
+      const res = typesParser(null, this.types)
+      return res
+    },
+    typesByModulesGet () {
+      const modulesParser = (ownerID) => {
+        return this.modules
+          .filter(mod => mod.OwnerID === ownerID)
+          .map(mod => {
+            const children = modulesParser(mod.ID)
+            const moduleTypes = this.types
+              .filter(type => type.ModuleID === mod.ID)
+              .map(type => Object.assign({}, type))
+
+            moduleTypes.map(type => {
+              let ownerID = type.OwnerID
+              if (ownerID && !moduleTypes.find(findType => findType.ID === ownerID)) {
+                ownerID = null
+              }
+              type.OwnerID = ownerID
+            })
+            const types = typesParser(null, moduleTypes)
+            if (moduleTypes.length > 0) {
+              children.push(...types)
+            }
+            return ({
+              ...mod,
+              type: 'module',
+              children
+            })
+          })
       }
-      const res = typesParser(null, [])
+      const res = modulesParser(null)
       return res
     }
   },
   methods: {
-    async typeListFetch () {
+    async typesFetch () {
       await fetchApiRPC('Dev.TypeTree')
         .then(response => {
           // response.map(item => {item.OwnerID = Object.prototype.hasOwnProperty.call(item, 'OwnerID') ? item.OwnerID : null})
-          this.typeList = response[0].Types
+          this.types = response[0].Types
           this.modules = response[0].Modules
         })
     },
@@ -228,7 +254,7 @@ export default {
     }
   },
   async mounted () {
-    await this.typeListFetch()
+    await this.typesFetch()
   }
 }
 </script>
