@@ -26,7 +26,7 @@
     </div>
     <q-table
       :data="findRecordset()"
-      :columns="typeMetadataColumns"
+      :columns="getTypeMetadataColumns()"
       :row-key="typeMetadataIdentifier"
       :loading="find.loading"
       class="q-pa-sm find-table-sticky-dynamic"
@@ -67,6 +67,7 @@
               size="sm"
               :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
               dropdown-icon="filter_list"
+              @hide="resetFieldToOrigin(col.name)"
             >
               <q-list>
                 <q-item style="max-width: 300px">
@@ -76,8 +77,7 @@
                     :filter="findFilters[col.name]"
                     :filter-current="findFiltersEmpty[col.name]"
                     :filter-update="filterUpdate"
-                    @apply-filter="refreshClick"
-                    @reset-field="resetClick"
+                    :apply-filter="refreshClick"
                   />
                 </q-item>
               </q-list>
@@ -120,7 +120,7 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import { isEqual } from 'lodash'
+import { cloneDeep } from 'lodash'
 import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
 import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
 import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
@@ -201,9 +201,6 @@ export default {
     }
   },
   computed: {
-    typeMetadataColumns () {
-      return this.getTypeMetadataColumns()
-    },
     typeMetadataIdentifier () {
       if (this.type.metadata && this.type.metadata.Fields) {
         const _field = this.type.metadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
@@ -212,15 +209,12 @@ export default {
         }
       }
       return null
-    },
-    filtersChanged () {
-      return !isEqual(this.findFilters, this.findFiltersCurrent)
-    },
-    filtersEmpty () {
-      return isEqual(this.findFilters, this.findFiltersEmpty)
     }
   },
   methods: {
+    resetFieldToOrigin (tag) {
+      this.findFilters[tag] = cloneDeep(this.findFiltersCurrent[tag])
+    },
     fieldByTag (tag) {
       return this.type.metadata.Fields.find(field => field.Tag === tag)
     },
@@ -280,9 +274,6 @@ export default {
     refreshClick () {
       this.find.pageNumber = 1
       this.find.recordset = []
-      this.findFetch()
-    },
-    resetClick () {
       this.findFetch()
     },
     createRecordByType () {

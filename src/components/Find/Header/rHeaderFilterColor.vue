@@ -1,11 +1,9 @@
 <template>
   <r-header-filter
     :field="field"
-    :filter="filter"
-    :filter-update="filterUpdate"
   >
     <q-form
-      @submit="$emit('apply-filter')"
+      @submit="applyFilter"
       class="full-width"
     >
       <q-input
@@ -18,7 +16,7 @@
         dense
         ref="input"
         label="HEX or RGBa"
-        :clearable="filter.ValueTo !== filterCurrent.ValueTo"
+        clearable
         @clear="updateValue(null)"
       >
         <div
@@ -87,11 +85,11 @@ export default {
       type: Object,
       required: true
     },
-    filterCurrent: {
-      type: Object,
+    filterUpdate: {
+      type: Function,
       required: true
     },
-    filterUpdate: {
+    applyFilter: {
       type: Function,
       required: true
     }
