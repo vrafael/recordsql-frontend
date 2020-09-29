@@ -43,12 +43,22 @@
       <template #header="props">
         <q-tr :props="props">
           <q-th
+            v-if="selection.type !== 'none'"
+            auto-width
+          >
+            <q-checkbox
+              v-model="props.selected"
+              dense
+            />
+          </q-th>
+          <q-th
             v-for="col in props.cols"
             :key="col.name"
             :props="props"
           >
             {{ col.label }}
             <q-btn-dropdown
+              v-if="col.filter"
               flat
               stack
               no-icon-animation
@@ -56,13 +66,10 @@
               align="center"
               size="sm"
               :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
-              v-if="col.filter"
               dropdown-icon="filter_list"
             >
               <q-list>
-                <q-item
-                  style="max-width: 300px"
-                >
+                <q-item style="max-width: 300px">
                   <component
                     :is="col.filter"
                     :field="fieldByTag(col.name)"
@@ -82,8 +89,8 @@
         <q-tr :props="props">
           <q-td v-if="selection.type !== 'none'">
             <q-checkbox
-              class="q-checkbox--dense"
               v-model="props.selected"
+              dense
             />
           </q-td>
           <q-td
@@ -346,13 +353,13 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-  .find-table-sticky-dynamic ::v-deep
-    height: 600px
+.find-table-sticky-dynamic ::v-deep
+  height: 600px
 
-    .q-table__top,
-    .q-table__bottom,
-    thead tr:first-child th
-      background-color: #fff
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    background-color: #fff
 
     thead tr th
       position: sticky

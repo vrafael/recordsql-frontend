@@ -34,12 +34,12 @@
           <q-icon
             name="search"
             class="cursor-pointer"
-            v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('LinkValueTypes')"
+            v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('LinkRelationships')"
           >
             <q-popup-proxy>
               <q-list>
                 <q-item
-                  v-for="type in field.Check.LinkValueTypes"
+                  v-for="type in field.Check.LinkRelationships"
                   :key="type.TypeID"
                   clickable
                   v-close-popup
