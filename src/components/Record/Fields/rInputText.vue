@@ -5,17 +5,16 @@
       type="textarea"
       class="q-field--with-bottom"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       dense
       outlined
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="updateFieldOnChange(originValue)"
     />
   </r-field>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -34,23 +33,15 @@ export default {
     originValue: {
       type: String,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

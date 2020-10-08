@@ -5,21 +5,20 @@
 </template>
 
 <script>
-import showNotify from './common/service.notify'
 import { ApiRpcError } from './common/service.api.rpc'
+import { Notify } from 'quasar'
 
 export default {
   name: 'App',
   errorCaptured (err, vm, info) {
     if (err instanceof ApiRpcError) {
-      showNotify(err)
+      Notify.create(err)
     } else {
       console.groupCollapsed('Application error')
       console.error(err)
       console.info(info)
       console.groupEnd()
-      const notify = { message: err.message }
-      showNotify(notify)
+      Notify.create({ type: 'negative', message: err.message })
     }
     return false
   }

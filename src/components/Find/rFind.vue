@@ -15,8 +15,10 @@
       </q-btn>
       <q-btn
         color="primary"
-        @click="createRecordByType"
+        :to="{ name: 'record', params: { typeTag }}"
+        v-if="!typeMetadataAbstract"
       >
+        <!--ToDo q-btn-dropdown with ChildrenTypes -->
         <q-icon
           left
           name="add"
@@ -66,7 +68,7 @@
               padding="0"
               align="center"
               size="sm"
-              :color="find.filtersCurrent[col.name].isChanged ? 'primary' : 'grey'"
+              :color="find.filtersCurrent[col.name].isEnabled ? 'primary' : 'grey'"
               dropdown-icon="filter_list"
               @before-show="resetFieldToOrigin(col.name)"
             >
@@ -119,8 +121,8 @@
 <script>
 import rObject from '../rObject'
 import fetchApiRPC from 'src/common/service.api.rpc'
-import fieldsMapping from 'src/store/helpers/fieldsMapping'
-import showNotify from 'src/common/service.notify'
+import fieldsMapping from 'src/common/fieldsMapping'
+import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
 import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
 import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
@@ -202,6 +204,27 @@ export default {
     }
   },
   computed: {
+    typeMetadataIcon () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Icon')) {
+        return this.type.metadata.Icon
+      }
+      return null
+    },
+    typeMetadataAbstract () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'Abstract')) {
+        return this.type.metadata.Abstract
+      }
+      return null
+    },
+    typeMetadataColumns () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
+    },
     typeMetadataIdentifier () {
       if (this.type.metadata && this.type.metadata.Fields) {
         const _field = this.type.metadata.Fields.find(field => field.Type.Tag === 'FieldIdentifier')
@@ -253,22 +276,22 @@ export default {
         .then(async (response) => {
           const metadata = response[0]
           metadata.Fields.map(fieldsMapping)
-          const emptyFindFilters = {}
+          const emptyFindFilters = Object.assign({}, this.filters)
           metadata.Fields
             .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
             .forEach(field => {
-              emptyFindFilters[field.Tag] = field.componentFilter.empty
+              emptyFindFilters[field.Tag] = Object.assign(field.componentFilter.empty, emptyFindFilters[field.Tag])
             })
           this.find.filters = JSON.parse(JSON.stringify(emptyFindFilters))
           this.find.filtersCurrent = JSON.parse(JSON.stringify(emptyFindFilters)) // this.find.filtersCurrent = Object.assign({}, emptyFindFilters)
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
-        }).catch(error => {
+        }).catch(err => {
           this.find.filters = null
           this.type.metadata = null
           this.type.loading = false
-          showNotify(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     filterApply (fieldTag) {
@@ -284,9 +307,6 @@ export default {
       this.find.recordset = []
       this.findFetch()
     },
-    createRecordByType () {
-      this.$router.push(`/record/${this.typeTag}`)
-    },
     async findFetch () {
       if (this.find.loading) {
         return
@@ -296,7 +316,7 @@ export default {
         find = {}
 
       fields.forEach(field => {
-        if (field.componentFilter && this.find.filters[field.Tag].isChanged) {
+        if (field.componentFilter && this.find.filters[field.Tag].isEnabled) {
           if (field.componentFilter.format) {
             find[field.Tag] = field.componentFilter.format(JSON.parse(JSON.stringify(this.find.filters[field.Tag])))
           } else {
@@ -317,15 +337,15 @@ export default {
       await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
         .then(response => {
           this.find.pageNumber += 1
-          this.find.recordset = Array.isArray(response)
-            ? this.find.recordset.concat(response)
-            : []
+          if (Array.isArray(response)) {
+            this.find.recordset = this.find.recordset.concat(response)
+          }
           this.find.isEOF = response.length < this.find.pageSize
           this.find.loading = false
           this.find.filtersCurrent = JSON.parse(JSON.stringify(this.find.filters)) // Object.assign(this.find.filtersCurrent, this.find.filters)
-        }).catch(error => {
+        }).catch(err => {
           this.find.loading = false
-          showNotify(error)
+          Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
     onScroll ({ to, ref }) {

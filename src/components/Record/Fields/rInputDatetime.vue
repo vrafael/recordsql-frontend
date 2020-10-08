@@ -3,13 +3,13 @@
     <q-input
       ref="input"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       :mask="datetimeInputMask"
       :rules="datetimeInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="updateFieldOnChange(originValue)"
     >
       <template #append>
         <q-icon
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 import { date } from 'quasar'
 
@@ -71,12 +70,8 @@ export default {
   data: () => ({
     datetimeInputMask: '####-##-## ##:##:##.###',
     datetimeInputRules: [
-      val => (
-        !val
-      ) || (
-        /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[\sT]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?$/
-          .test(val)
-      ) || 'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
+      val => !val || /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])[ T]([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
+        'Please use format "YYYY-MM-DD HH:mm:ss.nnn"'
     ],
     datetimeMask: 'YYYY-MM-DD HH:mm:ss',
     proxyValue: Date.now()
@@ -93,31 +88,25 @@ export default {
     originValue: {
       type: String,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
     applyProxyToValue () {
       const proxydatetime = date.extractDate(this.proxyValue, this.datetimeMask)
       const value = date.formatDate(proxydatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
-      this.updateFieldDataOnChange(value)
+      this.updateFieldOnChange(value)
     },
     applyValueToProxy () {
-      this.proxyValue = this.value
+      const value = this.value.replace('T', ' ').padEnd(23, '1000-01-01 00:00:00.000'.slice(this.value.length, 23))
+      const valuedatetime = date.extractDate(value, this.datetimeMask)
+      this.proxyValue = date.formatDate(valuedatetime, 'YYYY-MM-DD HH:mm:ss.SSS')
     },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

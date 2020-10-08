@@ -142,9 +142,9 @@ export default {
     filter: {
       handler: function (filter) {
         if (filter.Value === null) {
-          this.filterUpdate(this.field.Tag, { isChanged: false })
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: true })
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
         }
       },
       deep: true

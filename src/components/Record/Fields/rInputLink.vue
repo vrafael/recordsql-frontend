@@ -2,11 +2,12 @@
   <r-field :field="field">
     <q-field
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       class="q-field--with-bottom"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
+      :clearable="recordChanged"
+      @clear="updateFieldOnChange(originValue)"
     >
       <template
         #control
@@ -15,6 +16,7 @@
         <r-object
           v-if="value && value.ID"
           :value="value"
+          :remove="objectRemove"
         />
       </template>
       <template #append>
@@ -26,24 +28,24 @@
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in field.Check.FieldLinkValueType"
-                :key="type.ID"
-                clickable
+                v-for="type in field.Check.LinkRelationships"
+                :key="type.TypeID"
                 v-close-popup
                 context-menu
               >
                 <div
-                  class="row items-center"
+                  class="row items-center cursor-pointer"
                   style="width:200px"
+                  @click="selectShow(type)"
                 >
                   <q-icon
-                    :name="type.Icon"
+                    :name="type.TypeIcon"
                     color="accent"
                     size="28px"
                     class="q-mr-sm"
                   />
                   <div class="text-weight-bold text-primary">
-                    {{ `${type.Name}...` }}
+                    {{ `${type.TypeName}...` }}
                   </div>
                 </div>
               </q-item>
@@ -52,19 +54,36 @@
         </q-icon>
       </template>
     </q-field>
+    <template v-if="selectDialog">
+      <q-dialog
+        v-model="selectDialog"
+        full-width
+      >
+        <r-find
+          :type-tag="typeTag"
+          :select-multiple="false"
+          :select-confirm="selectConfirm"
+        />
+      </q-dialog>
+    </template>
   </r-field>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 import rObject from '../../rObject'
+import { isEqual } from 'lodash'
 
 export default {
   components: {
     rField,
-    rObject
+    rObject,
+    rFind: () => import('src/components/Find/rFind') // без этого ошибка
   },
+  data: () => ({
+    selectDialog: false,
+    typeTag: null
+  }),
   props: {
     field: {
       type: Object,
@@ -77,29 +96,41 @@ export default {
     originValue: {
       type: Object,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   computed: {
     iconsShow: function () {
-      return (
-        !!this.field && Object.prototype.hasOwnProperty.call(
-          this.field, 'Check'
-        ) && Object.prototype.hasOwnProperty.call(
-          this.field.Check, 'FieldLinkValueType'
-        )
+      return (!!this.field &&
+        Object.prototype.hasOwnProperty.call(this.field, 'Check') &&
+        Object.prototype.hasOwnProperty.call(this.field.Check, 'LinkRelationships')
       )
+    },
+    recordChanged () {
+      return !isEqual(this.value, this.originValue)
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    objectRemove () {
+      this.updateFieldOnChange(null)
+    },
+    selectShow (type) {
+      this.typeTag = type.TypeTag
+      this.selectDialog = true
+    },
+    selectConfirm (selected) {
+      let obj = null
+      if (selected && selected.length > 0) {
+        obj = selected[0]
+      }
+      this.updateFieldOnChange(obj)
+      this.selectDialog = false
     }
   }
 }

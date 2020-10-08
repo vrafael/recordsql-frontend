@@ -33,10 +33,10 @@
     </q-header>
     <q-drawer
       v-model="drawerLeft"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
+      <!--show-if-above-->
       <q-scroll-area class="fit">
         <q-list
           v-for="(menu_item, index) in menu"
@@ -83,18 +83,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data () {
     return ({
-      drawerLeft: true
-      // drawerRight: false
-    })
-  },
-  computed: {
-    ...mapGetters('Layout', {
-      menu: 'MENU_GET'
+      drawerLeft: false,
+      // drawerRight: false,
+      menu: [{
+        label: 'Home',
+        icon: 'home',
+        link: '/type',
+        separator: true
+      }]
     })
   }
 }

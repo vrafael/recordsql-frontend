@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{ name: 'record', params: { typeTag: value.TypeTag, identifier: value.ID }}"
-    v-slot="{ navigate }"
+    v-slot="{ href, navigate }"
   >
     <q-card
       :key="value.ID"
@@ -19,24 +19,35 @@
         style="height: 100%; width: 25px"
         @click="navigate"
       />
-      <span
+      <a
+        :href="href"
+        style="text-decoration: none"
         class="ellipsis text-primary text-bold q-mx-xs cursor-pointer"
         @click="navigate"
       >
         {{ value.Name }}
-      </span>
-      <q-tooltip>
+      </a>
+      <q-tooltip content-class="bg-secondary">
         <div class="col q-gutter-xs text-caption">
           <div class="row">
-            {{ value.TypeName }}
+            Type
+            <span class="text-bold q-ml-xs">{{ value.TypeName }}</span>
+          </div>
+          <div class="row">
+            Name
             <span class="text-bold q-ml-xs">{{ value.Name }}</span>
           </div>
-          <q-badge
-            v-if="value.StateName"
-            :color="value.StateColor"
-          >
-            {{ value.StateName }}
-          </q-badge>
+          <div class="row">
+            State
+            <div
+              class="q-mx-xs text-bold "
+              :style="(value.StateColor ? `border-radius: 3px; color: ${contrastColor(value.StateColor)}; background-color: #${value.StateColor}` : '')"
+            >
+              <span class="q-mx-xs">
+                {{ value.StateName ? value.StateName : 'NULL' }}
+              </span>
+            </div>
+          </div>
         </div>
       </q-tooltip>
       <!--q-badge
@@ -61,6 +72,8 @@
 </template>
 
 <script>
+import { colors } from 'quasar'
+
 export default {
   props: {
     value: {
@@ -78,6 +91,12 @@ export default {
       if (this.remove) {
         this.remove(this.value)
       }
+    },
+    contrastColor (color) {
+      if (color && colors.brightness(`#${color}`) > 128) {
+        return 'black'
+      }
+      return 'white'
     }
   }
 }

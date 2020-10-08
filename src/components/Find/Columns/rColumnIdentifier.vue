@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{ name: 'record', params: { typeTag: value.TypeTag, identifier: value.Identifier }}"
-    v-slot="{ navigate }"
+    v-slot="{ href, navigate }"
   >
     <q-card
       :key="value.Identifier"
@@ -19,17 +19,19 @@
         style="height: 100%; width: 25px"
         @click="navigate"
       />
-      <span
+      <a
+        style="text-decoration: none"
+        :href="href"
         class="ellipsis text-primary text-bold q-mx-xs cursor-pointer"
         @click="navigate"
       >
         {{ value.Identifier }}
-      </span>
-      <q-tooltip>
+      </a>
+      <q-tooltip content-class="bg-secondary">
         <div class="col q-gutter-xs text-caption">
           <div class="row">
-            {{ value.TypeName }}
-            <!--span class="text-bold q-ml-xs">{{ value.Identifier }}</span-->
+            Type
+            <span class="text-bold q-ml-xs">{{ value.TypeName }}</span>
           </div>
         </div>
       </q-tooltip>

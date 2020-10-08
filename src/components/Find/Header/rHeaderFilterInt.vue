@@ -78,9 +78,9 @@ export default {
     filter: {
       handler: function (filter) {
         if (filter.ValueFrom || filter.ValueTo) {
-          this.filterUpdate(this.field.Tag, { isChanged: true })
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: false })
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
         }
       },
       deep: true

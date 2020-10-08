@@ -3,13 +3,13 @@
     <q-input
       ref="input"
       :value="value"
-      @change="event => updateFieldDataOnChange(event.target.value)"
+      @change="event => updateFieldOnChange(event.target.value)"
       :mask="dateInputMask"
       :rules="dateInputRules"
       outlined
       dense
-      :clearable="compareWithOriginValue()"
-      @clear="() => reset()"
+      :clearable="value !== originValue"
+      @clear="updateFieldOnChange(originValue)"
     >
       <template #append>
         <q-icon
@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import rField from './rField'
 
 export default {
@@ -59,12 +58,7 @@ export default {
   data: () => ({
     dateInputMask: '####-##-##',
     dateInputRules: [
-      val => (
-        !val
-      ) || (
-        /^\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1])$/
-          .test(val)
-      ) || 'Please use format "YYYY-MM-DD"'
+      val => !val || /^(\d{4}-(0\d|1[0-2])-([0-2]\d|3[0-1]))?$/.test(val) || 'Please use format "YYYY-MM-DD"'
     ],
     dateMask: 'YYYY-MM-DD',
     proxyValue: Date.now()
@@ -81,30 +75,22 @@ export default {
     originValue: {
       type: String,
       default: null
+    },
+    change: {
+      type: Function,
+      required: true
     }
   },
   methods: {
-    ...mapActions([
-      'RECORD_STATE_UPDATE_FIELD'
-    ]),
     applyProxyToValue () {
       const value = this.proxyValue
-      this.updateFieldDataOnChange(value)
+      this.updateFieldOnChange(value)
     },
     applyValueToProxy () {
       this.proxyValue = this.value
     },
-    reset () {
-      this.$refs.input.resetValidation()
-      const obj = { [`${this.field.Tag}`]: this.originValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    updateFieldDataOnChange (eventValue) {
-      const obj = { [`${this.field.Tag}`]: eventValue }
-      this.RECORD_STATE_UPDATE_FIELD(obj)
-    },
-    compareWithOriginValue () {
-      return JSON.stringify(this.value) !== JSON.stringify(this.originValue)
+    updateFieldOnChange (eventValue) {
+      this.change({ [`${this.field.Tag}`]: eventValue })
     }
   }
 }

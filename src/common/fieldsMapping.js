@@ -1,10 +1,10 @@
 export default function fieldsMapping (field) {
   switch (field.Type.Tag) {
     case 'FieldIdentifier':
-      field.componentInput = 'r-input-identifier'
+      field.componentInput = { component: 'r-input-identifier' }
       field.componentFilter = {
         component: 'r-filter-bigint',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         component: 'r-column-identifier',
@@ -20,10 +20,10 @@ export default function fieldsMapping (field) {
       break
     case 'FieldLink':
     case 'FieldLinkToType':
-      field.componentInput = 'r-input-link'
+      field.componentInput = { component: 'r-input-link' }
       field.componentFilter = {
         component: 'r-filter-link',
-        empty: { isChanged: false, IsNull: false, Value: null },
+        empty: { isEnabled: false, IsNull: false, Value: null },
         format: filter => ({ ...filter, Value: filter.Value ? filter.Value.map(item => item.ID) : [] })
       }
       field.componentColumn = {
@@ -38,13 +38,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldText':
-      field.componentInput = 'r-input-text'
+      field.componentInput = { component: 'r-input-text' }
       break
     case 'FieldString':
-      field.componentInput = 'r-input-string'
+      field.componentInput = { component: 'r-input-string' }
       field.componentFilter = {
         component: 'r-filter-string',
-        empty: { isChanged: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-string',
@@ -58,10 +58,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldMoney':
-      field.componentInput = 'r-input-money'
+      field.componentInput = {
+        component: 'r-input-money',
+        format: value => (value ? Number(value) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-money',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-money',
@@ -74,10 +77,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldBigint':
-      field.componentInput = 'r-input-bigint'
+      field.componentInput = {
+        component: 'r-input-bigint',
+        format: value => (value ? Number(value) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-bigint',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-bigint',
@@ -89,10 +95,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldInt':
-      field.componentInput = 'r-input-int'
+      field.componentInput = {
+        component: 'r-input-int',
+        format: value => (value ? Number(value) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-int',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-int',
@@ -104,11 +113,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldFloat':
-      field.componentInput = 'r-input-float'
-      field.componentFilter = 'r-filter-float'
+      field.componentInput = {
+        component: 'r-input-float',
+        format: value => (value ? Number(value) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-float',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-float',
@@ -120,10 +131,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldTime':
-      field.componentInput = 'r-input-time'
+      field.componentInput = {
+        component: 'r-input-time',
+        format: value => (value ? value.padEnd(12, '00:00:00.000'.slice(value.length, 12)) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-time',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-time',
@@ -136,10 +150,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldDatetime':
-      field.componentInput = 'r-input-datetime'
+      field.componentInput = {
+        component: 'r-input-datetime',
+        format: value => (value ? value.padEnd(23, '1000-01-01 00:00:00.000'.slice(value.length, 23)) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-datetime',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-datetime',
@@ -153,10 +170,13 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldDate':
-      field.componentInput = 'r-input-date'
+      field.componentInput = {
+        component: 'r-input-date',
+        format: value => (value ? value.padEnd(10, '1000-01-01'.slice(value.length, 10)) : null)
+      }
       field.componentFilter = {
         component: 'r-filter-date',
-        empty: { isChanged: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-date',
@@ -169,10 +189,12 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldColor':
-      field.componentInput = 'r-input-color'
+      field.componentInput = {
+        component: 'r-input-color'
+      }
       field.componentFilter = {
         component: 'r-filter-color',
-        empty: { isChanged: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-color',
@@ -185,10 +207,10 @@ export default function fieldsMapping (field) {
       }
       break
     case 'FieldBool':
-      field.componentInput = 'r-input-bool'
+      field.componentInput = { component: 'r-input-bool' }
       field.componentFilter = {
         component: 'r-filter-bool',
-        empty: { isChanged: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
         filter: 'r-header-filter-bool',

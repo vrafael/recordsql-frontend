@@ -29,21 +29,20 @@
         <q-icon
           name="search"
           class="cursor-pointer"
-          v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('FieldLinkValueType')"
+          v-if="iconsShow"
         >
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in field.Check.FieldLinkValueType"
+                v-for="type in field.Check.LinkRelationships"
                 :key="type.TypeID"
-                clickable
                 v-close-popup
-                @click="selectShow(field, type)"
                 context-menu
               >
                 <div
-                  class="row items-center"
+                  class="row items-center cursor-pointer"
                   style="width:200px"
+                  @click="selectShow(type)"
                 >
                   <q-icon
                     :name="type.TypeIcon"
@@ -87,7 +86,6 @@ export default {
     rFind: () => import('../rFind') // без этого ошибка
   },
   data: () => ({
-    selectField: null,
     selectDialog: false,
     typeTag: null
   }),
@@ -107,6 +105,14 @@ export default {
     filterUpdate: {
       type: Function,
       required: true
+    }
+  },
+  computed: {
+    iconsShow: function () {
+      return (!!this.field &&
+        Object.prototype.hasOwnProperty.call(this.field, 'Check') &&
+        Object.prototype.hasOwnProperty.call(this.field.Check, 'LinkRelationships')
+      )
     }
   },
   methods: {
@@ -136,7 +142,7 @@ export default {
       }
       this.filterUpdate(this.field.Tag, { Value: value })
     },
-    selectShow (field, type) {
+    selectShow (type) {
       this.typeTag = type.TypeTag
       this.selectDialog = true
     },

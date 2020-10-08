@@ -2,11 +2,13 @@
   <q-form
     ref="form"
     class="q-pa-md"
+    @submit="recordSave"
+    @reset="recordReset"
   >
-    <template v-if="!!TYPE_METADATA_INPUTS_GET">
-      <template v-for="field in TYPE_METADATA_INPUTS_GET">
+    <template v-if="!!metadataInputs">
+      <template v-for="field in metadataInputs">
         <r-field
-          v-if="RECORD_LOADING_GET"
+          v-if="!record"
           :key="field.ID"
           :field="field"
         >
@@ -17,12 +19,13 @@
           />
         </r-field>
         <component
-          v-else-if="!!RECORD_GET"
-          :is="field.componentInput"
+          v-else
+          :is="field.componentInput.component"
           :field="field"
           :key="field.ID"
-          :value="RECORD_GET[field.Tag]"
-          :origin-value="RECORD_ORIGIN_GET[field.Tag]"
+          :value="record[field.Tag]"
+          :origin-value="recordOrigin[field.Tag]"
+          :change="recordChange"
         />
       </template>
     </template>
@@ -30,10 +33,10 @@
     <div class="row q-pt-md">
       <q-btn
         color="primary"
+        type="submit"
         style="width: 140px"
-        :disable="compareState()"
-        @click="RECORD_UPLOAD()"
       >
+        <!--:disable="recordNotChanged && !!recordOrigin && !!recordOrigin._record"-->
         <q-icon
           left
           name="save"
@@ -44,9 +47,9 @@
       <q-btn-group>
         <q-btn
           color="primary"
+          type="reset"
           style="width: 140px"
-          :disable="compareState()"
-          @click="reset()"
+          :disable="!recordChanged"
         >
           <q-icon
             left
@@ -57,8 +60,8 @@
         <q-btn
           color="red"
           icon="delete"
-          :disable="!TYPE_METADATA_IDENTIFIER_GET || !RECORD_GET || !RECORD_GET[TYPE_METADATA_IDENTIFIER_GET]"
-          @click="RECORD_DELETE()"
+          :disable="!recordOrigin || !recordOrigin._record"
+          @click="recordDelete"
         />
       </q-btn-group>
     </div>
@@ -66,7 +69,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import rField from './Fields/rField'
 import rInputBool from './Fields/rInputBool'
 import rInputColor from './Fields/rInputColor'
@@ -100,27 +102,40 @@ export default {
     rInputText,
     rInputLink
   },
-  computed: {
-    ...mapGetters([
-      'TYPE_METADATA_INPUTS_GET',
-      'RECORD_GET',
-      'RECORD_ORIGIN_GET',
-      'RECORD_LOADING_GET',
-      'TYPE_METADATA_IDENTIFIER_GET'
-    ])
-  },
-  methods: {
-    ...mapActions([
-      'RECORD_UPLOAD',
-      'RECORD_DELETE',
-      'RECORD_RESET_STATE_TO_ORIGIN'
-    ]),
-    compareState () {
-      return isEqual(this.RECORD_GET, this.RECORD_ORIGIN_GET)
+  props: {
+    metadataInputs: {
+      type: Array,
+      required: false,
+      default: null
     },
-    reset () {
-      this.RECORD_RESET_STATE_TO_ORIGIN()
-      this.$refs.form.resetValidation()
+    record: {
+      type: Object,
+      required: true
+    },
+    recordOrigin: {
+      type: Object,
+      required: true
+    },
+    recordSave: {
+      type: Function,
+      required: true
+    },
+    recordDelete: {
+      type: Function,
+      required: true
+    },
+    recordReset: {
+      type: Function,
+      required: true
+    },
+    recordChange: {
+      type: Function,
+      required: true
+    }
+  },
+  computed: {
+    recordChanged () {
+      return !isEqual(this.record, this.recordOrigin)
     }
   }
 }
