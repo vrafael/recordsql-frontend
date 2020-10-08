@@ -4,9 +4,7 @@
     style="max-width: 300px"
   >
     <div class="col-12">
-      <div
-        class="row items-center no-wrap q-my-sm flex justify-between"
-      >
+      <div class="row items-center no-wrap q-my-sm flex">
         <div>
           <q-icon
             :name="field.Type.Icon"
@@ -19,9 +17,9 @@
           </span>
         </div>
 
-        <div
-          v-if="this.field.Type.Tag === 'FieldString'"
-        >
+        <q-space />
+
+        <div v-if="field.Type.Tag === 'FieldString'">
           <q-icon
             name="info"
             color="primary"
@@ -48,7 +46,23 @@
         </div>
       </div>
     </div>
-    <slot />
+
+    <q-form
+      @submit="filterApply(field.Tag)"
+      class="full-width"
+    >
+      <slot />
+      <div class="col-12 q-my-sm">
+        <q-btn
+          class="full-width"
+          color="primary"
+          size="md"
+          type="submit"
+        >
+          OK
+        </q-btn>
+      </div>
+    </q-form>
   </div>
 </template>
 
@@ -58,6 +72,16 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    filterClose: {
+      type: Function,
+      required: false,
+      default: null
+    },
+    filterApply: {
+      type: Function,
+      required: false,
+      default: null
     }
   },
   data () {

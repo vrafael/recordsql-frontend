@@ -1,117 +1,103 @@
 <template>
   <r-header-filter
     :field="field"
+    :filter-apply="filterApply"
   >
-    <q-form
-      @submit="applyFilter"
-      class="full-width"
+    <q-input
+      class="col-12"
+      :mask="dateInputMask"
+      :rules="dateInputRules"
+      :value="filter.ValueFrom"
+      @input="event => updateValueFrom(event)"
+      outlined
+      dense
+      ref="inputFrom"
+      label="From"
+      clearable
+      @clear="updateValueFrom(null)"
     >
-      <q-input
-        class="col-12"
-        :mask="dateInputMask"
-        :rules="dateInputRules"
-        :value="filter.ValueFrom"
-        @input="event => updateValueFrom(event)"
-        outlined
-        dense
-        ref="inputFrom"
-        label="From"
-        clearable
-        @clear="updateValueFrom(null)"
-      >
-        <template #append>
-          <q-icon
-            @click="applyValueFromToProxyFrom"
-            name="event"
-            class="cursor-pointer"
-          >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date
-                v-model="proxyValueFrom"
-                :mask="dateMask"
-              >
-                <div class="row items-center justify-between">
-                  <q-btn
-                    @click="applyProxyFromToValueFrom"
-                    label="OK"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                  <q-btn
-                    label="Cancel"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <q-space />
-      <q-input
-        class="col-12"
-        :mask="dateInputMask"
-        :rules="dateInputRules"
-        :value="filter.ValueTo"
-        @input="event => updateValueTo(event)"
-        outlined
-        dense
-        ref="inputTo"
-        label="To"
-        clearable
-        @clear="updateValueTo(null)"
-      >
-        <template #append>
-          <q-icon
-            @click="applyValueToToProxyTo"
-            name="event"
-            class="cursor-pointer"
-          >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date
-                v-model="proxyValueTo"
-                :mask="dateMask"
-              >
-                <div class="row items-center justify-between">
-                  <q-btn
-                    @click="applyProxyToToValueTo"
-                    label="OK"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                  <q-btn
-                    label="Cancel"
-                    color="primary"
-                    flat
-                    v-close-popup
-                  />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <div class="col-12 q-my-sm">
-        <q-btn
-          class="full-width"
-          color="primary"
-          size="md"
-          type="submit"
+      <template #append>
+        <q-icon
+          @click="applyValueFromToProxyFrom"
+          name="event"
+          class="cursor-pointer"
         >
-          OK
-        </q-btn>
-      </div>
-    </q-form>
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-date
+              v-model="proxyValueFrom"
+              :mask="dateMask"
+            >
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyFromToValueFrom"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+    <q-space />
+    <q-input
+      class="col-12"
+      :mask="dateInputMask"
+      :rules="dateInputRules"
+      :value="filter.ValueTo"
+      @input="event => updateValueTo(event)"
+      outlined
+      dense
+      ref="inputTo"
+      label="To"
+      clearable
+      @clear="updateValueTo(null)"
+    >
+      <template #append>
+        <q-icon
+          @click="applyValueToToProxyTo"
+          name="event"
+          class="cursor-pointer"
+        >
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-date
+              v-model="proxyValueTo"
+              :mask="dateMask"
+            >
+              <div class="row items-center justify-between">
+                <q-btn
+                  @click="applyProxyToToValueTo"
+                  label="OK"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+                <q-btn
+                  label="Cancel"
+                  color="primary"
+                  flat
+                  v-close-popup
+                />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
   </r-header-filter>
 </template>
 
@@ -136,7 +122,7 @@ export default {
       type: Function,
       required: true
     },
-    applyFilter: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -178,9 +164,9 @@ export default {
     filter: {
       handler: function (filter) {
         if (filter.ValueFrom || filter.ValueTo) {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+          this.filterUpdate(this.field.Tag, { isChanged: true })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+          this.filterUpdate(this.field.Tag, { isChanged: false })
         }
       },
       deep: true

@@ -1,71 +1,57 @@
 <template>
   <r-header-filter
     :field="field"
+    :filter-apply="filterApply"
   >
-    <q-form
-      @submit="applyFilter"
-      class="full-width"
+    <q-input
+      class="col-12"
+      :value="filter.Value"
+      @input="event => updateValue(event)"
+      :rules="colorInputRules"
+      mask="XXXXXXXX"
+      outlined
+      dense
+      ref="input"
+      label="HEX or RGBa"
+      clearable
+      @clear="updateValue(null)"
     >
-      <q-input
-        class="col-12"
-        :value="filter.Value"
-        @input="event => updateValue(event)"
-        :rules="colorInputRules"
-        mask="XXXXXXXX"
-        outlined
-        dense
-        ref="input"
-        label="HEX or RGBa"
-        clearable
-        @clear="updateValue(null)"
+      <div
+        slot="prepend"
+        :style="helperColor.style"
+        class="color-helper"
+      />
+      <q-icon
+        @click="applyValueToProxy"
+        slot="append"
+        name="colorize"
+        class="cursor-pointer"
       >
-        <div
-          slot="prepend"
-          :style="helperColor.style"
-          class="color-helper"
-        />
-        <q-icon
-          @click="applyValueToProxy"
-          slot="append"
-          name="colorize"
-          class="cursor-pointer"
+        <q-popup-proxy
+          transition-show="scale"
+          transition-hide="scale"
         >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
-          >
-            <q-card class="q-gutter-md">
-              <q-color v-model="proxyValue" />
-              <div class="row items-center justify-between">
-                <q-btn
-                  @click="applyProxyToValue"
-                  label="OK"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-                <q-btn
-                  label="Cancel"
-                  color="primary"
-                  flat
-                  v-close-popup
-                />
-              </div>
-            </q-card>
-          </q-popup-proxy>
-        </q-icon>
-      </q-input>
-      <div class="col-12 q-my-sm">
-        <q-btn
-          class="full-width"
-          color="primary"
-          size="md"
-          type="submit"
-        >
-          OK
-        </q-btn>
-      </div>
-    </q-form>
+          <q-card class="q-gutter-md">
+            <q-color v-model="proxyValue" />
+            <div class="row items-center justify-between">
+              <q-btn
+                @click="applyProxyToValue"
+                label="OK"
+                color="primary"
+                flat
+                v-close-popup
+              />
+              <q-btn
+                label="Cancel"
+                color="primary"
+                flat
+                v-close-popup
+              />
+            </div>
+          </q-card>
+        </q-popup-proxy>
+      </q-icon>
+    </q-input>
   </r-header-filter>
 </template>
 
@@ -89,7 +75,7 @@ export default {
       type: Function,
       required: true
     },
-    applyFilter: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -122,9 +108,9 @@ export default {
         }
 
         if (filter.Value) {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+          this.filterUpdate(this.field.Tag, { isChanged: true })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+          this.filterUpdate(this.field.Tag, { isChanged: false })
         }
       },
       deep: true

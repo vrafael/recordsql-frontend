@@ -32,8 +32,8 @@
       class="q-pa-sm find-table-sticky-dynamic"
       dense
       virtual-scroll
-      :virtual-scroll-item-size="48"
-      :virtual-scroll-sticky-size-start="48"
+      :virtual-scroll-item-size="31"
+      :virtual-scroll-sticky-size-start="31"
       @virtual-scroll="onScroll"
       :pagination="pagination"
       :rows-per-page-options="[0]"
@@ -59,25 +59,27 @@
             {{ col.label }}
             <q-btn-dropdown
               v-if="col.filter"
+              v-model="filtersDropdown[col.name]"
               flat
-              stack
+              split
               no-icon-animation
               padding="0"
               align="center"
               size="sm"
-              :color="findFilters[col.name].isChanged ? 'primary' : 'grey'"
+              :color="find.filtersCurrent[col.name].isChanged ? 'primary' : 'grey'"
               dropdown-icon="filter_list"
-              @hide="resetFieldToOrigin(col.name)"
+              @before-show="resetFieldToOrigin(col.name)"
             >
               <q-list>
                 <q-item style="max-width: 300px">
                   <component
                     :is="col.filter"
                     :field="fieldByTag(col.name)"
-                    :filter="findFilters[col.name]"
-                    :filter-current="findFiltersEmpty[col.name]"
+                    :filter="find.filters[col.name]"
+                    :filter-current="find.filtersCurrent[col.name]"
                     :filter-update="filterUpdate"
-                    :apply-filter="refreshClick"
+                    :filter-apply="filterApply"
+                    :filter-close="filterClose"
                   />
                 </q-item>
               </q-list>
@@ -120,7 +122,6 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/store/helpers/fieldsMapping'
 import showNotify from 'src/common/service.notify'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import { cloneDeep } from 'lodash'
 import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
 import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
 import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
@@ -177,17 +178,17 @@ export default {
         value: 0,
         restore: 40
       },
-      pagination: {
-        rowsPerPage: 0
-      },
       type: {
         metadata: null,
         loading: false
       },
-      findFilters: this.filters, // редактируемые фильтры
-      findFiltersCurrent: null, // текущие фильтры
-      findFiltersValid: true,
+      pagination: {
+        rowsPerPage: 0
+      },
+      filtersDropdown: {},
       find: {
+        filters: this.filters, // редактируемые фильтры
+        filtersCurrent: null,
         recordset: [],
         loading: false,
         pageSize: 50,
@@ -213,7 +214,7 @@ export default {
   },
   methods: {
     resetFieldToOrigin (tag) {
-      this.findFilters[tag] = cloneDeep(this.findFiltersCurrent[tag])
+      this.find.filters[tag] = JSON.parse(JSON.stringify(this.find.filtersCurrent[tag]))
     },
     fieldByTag (tag) {
       return this.type.metadata.Fields.find(field => field.Tag === tag)
@@ -241,7 +242,7 @@ export default {
     },
     async filterUpdate (field, filter) {
       for (const property in filter) {
-        this.findFilters[field][property] = filter[property]
+        this.find.filters[field][property] = JSON.parse(JSON.stringify(filter[property]))
       }
     },
     async typeMetadataFetch () {
@@ -252,26 +253,33 @@ export default {
         .then(async (response) => {
           const metadata = response[0]
           metadata.Fields.map(fieldsMapping)
-          const emptyfindFilters = {}
+          const emptyFindFilters = {}
           metadata.Fields
             .filter(field => Object.prototype.hasOwnProperty.call(field, 'componentFilter') && Object.prototype.hasOwnProperty.call(field.componentFilter, 'empty'))
             .forEach(field => {
-              emptyfindFilters[field.Tag] = field.componentFilter.empty
+              emptyFindFilters[field.Tag] = field.componentFilter.empty
             })
-          this.findFiltersEmpty = emptyfindFilters
-          this.findFilters = JSON.parse(JSON.stringify(emptyfindFilters))
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(emptyfindFilters)) // this.findFiltersCurrent = Object.assign({}, emptyfindFilters)
+          this.find.filters = JSON.parse(JSON.stringify(emptyFindFilters))
+          this.find.filtersCurrent = JSON.parse(JSON.stringify(emptyFindFilters)) // this.find.filtersCurrent = Object.assign({}, emptyFindFilters)
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
         }).catch(error => {
-          this.findFilters = null
+          this.find.filters = null
           this.type.metadata = null
           this.type.loading = false
           showNotify(error)
         })
     },
-    refreshClick () {
+    filterApply (fieldTag) {
+      this.filtersDropdown[fieldTag] = false
+      this.refresh()
+    },
+    filterClose (fieldTag) {
+      this.resetFieldToOrigin(fieldTag)
+      this.filtersDropdown[fieldTag] = false
+    },
+    refresh () {
       this.find.pageNumber = 1
       this.find.recordset = []
       this.findFetch()
@@ -288,11 +296,11 @@ export default {
         find = {}
 
       fields.forEach(field => {
-        if (field.componentFilter && this.findFilters[field.Tag].isChanged) {
+        if (field.componentFilter && this.find.filters[field.Tag].isChanged) {
           if (field.componentFilter.format) {
-            find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
+            find[field.Tag] = field.componentFilter.format(JSON.parse(JSON.stringify(this.find.filters[field.Tag])))
           } else {
-            find[field.Tag] = this.findFilters[field.Tag]
+            find[field.Tag] = JSON.parse(JSON.stringify(this.find.filters[field.Tag]))
           }
         }
       })
@@ -314,7 +322,7 @@ export default {
             : []
           this.find.isEOF = response.length < this.find.pageSize
           this.find.loading = false
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
+          this.find.filtersCurrent = JSON.parse(JSON.stringify(this.find.filters)) // Object.assign(this.find.filtersCurrent, this.find.filters)
         }).catch(error => {
           this.find.loading = false
           showNotify(error)
@@ -345,7 +353,7 @@ export default {
 
 <style lang="sass" scoped>
 .find-table-sticky-dynamic ::v-deep
-  height: 600px
+  max-height: 80vh
 
   .q-table__top,
   .q-table__bottom,
@@ -355,6 +363,9 @@ export default {
     thead tr th
       position: sticky
       z-index: 1
+    thead tr:last-child th
+      /* height of all previous header rows */
+      top: 31px
     thead tr:first-child th
       top: 0px
 </style>

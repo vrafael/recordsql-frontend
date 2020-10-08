@@ -1,28 +1,14 @@
 <template>
   <r-header-filter
     :field="field"
+    :filter-apply="filterApply"
   >
-    <q-form
-      @submit="applyFilter"
-      class="full-width"
-    >
-      <q-checkbox
-        :value="filter.Value"
-        @input="event => updateValue(event)"
-        :label="label"
-        dense
-      />
-      <div class="col-12 q-my-sm">
-        <q-btn
-          class="full-width"
-          color="primary"
-          size="md"
-          type="submit"
-        >
-          OK
-        </q-btn>
-      </div>
-    </q-form>
+    <q-checkbox
+      :value="filter.Value"
+      @input="event => updateValue(event)"
+      :label="label"
+      dense
+    />
   </r-header-filter>
 </template>
 
@@ -46,7 +32,7 @@ export default {
       type: Function,
       required: true
     },
-    applyFilter: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -66,12 +52,10 @@ export default {
   watch: {
     filter: {
       handler: function (filter) {
-        if (filter.Value === true) {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
-        } else if (filter.Value === false) {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+        if (filter.Value === true || filter.Value === false) {
+          this.filterUpdate(this.field.Tag, { isChanged: true })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+          this.filterUpdate(this.field.Tag, { isChanged: false })
         }
       },
       deep: true

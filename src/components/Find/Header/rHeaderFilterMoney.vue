@@ -1,46 +1,32 @@
 <template>
   <r-header-filter
     :field="field"
+    :filter-apply="filterApply"
   >
-    <q-form
-      @submit="applyFilter"
-      class="full-width"
-    >
-      <q-input
-        class="r-header-filter-money-input col-12"
-        :value="filter.ValueFrom"
-        :rules="moneyInputRules"
-        @input="event => updateValueFrom(event)"
-        outlined
-        dense
-        ref="inputFrom"
-        label="From"
-        clearable
-        @clear="updateValueFrom(null)"
-      />
-      <q-input
-        class="r-header-filter-money-input col-12"
-        :value="filter.ValueTo"
-        :rules="moneyInputRules"
-        @input="event => updateValueTo(event)"
-        outlined
-        dense
-        ref="inputTo"
-        label="To"
-        clearable
-        @clear="updateValueTo(null)"
-      />
-      <div class="col-12 q-my-sm">
-        <q-btn
-          class="full-width"
-          color="primary"
-          size="md"
-          type="submit"
-        >
-          OK
-        </q-btn>
-      </div>
-    </q-form>
+    <q-input
+      class="r-header-filter-money-input col-12"
+      :value="filter.ValueFrom"
+      :rules="moneyInputRules"
+      @input="event => updateValueFrom(event)"
+      outlined
+      dense
+      ref="inputFrom"
+      label="From"
+      clearable
+      @clear="updateValueFrom(null)"
+    />
+    <q-input
+      class="r-header-filter-money-input col-12"
+      :value="filter.ValueTo"
+      :rules="moneyInputRules"
+      @input="event => updateValueTo(event)"
+      outlined
+      dense
+      ref="inputTo"
+      label="To"
+      clearable
+      @clear="updateValueTo(null)"
+    />
   </r-header-filter>
 </template>
 
@@ -78,7 +64,7 @@ export default {
       type: Function,
       required: true
     },
-    applyFilter: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -95,9 +81,9 @@ export default {
     filter: {
       handler: function (filter) {
         if (filter.ValueFrom || filter.ValueTo) {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = true })
+          this.filterUpdate(this.field.Tag, { isChanged: true })
         } else {
-          this.filterUpdate(this.field.Tag, { isChanged: this.filter.isChanged = false })
+          this.filterUpdate(this.field.Tag, { isChanged: false })
         }
       },
       deep: true
@@ -107,17 +93,17 @@ export default {
 </script>
 
 <style lang="scss">
-  .r-header-filter-int-input {
-    /* Chrome, Safari, Edge, Opera */
-    & input::-webkit-outer-spin-button,
-    & input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    /* Firefox */
-    & input[type=number] {
-      -moz-appearance: textfield;
-    }
+.r-header-filter-int-input {
+  /* Chrome, Safari, Edge, Opera */
+  & input::-webkit-outer-spin-button,
+  & input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
+
+  /* Firefox */
+  & input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
 </style>
