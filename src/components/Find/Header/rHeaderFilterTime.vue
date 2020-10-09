@@ -1,21 +1,20 @@
 <template>
-  <r-filter
+  <r-header-filter
     :field="field"
-    :filter="filter"
-    :filter-update="filterUpdate"
+    :filter-apply="filterApply"
   >
     <q-input
-      class="col-4"
+      class="col-12"
       :mask="timeInputMask"
       :rules="timeInputRules"
       :value="filter.ValueFrom"
-      :disable="!filter.Enable"
-      @change="event => updateValueFrom(event.target.value)"
+      @input="event => updateValueFrom(event)"
       outlined
       dense
       ref="inputFrom"
-      :clearable="filter.ValueFrom !== filterCurrent.ValueFrom"
-      @clear="resetFrom"
+      label="From"
+      clearable
+      @clear="updateValueFrom(null)"
     >
       <template #append>
         <q-icon
@@ -57,17 +56,17 @@
     <q-space />
 
     <q-input
-      class="col-4"
+      class="col-12"
       :mask="timeInputMask"
       :rules="timeInputRules"
       :value="filter.ValueTo"
-      :disable="!filter.Enable"
-      @change="event => updateValueTo(event.target.value)"
+      @input="event => updateValueTo(event)"
       outlined
       dense
       ref="inputTo"
-      :clearable="filter.ValueTo !== filterCurrent.ValueTo"
-      @clear="resetTo"
+      label="To"
+      clearable
+      @clear="updateValueTo(null)"
     >
       <template #append>
         <q-icon
@@ -105,16 +104,16 @@
         </q-icon>
       </template>
     </q-input>
-  </r-filter>
+  </r-header-filter>
 </template>
 
 <script>
-import rFilter from './rFilter'
+import rHeaderFilter from './rHeaderFilter'
 import { date } from 'quasar'
 
 export default {
   components: {
-    rFilter
+    rHeaderFilter
   },
   props: {
     field: {
@@ -125,11 +124,11 @@ export default {
       type: Object,
       required: true
     },
-    filterCurrent: {
-      type: Object,
+    filterUpdate: {
+      type: Function,
       required: true
     },
-    filterUpdate: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -137,22 +136,14 @@ export default {
   data: () => ({
     timeInputMask: '##:##:##.###',
     timeInputRules: [
-      val => (
-        !val
-      ) || /^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{0,3})?)?$/
-        .test(val) || 'Please use format "HH:mm:ss.nnn"'
+      val => !val || /^(([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d(\.[0-9]{1,7})?)?)?$/.test(val) ||
+        'Please use format "HH:mm:ss.nnn"'
     ],
     timeMask: 'HH:mm:ss',
     proxyValueFrom: Date.now(),
     proxyValueTo: Date.now()
   }),
   methods: {
-    resetFrom () {
-      this.filterUpdate(this.field.Tag, { ValueFrom: this.filterCurrent.ValueFrom })
-      setTimeout(() => {
-        this.$refs.inputFrom.resetValidation()
-      })
-    },
     updateValueFrom (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueFrom: eventValue })
     },
@@ -164,12 +155,6 @@ export default {
     applyValueFromToProxyFrom () {
       this.proxyValueFrom = this.filter.ValueFrom
     },
-    resetTo () {
-      this.filterUpdate(this.field.Tag, { ValueTo: this.filterCurrent.ValueTo })
-      setTimeout(() => {
-        this.$refs.inputTo.resetValidation()
-      })
-    },
     updateValueTo (eventValue) {
       this.filterUpdate(this.field.Tag, { ValueTo: eventValue })
     },
@@ -180,6 +165,18 @@ export default {
     },
     applyValueToToProxyTo () {
       this.proxyValueTo = this.filter.ValueTo
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.ValueFrom || filter.ValueTo) {
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
+        }
+      },
+      deep: true
     }
   }
 }

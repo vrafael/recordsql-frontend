@@ -32,7 +32,7 @@
       >
         <r-find
           :type-tag="relation.TypeTag"
-          :filters="{[relation.FieldLinkTag]: {Value: [object], Enable:true}}"
+          :filters="{[relation.FieldLinkTag]: {Value: [object], isEnabled: true}}"
         />
       </q-tab-panel>
     </q-tab-panels>

@@ -1,128 +1,99 @@
 <template>
-  <div class="bg-white ">
-    <q-form
-      class="q-ma-sm"
-      ref="filterForm"
-      @submit="refreshClick"
-      @reset="resetClick"
-    >
-      <q-expansion-item
-        header-class="bg-linear text-white"
-        class="shadow-1 overflow-hidden"
-        style="border-radius: 5px"
-        v-model="expanded"
-        expand-icon-class="text-white"
+  <div class="bg-white">
+    <div class="q-gutter-sm q-pa-sm">
+      <q-btn
+        color="primary"
+        v-if="!!selectConfirm"
+        :disable="selection.selected.length === 0"
+        @click="selectClick"
       >
-        <template #header>
-          <div class="q-gutter-sm row items-center">
-            <q-avatar
-              :icon="typeMetadataIcon"
-              font-size="23px"
-              color="grey-4"
-              text-color="accent"
-              size="md"
-              rounded
-            />
-            <span>
-              {{ type.metadata ? type.metadata.Name : typeTag }}
-            </span>
-            <q-space />
-          </div>
-        </template>
-        <q-inner-loading :showing="type.loading">
-          <q-spinner-gears
-            size="50px"
-            color="primary"
-          />
-        </q-inner-loading>
-        <div class="q-pa-sm">
-          <template
-            v-if="!!type.metadata && !!typeMetadataFilters"
-            class="q-ma-sm q-pa-sm"
-          >
-            <component
-              v-for="field in typeMetadataFilters"
-              :is="field.componentFilter.component"
-              :field="field"
-              :key="field.ID"
-              :filter="findFilters[field.Tag]"
-              :filter-current="findFiltersEmpty[field.Tag]"
-              :filter-update="filterUpdate"
-            />
-          </template>
-        </div>
-      </q-expansion-item>
-      <div class="q-gutter-sm q-pa-sm">
-        <q-btn
-          color="primary"
-          v-if="!!selectConfirm"
-          :disable="selection.selected.length == 0"
-          @click="selectClick"
-        >
-          <q-icon
-            left
-            name="check"
-          />
-          OK
-        </q-btn>
-        <q-btn
-          :color="filtersChanged ? 'accent': 'primary'"
-          type="submit"
-        >
-          <q-icon
-            left
-            :name="filtersEmpty ? 'refresh' : 'search'"
-          />
-          Refresh
-        </q-btn>
-        <q-btn
-          color="primary"
-          type="reset"
-          flat
-          :disable="!!filtersEmpty"
-        >
-          <q-icon
-            left
-            name="clear"
-          />
-          Reset
-        </q-btn>
-        <q-btn
-          color="primary"
-          :to="{ name: 'record', params: { typeTag }}"
-          v-if="!typeMetadataAbstract"
-        >
-          <!--ToDo q-btn-dropdown with ChildrenTypes -->
-          <q-icon
-            left
-            name="add"
-          />
-          Create
-        </q-btn>
-      </div>
-    </q-form>
+        <q-icon
+          left
+          name="check"
+        />
+        OK
+      </q-btn>
+      <q-btn
+        color="primary"
+        :to="{ name: 'record', params: { typeTag }}"
+        v-if="!typeMetadataAbstract"
+      >
+        <!--ToDo q-btn-dropdown with ChildrenTypes -->
+        <q-icon
+          left
+          name="add"
+        />
+        Create
+      </q-btn>
+    </div>
     <q-table
       :data="findRecordset()"
-      :columns="typeMetadataColumns"
+      :columns="getTypeMetadataColumns()"
       :row-key="typeMetadataIdentifier"
       :loading="find.loading"
       class="q-pa-sm find-table-sticky-dynamic"
       dense
       virtual-scroll
-      :virtual-scroll-item-size="48"
-      :virtual-scroll-sticky-size-start="48"
+      :virtual-scroll-item-size="31"
+      :virtual-scroll-sticky-size-start="31"
       @virtual-scroll="onScroll"
       :pagination="pagination"
       :rows-per-page-options="[0]"
       :selection="selection.type"
       :selected.sync="selection.selected"
     >
+      <template #header="props">
+        <q-tr :props="props">
+          <q-th
+            v-if="selection.type !== 'none'"
+            auto-width
+          >
+            <q-checkbox
+              v-model="props.selected"
+              dense
+            />
+          </q-th>
+          <q-th
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            {{ col.label }}
+            <q-btn-dropdown
+              v-if="col.filter"
+              v-model="filtersDropdown[col.name]"
+              flat
+              split
+              no-icon-animation
+              padding="0"
+              align="center"
+              size="sm"
+              :color="find.filtersCurrent[col.name].isEnabled ? 'primary' : 'grey'"
+              dropdown-icon="filter_list"
+              @before-show="resetFieldToOrigin(col.name)"
+            >
+              <q-list>
+                <q-item style="max-width: 300px">
+                  <component
+                    :is="col.filter"
+                    :field="fieldByTag(col.name)"
+                    :filter="find.filters[col.name]"
+                    :filter-current="find.filtersCurrent[col.name]"
+                    :filter-update="filterUpdate"
+                    :filter-apply="filterApply"
+                  />
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </q-th>
+        </q-tr>
+      </template>
       <template #body="props">
         <q-tr :props="props">
           <q-td v-if="selection.type !== 'none'">
             <q-checkbox
-              class="q-checkbox--dense"
               v-model="props.selected"
+              dense
             />
           </q-td>
           <q-td
@@ -152,36 +123,22 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/common/fieldsMapping'
 import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import { isEqual } from 'lodash'
-
-import rFilterBool from './Filters/rFilterBool'
-import rFilterColor from './Filters/rFilterColor'
-import rFilterDate from './Filters/rFilterDate'
-import rFilterTime from './Filters/rFilterTime'
-import rFilterDatetime from './Filters/rFilterDatetime'
-import rFilterInt from './Filters/rFilterInt'
-import rFilterBigint from './Filters/rFilterBigint'
-import rFilterLink from './Filters/rFilterLink'
-import rFilterMoney from './Filters/rFilterMoney'
-import rFilterString from './Filters/rFilterString'
-import rFilterFloat from './Filters/rFilterFloat'
 
 export default {
   components: {
     rObject,
     rColumnIdentifier,
-
-    rFilterBool,
-    rFilterColor,
-    rFilterDate,
-    rFilterTime,
-    rFilterDatetime,
-    rFilterInt,
-    rFilterBigint,
-    rFilterLink,
-    rFilterMoney,
-    rFilterString,
-    rFilterFloat
+    rHeaderFilterBool: () => import('./Header/rHeaderFilterBool'),
+    rHeaderFilterColor: () => import('./Header/rHeaderFilterColor'),
+    rHeaderFilterDate: () => import('./Header/rHeaderFilterDate'),
+    rHeaderFilterTime: () => import('./Header/rHeaderFilterTime'),
+    rHeaderFilterDatetime: () => import('./Header/rHeaderFilterDatetime'),
+    rHeaderFilterInt: () => import('./Header/rHeaderFilterInt'),
+    rHeaderFilterBigint: () => import('./Header/rHeaderFilterBigint'),
+    rHeaderFilterLink: () => import('./Header/rHeaderFilterLink'),
+    rHeaderFilterMoney: () => import('./Header/rHeaderFilterMoney'),
+    rHeaderFilterString: () => import('./Header/rHeaderFilterString'),
+    rHeaderFilterFloat: () => import('./Header/rHeaderFilterFloat')
   },
   props: {
     typeTag: {
@@ -211,17 +168,17 @@ export default {
         value: 0,
         restore: 40
       },
-      pagination: {
-        rowsPerPage: 0
-      },
       type: {
         metadata: null,
         loading: false
       },
-      findFilters: this.filters, // редактируемые фильтры
-      findFiltersCurrent: null, // текущие фильтры
-      findFiltersValid: true,
+      pagination: {
+        rowsPerPage: 0
+      },
+      filtersDropdown: {},
       find: {
+        filters: this.filters, // редактируемые фильтры
+        filtersCurrent: null,
         recordset: [],
         loading: false,
         pageSize: 50,
@@ -264,18 +221,24 @@ export default {
         }
       }
       return null
-    },
-    typeMetadataFilters () {
-      return this.type.metadata.Fields ? this.type.metadata.Fields.filter(field => field.componentFilter) : null
-    },
-    filtersChanged () {
-      return !isEqual(this.findFilters, this.findFiltersCurrent)
-    },
-    filtersEmpty () {
-      return isEqual(this.findFilters, this.findFiltersEmpty)
     }
   },
   methods: {
+    resetFieldToOrigin (tag) {
+      this.find.filters[tag] = JSON.parse(JSON.stringify(this.find.filtersCurrent[tag]))
+    },
+    fieldByTag (tag) {
+      return this.type.metadata.Fields.find(field => field.Tag === tag)
+    },
+    getTypeMetadataColumns () {
+      if (this.type.metadata && this.type.metadata.Fields) {
+        const _columns = this.type.metadata.Fields.filter(field => field.componentColumn)
+        if (_columns.length > 0) {
+          return _columns.map(field => field.componentColumn)
+        }
+      }
+      return []
+    },
     selectClick () {
       if (this.selectConfirm) {
         const selected = this.selection.selected.map(item => item._object)
@@ -290,7 +253,7 @@ export default {
     },
     async filterUpdate (field, filter) {
       for (const property in filter) {
-        this.findFilters[field][property] = filter[property]
+        this.find.filters[field][property] = JSON.parse(JSON.stringify(filter[property]))
       }
     },
     async typeMetadataFetch () {
@@ -307,28 +270,30 @@ export default {
             .forEach(field => {
               emptyFindFilters[field.Tag] = Object.assign(field.componentFilter.empty, emptyFindFilters[field.Tag])
             })
-          this.findFiltersEmpty = emptyFindFilters
-          this.findFilters = JSON.parse(JSON.stringify(emptyFindFilters))
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(emptyFindFilters)) // this.findFiltersCurrent = Object.assign({}, emptyfindFilters)
+          this.find.filters = JSON.parse(JSON.stringify(emptyFindFilters))
+          this.find.filtersCurrent = JSON.parse(JSON.stringify(emptyFindFilters)) // this.find.filtersCurrent = Object.assign({}, emptyFindFilters)
           this.type.metadata = metadata
           this.type.loading = false
           await this.findFetch()
         }).catch(err => {
-          this.findFilters = null
+          this.find.filters = null
           this.type.metadata = null
           this.type.loading = false
           Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
         })
     },
-    refreshClick () {
+    filterApply (fieldTag) {
+      this.filtersDropdown[fieldTag] = false
+      this.refresh()
+    },
+    filterClose (fieldTag) {
+      this.resetFieldToOrigin(fieldTag)
+      this.filtersDropdown[fieldTag] = false
+    },
+    refresh () {
       this.find.pageNumber = 1
       this.find.recordset = []
       this.findFetch()
-    },
-    resetClick () {
-      if (!isEqual(this.findFilters, this.findFiltersEmpty)) {
-        this.findFilters = JSON.parse(JSON.stringify(this.findFiltersEmpty))
-      }
     },
     async findFetch () {
       if (this.find.loading) {
@@ -339,11 +304,11 @@ export default {
         find = {}
 
       fields.forEach(field => {
-        if (field.componentFilter && this.findFilters[field.Tag].Enable) {
+        if (field.componentFilter && this.find.filters[field.Tag].isEnabled) {
           if (field.componentFilter.format) {
-            find[field.Tag] = field.componentFilter.format(this.findFilters[field.Tag])
+            find[field.Tag] = field.componentFilter.format(JSON.parse(JSON.stringify(this.find.filters[field.Tag])))
           } else {
-            find[field.Tag] = this.findFilters[field.Tag]
+            find[field.Tag] = JSON.parse(JSON.stringify(this.find.filters[field.Tag]))
           }
         }
       })
@@ -360,10 +325,12 @@ export default {
       await fetchApiRPC('Dev.RecordFind', paramsWithPaging)
         .then(response => {
           this.find.pageNumber += 1
-          this.find.recordset = this.find.recordset.concat(response)
+          if (Array.isArray(response)) {
+            this.find.recordset = this.find.recordset.concat(response)
+          }
           this.find.isEOF = response.length < this.find.pageSize
           this.find.loading = false
-          this.findFiltersCurrent = JSON.parse(JSON.stringify(this.findFilters)) // Object.assign(this.findFiltersCurrent, this.findFilters)
+          this.find.filtersCurrent = JSON.parse(JSON.stringify(this.find.filters)) // Object.assign(this.find.filtersCurrent, this.find.filters)
         }).catch(err => {
           this.find.loading = false
           Notify.create({ type: err.type, message: err.message, timeout: err.timeout })
@@ -394,16 +361,19 @@ export default {
 
 <style lang="sass" scoped>
 .find-table-sticky-dynamic ::v-deep
-  height: 600px
+  max-height: 80vh
 
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th
     background-color: #fff
 
-  thead tr th
-    position: sticky
-    z-index: 1
-  thead tr:first-child th
-    top: 0px
+    thead tr th
+      position: sticky
+      z-index: 1
+    thead tr:last-child th
+      /* height of all previous header rows */
+      top: 31px
+    thead tr:first-child th
+      top: 0px
 </style>

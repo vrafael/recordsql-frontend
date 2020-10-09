@@ -4,17 +4,18 @@ export default function fieldsMapping (field) {
       field.componentInput = { component: 'r-input-identifier' }
       field.componentFilter = {
         component: 'r-filter-bigint',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
         component: 'r-column-identifier',
+        filter: 'r-header-filter-bigint',
         name: field.Tag,
         required: true,
         label: field.Name,
         field: '_record', // field.Tag,
-        // sortable: true,
+        sortable: false,
         align: 'left',
-        style: 'max-width: 150px; width: 150px'
+        style: 'max-width: 150px; width: 150px;'
       }
       break
     case 'FieldLink':
@@ -22,16 +23,18 @@ export default function fieldsMapping (field) {
       field.componentInput = { component: 'r-input-link' }
       field.componentFilter = {
         component: 'r-filter-link',
-        empty: { Enable: false, IsNull: false, Value: null },
+        empty: { isEnabled: false, IsNull: false, Value: null },
         format: filter => ({ ...filter, Value: filter.Value ? filter.Value.map(item => item.ID) : [] })
       }
       field.componentColumn = {
         component: 'r-object',
+        filter: 'r-header-filter-link',
         name: field.Tag,
         label: field.Name,
         field: field.Tag, // row => row.Type.Name,
+        sortable: false,
         align: 'left',
-        style: 'max-width: 200px; width: 200px'
+        style: 'max-width: 200px; width: 200px;'
       }
       break
     case 'FieldText':
@@ -41,15 +44,17 @@ export default function fieldsMapping (field) {
       field.componentInput = { component: 'r-input-string' }
       field.componentFilter = {
         component: 'r-filter-string',
-        empty: { Enable: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-string',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'left',
         classes: 'ellipsis no-wrap',
-        style: 'max-width:200px; width:200px'
+        style: 'max-width:200px; width:200px;'
       }
       break
     case 'FieldMoney':
@@ -59,14 +64,16 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-money',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-money',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'right',
-        style: 'max-width: 100px; width: 100px'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldBigint':
@@ -76,12 +83,14 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-bigint',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-bigint',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'right'
       }
       break
@@ -92,12 +101,14 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-int',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-int',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'right'
       }
       break
@@ -108,12 +119,14 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-float',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-float',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'right'
       }
       break
@@ -124,14 +137,16 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-time',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-time',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'left',
-        style: 'max-width: 100px; width: 100px'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldDatetime':
@@ -141,15 +156,17 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-datetime',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-datetime',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         format: (val) => val ? val.replace('T', ' ') : null,
         align: 'left',
-        style: 'max-width: 150px; width: 150px'
+        style: 'max-width: 160px; width: 150px;'
       }
       break
     case 'FieldDate':
@@ -159,14 +176,16 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-date',
-        empty: { Enable: false, IsNull: false, ValueFrom: null, ValueTo: null }
+        empty: { isEnabled: false, IsNull: false, ValueFrom: null, ValueTo: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-date',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'left',
-        style: 'max-width: 100px; width: 100px'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldColor':
@@ -175,29 +194,33 @@ export default function fieldsMapping (field) {
       }
       field.componentFilter = {
         component: 'r-filter-color',
-        empty: { Enable: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-color',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'right',
-        style: 'max-width: 100px; width: 100px'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
     case 'FieldBool':
       field.componentInput = { component: 'r-input-bool' }
       field.componentFilter = {
         component: 'r-filter-bool',
-        empty: { Enable: false, IsNull: false, Value: null }
+        empty: { isEnabled: false, IsNull: false, Value: null }
       }
       field.componentColumn = {
+        filter: 'r-header-filter-bool',
         name: field.Tag,
         label: field.Name,
         field: field.Tag,
+        sortable: false,
         align: 'left',
         classes: 'text-uppercase',
-        style: 'max-width: 100px; width: 100px'
+        style: 'max-width: 100px; width: 100px;'
       }
       break
   }

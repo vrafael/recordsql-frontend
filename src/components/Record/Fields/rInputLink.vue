@@ -28,15 +28,15 @@
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in field.Check.LinkValueTypes"
+                v-for="type in field.Check.LinkRelationships"
                 :key="type.TypeID"
                 v-close-popup
-                @click="selectShow(type)"
                 context-menu
               >
                 <div
-                  class="row items-center"
+                  class="row items-center cursor-pointer"
                   style="width:200px"
+                  @click="selectShow(type)"
                 >
                   <q-icon
                     :name="type.TypeIcon"
@@ -106,7 +106,7 @@ export default {
     iconsShow: function () {
       return (!!this.field &&
         Object.prototype.hasOwnProperty.call(this.field, 'Check') &&
-        Object.prototype.hasOwnProperty.call(this.field.Check, 'LinkValueTypes')
+        Object.prototype.hasOwnProperty.call(this.field.Check, 'LinkRelationships')
       )
     },
     recordChanged () {

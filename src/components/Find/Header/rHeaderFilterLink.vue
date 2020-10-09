@@ -1,17 +1,17 @@
 <template>
-  <r-filter
+  <r-header-filter
     :field="field"
-    :filter="filter"
-    :filter-update="filterUpdate"
+    :filter-apply="filterApply"
   >
     <q-field
-      class="col-9 q-field--with-bottom"
+      class="col-12"
       :value="filter.Value"
-      :disable="!filter.Enable"
+      label="Object"
       outlined
       dense
-      :clearable="filter.Value !== filterCurrent.Value"
-      @clear="reset"
+      style="min-width: 200px"
+      clearable
+      @clear="clear"
     >
       <template
         #control
@@ -22,27 +22,28 @@
           :key="object.ID"
           :value="object"
           :remove="objectRemove"
-          style="max-width: 200px;"
+          style="max-width: 200px; margin-top: 4px; margin-bottom: 4px"
         />
       </template>
       <template #append>
         <q-icon
           name="search"
           class="cursor-pointer"
-          v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('LinkValueTypes')"
+          v-if="!!field && field.hasOwnProperty('Check') && field.Check.hasOwnProperty('LinkRelationships')"
         >
           <q-popup-proxy>
             <q-list>
               <q-item
-                v-for="type in field.Check.LinkValueTypes"
+                v-for="type in field.Check.LinkRelationships"
                 :key="type.TypeID"
+                clickable
                 v-close-popup
-                @click="selectShow(type)"
+                @click="selectShow(field, type)"
                 context-menu
               >
                 <div
                   class="row items-center"
-                  style="width:200px"
+                  style="min-width: 200px;"
                 >
                   <q-icon
                     :name="type.TypeIcon"
@@ -72,20 +73,22 @@
         />
       </q-dialog>
     </template>
-  </r-filter>
+  </r-header-filter>
 </template>
 
 <script>
-import rFilter from './rFilter'
-import rObject from 'src/components/rObject'
+import rHeaderFilter from './rHeaderFilter'
+import rObject from 'components/rObject'
+import { unionWith, isEqual } from 'lodash'
 
 export default {
   components: {
-    rFilter,
+    rHeaderFilter,
     rObject,
     rFind: () => import('../rFind') // без этого ошибка
   },
   data: () => ({
+    selectField: null,
     selectDialog: false,
     typeTag: null
   }),
@@ -98,51 +101,53 @@ export default {
       type: Object,
       required: true
     },
-    filterCurrent: {
-      type: Object,
+    filterUpdate: {
+      type: Function,
       required: true
     },
-    filterUpdate: {
+    filterApply: {
       type: Function,
       required: true
     }
   },
   methods: {
-    reset () {
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
+    clear () {
+      setTimeout(() => { this.filterUpdate(this.field.Tag, { Value: null }) }, 200) // костыль
     },
-    objectInsert (object) {
+    objectRemove (object) {
       let value = null
       if (this.filter.Value) {
         value = this.filter.Value.slice()
         const index = value.indexOf(object)
-        if (index === -1) {
-          value.push(object)
-        }
-      } else {
-        value = [object]
-      }
-      this.filterUpdate(this.field.Tag, { Value: value })
-    },
-    objectRemove (object) {
-      const value = this.filter.Value
-      if (value) {
-        const index = value.indexOf(object)
         if (index !== -1) {
           value.splice(index, 1)
         }
+        if (value.length === 0) {
+          value = null
+        }
       }
-      this.filterUpdate(this.field.Tag, { Value: value })
+      setTimeout(() => { this.filterUpdate(this.field.Tag, { Value: value }) }, 200) // костыль
     },
-    selectShow (type) {
+    selectShow (field, type) {
       this.typeTag = type.TypeTag
       this.selectDialog = true
     },
     selectConfirm (selected) {
-      selected.forEach(object => {
-        this.objectInsert(object)
-      })
-      this.selectDialog = false
+      const value = unionWith(this.filter.Value, selected, isEqual)
+      this.filterUpdate(this.field.Tag, { Value: value })
+      setTimeout(() => { this.selectDialog = false }, 200) // костыль
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.Value === null) {
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
+        } else {
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
+        }
+      },
+      deep: true
     }
   }
 }

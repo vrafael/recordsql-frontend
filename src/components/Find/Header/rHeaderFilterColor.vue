@@ -1,21 +1,20 @@
 <template>
-  <r-filter
+  <r-header-filter
     :field="field"
-    :filter="filter"
-    :filter-update="filterUpdate"
+    :filter-apply="filterApply"
   >
     <q-input
-      ref="input"
-      class="col-9"
+      class="col-12"
       :value="filter.Value"
-      @change="event => updateValue(event.target.value)"
+      @input="event => updateValue(event)"
       :rules="colorInputRules"
-      :disable="!filter.Enable"
-      mask="\#XXXXXXXX"
+      mask="XXXXXXXX"
       outlined
       dense
-      :clearable="filter.Value !== filterCurrent.Value"
-      @clear="reset"
+      ref="input"
+      label="HEX or RGBa"
+      clearable
+      @clear="updateValue(null)"
     >
       <div
         slot="prepend"
@@ -53,16 +52,15 @@
         </q-popup-proxy>
       </q-icon>
     </q-input>
-  </r-filter>
+  </r-header-filter>
 </template>
 
 <script>
-import rFilter from './rFilter'
-// ToDo import hexOrHexaColor from 'quasar/src/utils/patterns'
+import rHeaderFilter from './rHeaderFilter'
 
 export default {
   components: {
-    rFilter
+    rHeaderFilter
   },
   props: {
     field: {
@@ -73,11 +71,11 @@ export default {
       type: Object,
       required: true
     },
-    filterCurrent: {
-      type: Object,
+    filterUpdate: {
+      type: Function,
       required: true
     },
-    filterUpdate: {
+    filterApply: {
       type: Function,
       required: true
     }
@@ -85,11 +83,11 @@ export default {
   data: () => ({
     colorInputRules: [
       val => (!val) ||
-        (val.length === 7) ||
-        (val.length === 9) ||
+        (val.length === 6) ||
+        (val.length === 8) ||
         'Please use 6-8 characters',
       val => (!val) ||
-        /^#([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
+        /^([\da-fA-F]{6,8})$/.test(val) || 'Please use hex or hexa values (0-9 and A-F)'
     ],
     helperColor: {
       style: {
@@ -108,6 +106,12 @@ export default {
         } else {
           this.helperColor.style.backgroundColor = null
         }
+
+        if (filter.Value) {
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
+        }
       },
       deep: true
     }
@@ -116,12 +120,6 @@ export default {
     this.helperColor.style.backgroundColor = this.filter.Value
   },
   methods: {
-    reset () {
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-    },
     applyProxyToValue () {
       this.updateValue(this.proxyValue)
     },

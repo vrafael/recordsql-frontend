@@ -1,25 +1,23 @@
 <template>
-  <r-filter
+  <r-header-filter
     :field="field"
-    :filter="filter"
-    :filter-update="filterUpdate"
+    :filter-apply="filterApply"
   >
     <q-checkbox
       :value="filter.Value"
-      :disable="!filter.Enable"
       @input="event => updateValue(event)"
       :label="label"
       dense
     />
-  </r-filter>
+  </r-header-filter>
 </template>
 
 <script>
-import rFilter from './rFilter'
+import rHeaderFilter from './rHeaderFilter'
 
 export default {
   components: {
-    rFilter
+    rHeaderFilter
   },
   props: {
     field: {
@@ -30,11 +28,11 @@ export default {
       type: Object,
       required: true
     },
-    /* filterCurrent: {
-      type: Object,
-      required: true
-    }, */
     filterUpdate: {
+      type: Function,
+      required: true
+    },
+    filterApply: {
       type: Function,
       required: true
     }
@@ -47,14 +45,20 @@ export default {
     }
   },
   methods: {
-    /* reset () {
-      this.filterUpdate(this.field.Tag, { Value: this.filterCurrent.Value })
-      setTimeout(() => {
-        this.$refs.input.resetValidation()
-      })
-    }, */
     updateValue (eventValue) {
       this.filterUpdate(this.field.Tag, { Value: eventValue })
+    }
+  },
+  watch: {
+    filter: {
+      handler: function (filter) {
+        if (filter.Value === true || filter.Value === false) {
+          this.filterUpdate(this.field.Tag, { isEnabled: true })
+        } else {
+          this.filterUpdate(this.field.Tag, { isEnabled: false })
+        }
+      },
+      deep: true
     }
   }
 }
