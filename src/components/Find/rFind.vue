@@ -81,7 +81,6 @@
                     :filter-current="find.filtersCurrent[col.name]"
                     :filter-update="filterUpdate"
                     :filter-apply="filterApply"
-                    :filter-close="filterClose"
                   />
                 </q-item>
               </q-list>
@@ -124,33 +123,22 @@ import fetchApiRPC from 'src/common/service.api.rpc'
 import fieldsMapping from 'src/common/fieldsMapping'
 import { Notify } from 'quasar'
 import rColumnIdentifier from './Columns/rColumnIdentifier'
-import rHeaderFilterBool from 'components/Find/Header/rHeaderFilterBool'
-import rHeaderFilterColor from 'components/Find/Header/rHeaderFilterColor'
-import rHeaderFilterDate from 'components/Find/Header/rHeaderFilterDate'
-import rHeaderFilterTime from 'components/Find/Header/rHeaderFilterTime'
-import rHeaderFilterDatetime from 'components/Find/Header/rHeaderFilterDatetime'
-import rHeaderFilterInt from 'components/Find/Header/rHeaderFilterInt'
-import rHeaderFilterBigint from 'components/Find/Header/rHeaderFilterBigint'
-import rHeaderFilterLink from 'components/Find/Header/rHeaderFilterLink'
-import rHeaderFilterMoney from 'components/Find/Header/rHeaderFilterMoney'
-import rHeaderFilterString from 'components/Find/Header/rHeaderFilterString'
-import rHeaderFilterFloat from 'components/Find/Header/rHeaderFilterFloat'
 
 export default {
   components: {
     rObject,
     rColumnIdentifier,
-    rHeaderFilterBool,
-    rHeaderFilterColor,
-    rHeaderFilterDate,
-    rHeaderFilterTime,
-    rHeaderFilterDatetime,
-    rHeaderFilterInt,
-    rHeaderFilterBigint,
-    rHeaderFilterLink,
-    rHeaderFilterMoney,
-    rHeaderFilterString,
-    rHeaderFilterFloat
+    rHeaderFilterBool: () => import('./Header/rHeaderFilterBool'),
+    rHeaderFilterColor: () => import('./Header/rHeaderFilterColor'),
+    rHeaderFilterDate: () => import('./Header/rHeaderFilterDate'),
+    rHeaderFilterTime: () => import('./Header/rHeaderFilterTime'),
+    rHeaderFilterDatetime: () => import('./Header/rHeaderFilterDatetime'),
+    rHeaderFilterInt: () => import('./Header/rHeaderFilterInt'),
+    rHeaderFilterBigint: () => import('./Header/rHeaderFilterBigint'),
+    rHeaderFilterLink: () => import('./Header/rHeaderFilterLink'),
+    rHeaderFilterMoney: () => import('./Header/rHeaderFilterMoney'),
+    rHeaderFilterString: () => import('./Header/rHeaderFilterString'),
+    rHeaderFilterFloat: () => import('./Header/rHeaderFilterFloat')
   },
   props: {
     typeTag: {
