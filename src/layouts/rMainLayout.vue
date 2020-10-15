@@ -22,21 +22,21 @@
           </q-avatar>
           RecordSQL
         </q-toolbar-title>
-        <q-btn
-          flat
-          @click="drawerRight = !drawerRight"
-          round
-          dense
-          icon="star"
-        />
+        <!--        <q-btn-->
+        <!--          flat-->
+        <!--          @click="drawerRight = !drawerRight"-->
+        <!--          round-->
+        <!--          dense-->
+        <!--          icon="star"-->
+        <!--        />-->
       </q-toolbar>
     </q-header>
     <q-drawer
       v-model="drawerLeft"
-      show-if-above
       bordered
       content-class="bg-grey-1"
     >
+      <!--show-if-above-->
       <q-scroll-area class="fit">
         <q-list
           v-for="(menu_item, index) in menu"
@@ -65,16 +65,16 @@
       </q-scroll-area>
     </q-drawer>
 
-    <q-drawer
-      side="right"
-      v-model="drawerRight"
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list class="flex flex-center">
-        Favorite objects
-      </q-list>
-    </q-drawer>
+    <!--    <q-drawer-->
+    <!--      side="right"-->
+    <!--      v-model="drawerRight"-->
+    <!--      bordered-->
+    <!--      content-class="bg-grey-1"-->
+    <!--    >-->
+    <!--      <q-list class="flex flex-center">-->
+    <!--        Favorite objects-->
+    <!--      </q-list>-->
+    <!--    </q-drawer>-->
 
     <q-page-container>
       <router-view />
@@ -83,18 +83,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   data () {
     return ({
-      drawerLeft: true,
-      drawerRight: false
-    })
-  },
-  computed: {
-    ...mapGetters('MainLayout', {
-      menu: 'MENU_GET'
+      drawerLeft: false,
+      // drawerRight: false,
+      menu: [{
+        label: 'Home',
+        icon: 'home',
+        link: '/type',
+        separator: true
+      }]
     })
   }
 }

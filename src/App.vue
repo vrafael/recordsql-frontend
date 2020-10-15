@@ -5,15 +5,22 @@
 </template>
 
 <script>
+import { ApiRpcError } from './common/service.api.rpc'
+import { Notify } from 'quasar'
+
 export default {
-  name: 'App'
-  // async mounted () {
-  //   await this.$store.dispatch('TYPE_METADATA_FETCH', 9)
-  //   console.log('test: ', this.$store.getters.TYPE_METADATA_GET)
-  // }
-  // async mounted() {
-  //   await this.$store.dispatch('TYPE_LIST_FETCH',)
-  //   console.log('test: ', this.$store.getters.TYPE_LIST_GET)
-  // },
+  name: 'App',
+  errorCaptured (err, vm, info) {
+    if (err instanceof ApiRpcError) {
+      Notify.create(err)
+    } else {
+      console.groupCollapsed('Application error')
+      console.error(err)
+      console.info(info)
+      console.groupEnd()
+      Notify.create({ type: 'negative', message: err.message })
+    }
+    return false
+  }
 }
 </script>

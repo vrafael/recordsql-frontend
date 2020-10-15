@@ -1,34 +1,38 @@
-const routes = [
-  {
-    path: '/record/:id/',
-    redirect: '/record/:id/fields'
+const routes = [{
+  path: '/',
+  component: () => import('layouts/rMainLayout.vue'),
+  children: [{
+    path: '',
+    name: 'home',
+    component: () => import('pages/rHome.vue')
   },
   {
-    path: '/',
-    component: () => import('layouts/rMainLayout.vue'),
-    children: [{
-      path: '',
-      component: () => import('pages/rHome.vue')
-    },
-    {
-      path: '/types',
-      component: () => import('pages/rTypes.vue')
-    },
-    {
-      path: '/record',
-      component: () => import('pages/rRecords.vue'),
-      children: [{
-        path: '/record/:id/fields',
-        component: () => import('components/Records/rFields')
-      },
-      {
-        path: 'relations',
-        component: () => import('components/Records/rRelations')
-      }
-      ]
-    }
-    ]
-  }
+    path: '/type/:typeTag([a-zA-Z0-9]+)?',
+    name: 'type',
+    component: () => import('pages/rType.vue'),
+    props: (route) => ({
+      typeTag: route.params.typeTag
+    })
+  },
+  {
+    path: '/record/:typeTag([a-zA-Z0-9]+)/:identifier(\\d+)?',
+    name: 'record',
+    component: () => import('pages/rRecord.vue'),
+    props: (route) => ({
+      identifier: route.params.identifier ? parseInt(route.params.identifier) : null,
+      typeTag: route.params.typeTag
+    })
+  }]
+},
+{
+  path: '/login',
+  component: () => import('layouts/rLoginLayout.vue'),
+  children: [{
+    path: '',
+    name: 'login',
+    component: () => import('pages/Login.vue')
+  }]
+}
 ]
 
 // Always leave this as last one
