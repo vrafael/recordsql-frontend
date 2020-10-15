@@ -1,26 +1,20 @@
-# Quasar App (recordsql-frontend)
+RecordSQL.Frontend
+==============
 
-A Quasar Framework app
+Description
+----------
 
-## Install the dependencies
-```bash
-yarn
-```
+Frontend for object-relational framework RecordSQL (Record v2)
+Based on VueJS and Quasar Framework
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+Instruction
+----------
+### Prepare
+Use ```yarn``` or ```npm install``` for pull node_modules
 
-### Lint the files
-```bash
-yarn run lint
-```
+### Run
+Use ```quasar dev```
 
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+### Build
+Use ```quasar build```
+Chack path \dist\spa

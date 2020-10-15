@@ -87,7 +87,7 @@ module.exports = function (/* ctx */) {
       open: true, // opens browser window automatically
       proxy: {
         '/api/rpc/': {
-          target: 'http://test.record.lightdoc.io',
+          target: 'http://record.lightdoc.io',
           changeOrigin: true
         }
       }
