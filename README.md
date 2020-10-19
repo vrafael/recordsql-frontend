@@ -5,6 +5,7 @@ Description
 ----------
 
 Frontend for object-relational framework RecordSQL (Record v2)
+
 Based on VueJS and Quasar Framework
 
 Links
@@ -22,4 +23,4 @@ Use ```quasar dev```
 
 ### Build
 Use ```quasar build```
-Chack path \dist\spa
+and check path \dist\spa
