@@ -12,7 +12,7 @@ export default {
   name: 'App',
   errorCaptured (err, vm, info) {
     if (err instanceof ApiRpcError) {
-      Notify.create(err)
+      Notify.create({ message: err.message, type: err.type, timeout: err.timeout, progress: true })
     } else {
       console.groupCollapsed('Application error')
       console.error(err)
@@ -24,3 +24,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.q-notification__message {
+  white-space: pre-wrap;
+}
+</style>
