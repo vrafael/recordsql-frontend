@@ -250,7 +250,10 @@ export default {
             }
           })
       }
-      this.$router.push({ name: 'record', params: { typeTag: this.typeTag }, query })
+      const route = this.$router.resolve({ name: 'record', params: { typeTag: this.typeTag }, query })
+      window.open(route.href, '_blank')
+
+      // this.$router.push({ name: 'record', params: { typeTag: this.typeTag }, query })
     },
     resetFieldToOrigin (tag) {
       this.find.filters[tag] = JSON.parse(JSON.stringify(this.find.filtersCurrent[tag]))
