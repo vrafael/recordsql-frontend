@@ -16,7 +16,7 @@
       <q-btn
         color="primary"
         :to="{ name: 'record', params: { typeTag }}"
-        v-if="!typeMetadataAbstract"
+        v-if="!typeMetadataAbstract && !!type.metadata.State"
       >
         <!--ToDo q-btn-dropdown with ChildrenTypes -->
         <q-icon
