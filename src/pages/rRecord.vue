@@ -88,7 +88,7 @@
               label="Fields"
             />
             <q-tab
-              v-if="type.metadata && type.metadata.Object && recordOrigin"
+              v-if="type.metadata && type.metadata.Object && recordOrigin && recordOrigin._record"
               name="relations"
               label="Relations"
             />
@@ -231,7 +231,7 @@ export default {
           }
           if (recordInit) {
             const emptyRecord = {}
-            typeMetadata.Fields.forEach((field) => {
+            typeMetadata.Fields.forEach(field => {
               emptyRecord[field.Tag] = this.$route.query[field.Tag] ? JSON.parse(this.$route.query[field.Tag]) : null
             })
             this.loading = false
