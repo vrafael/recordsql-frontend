@@ -89,8 +89,8 @@ export default {
       drawerLeft: false,
       // drawerRight: false,
       menu: [{
-        label: 'Home',
-        icon: 'home',
+        label: 'Types',
+        icon: 'view_list',
         link: '/type',
         separator: true
       }]

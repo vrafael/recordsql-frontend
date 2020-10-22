@@ -1,28 +1,32 @@
 const routes = [{
   path: '/',
+  redirect: '/type'
+},
+{
+  path: '/',
   component: () => import('layouts/rMainLayout.vue'),
-  children: [{
+  children: [/* {
     path: '',
     name: 'home',
     component: () => import('pages/rHome.vue')
-  },
-  {
-    path: '/type/:typeTag([a-zA-Z0-9]+)?',
-    name: 'type',
-    component: () => import('pages/rType.vue'),
-    props: (route) => ({
-      typeTag: route.params.typeTag
-    })
-  },
-  {
-    path: '/record/:typeTag([a-zA-Z0-9]+)/:identifier(\\d+)?',
-    name: 'record',
-    component: () => import('pages/rRecord.vue'),
-    props: (route) => ({
-      identifier: route.params.identifier ? parseInt(route.params.identifier) : null,
-      typeTag: route.params.typeTag
-    })
-  }]
+  }, */
+    {
+      path: '/type/:typeTag([a-zA-Z0-9]+)?',
+      name: 'type',
+      component: () => import('pages/rType.vue'),
+      props: (route) => ({
+        typeTag: route.params.typeTag
+      })
+    },
+    {
+      path: '/record/:typeTag([a-zA-Z0-9]+)/:identifier(\\d+)?',
+      name: 'record',
+      component: () => import('pages/rRecord.vue'),
+      props: (route) => ({
+        identifier: route.params.identifier ? parseInt(route.params.identifier) : null,
+        typeTag: route.params.typeTag
+      })
+    }]
 },
 {
   path: '/login',
