@@ -15,8 +15,8 @@
       </q-btn>
       <q-btn
         color="primary"
-        :to="{ name: 'record', params: { typeTag }}"
-        v-if="!typeMetadataAbstract"
+        @click="create"
+        v-if="!typeMetadataAbstract && !!typeMetadataState"
       >
         <!--ToDo q-btn-dropdown with ChildrenTypes -->
         <q-icon
@@ -221,9 +221,40 @@ export default {
         }
       }
       return null
+    },
+    typeMetadataState () {
+      if (this.type.metadata && Object.prototype.hasOwnProperty.call(this.type.metadata, 'State')) {
+        return this.type.metadata.State
+      }
+      return null
     }
   },
   methods: {
+    create () {
+      const query = {} // проброс фильтров на форму новой записи
+      if (this.type.metadata && this.type.metadata.Fields && this.find.filtersCurrent) {
+        this.type.metadata.Fields
+          .forEach(field => {
+            const val = this.find.filtersCurrent[field.Tag]
+            if (val && val.isEnabled && !!val.Value) {
+              switch (field.Type.Tag) {
+                case 'FieldLink':
+                case 'FieldLinkToType':
+                  if (val.Value.length > 0) {
+                    query[field.Tag] = JSON.stringify(val.Value[0])
+                  }
+                  break
+                case 'FieldString': query[field.Tag] = JSON.stringify(val.Value)
+                  break
+              }
+            }
+          })
+      }
+      const route = this.$router.resolve({ name: 'record', params: { typeTag: this.typeTag }, query })
+      window.open(route.href, '_blank')
+
+      // this.$router.push({ name: 'record', params: { typeTag: this.typeTag }, query })
+    },
     resetFieldToOrigin (tag) {
       this.find.filters[tag] = JSON.parse(JSON.stringify(this.find.filtersCurrent[tag]))
     },
